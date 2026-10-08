@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>VIORA — Customer Profile & Preferences</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Background Ambient Glow -->
+  <div class="ambient-background"></div>
+
+  <!-- Mobile Viewport Container -->
+  <div class="device-wrapper">
+    <div class="device-frame" id="appContainer">
+
+      <!-- Status Bar Mockup -->
+      <header class="status-bar" id="statusBar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <svg class="icon-signal" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <rect x="2" y="16" width="3" height="6" rx="1"></rect>
+            <rect x="7" y="12" width="3" height="10" rx="1"></rect>
+            <rect x="12" y="8" width="3" height="14" rx="1"></rect>
+            <rect x="17" y="4" width="3" height="18" rx="1"></rect>
+          </svg>
+          <svg class="icon-wifi" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path>
+          </svg>
+          <svg class="icon-battery" viewBox="0 0 24 24" width="20" height="16" fill="currentColor">
+            <rect x="2" y="6" width="18" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2"></rect>
+            <rect x="4" y="8" width="14" height="8" rx="1"></rect>
+            <path d="M21 10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </div>
+      </header>
+
+      <!-- Toast Feedback Notifications -->
+      <div id="toastContainer" class="toast-container" role="alert" aria-live="polite"></div>
+
+      <!-- MAIN APP CONTENT SCREENS -->
+      <main class="screens-container">
+
+        <!-- ============================================== -->
+        <!-- SCREEN 1: AUTHENTICATION (Sign In / Register)  -->
+        <!-- Matches login-signup.png                       -->
+        <!-- ============================================== -->
+        <section id="screenAuth" class="app-screen" style="display: none;">
+          <div class="auth-content">
+            <div class="auth-header">
+              <h1 class="brand-title">VIORA</h1>
+              <p class="brand-subtitle">EXCLUSIVE SALON MEMBER ACCESS</p>
+            </div>
+
+            <!-- Tab Switcher between Sign In and Register -->
+            <div class="auth-tabs" role="tablist">
+              <button type="button" class="auth-tab active" id="tabSignIn" role="tab" aria-selected="true">Sign In</button>
+              <button type="button" class="auth-tab" id="tabSignUp" role="tab" aria-selected="false">Create Account</button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="signInForm" class="auth-form" novalidate>
+              <div class="form-group">
+                <label for="loginEmail" class="form-label">EMAIL ADDRESS</label>
+                <input type="email" id="loginEmail" class="form-input" placeholder="sarah.kothari@gmail.com" required autocomplete="email">
+                <span class="field-error" id="loginEmailError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="loginPassword" class="form-label">PASSWORD</label>
+                <div class="input-password-wrapper">
+                  <input type="password" id="loginPassword" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
+                  <button type="button" class="password-toggle-btn" aria-label="Toggle password visibility" data-target="loginPassword">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </button>
+                </div>
+                <span class="field-error" id="loginPasswordError"></span>
+              </div>
+
+              <div class="auth-action-row">
+                <a href="#forgot" class="forgot-link" id="forgotPasswordBtn">Forgot Password?</a>
+              </div>
+
+              <button type="submit" id="btnSignInSubmit" class="btn-primary">
+                <span class="btn-text">SIGN IN</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+              </button>
+            </form>
+
+            <!-- Register Form (Initially Hidden) -->
+            <form id="signUpForm" class="auth-form" style="display: none;" novalidate>
+              <div class="form-group">
+                <label for="regName" class="form-label">FULL NAME</label>
+                <input type="text" id="regName" class="form-input" placeholder="Sarah Sen" required autocomplete="name">
+                <span class="field-error" id="regNameError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="regEmail" class="form-label">EMAIL ADDRESS</label>
+                <input type="email" id="regEmail" class="form-input" placeholder="sarah.sen@maison.com" required autocomplete="email">
+                <span class="field-error" id="regEmailError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="regPhone" class="form-label">PHONE NUMBER</label>
+                <input type="tel" id="regPhone" class="form-input" placeholder="+91 98200 12345" autocomplete="tel">
+                <span class="field-error" id="regPhoneError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="regPassword" class="form-label">PASSWORD</label>
+                <div class="input-password-wrapper">
+                  <input type="password" id="regPassword" class="form-input" placeholder="Min 6 characters" required autocomplete="new-password">
+                  <button type="button" class="password-toggle-btn" aria-label="Toggle password visibility" data-target="regPassword">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </button>
+                </div>
+                <span class="field-error" id="regPasswordError"></span>
+              </div>
+
+              <button type="submit" id="btnSignUpSubmit" class="btn-primary">
+                <span class="btn-text">CREATE ACCOUNT</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+              </button>
+            </form>
+
+            <!-- Social / Quick Demo Access -->
+            <div class="auth-divider">
+              <span>Or continue with</span>
+            </div>
+
+            <div class="social-login-grid">
+              <button type="button" class="btn-social" id="btnDemoLogin">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Quick Demo Customer</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 2: CUSTOMER PROFILE                     -->
+        <!-- Matches Group 50.png exact layout              -->
+        <!-- ============================================== -->
+        <section id="screenProfile" class="app-screen" style="display: none;">
+          <!-- Navigation Bar -->
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnProfileBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">My Profile</h2>
+            <button type="button" class="nav-text-btn" id="btnEditProfile" aria-label="Edit Profile">
+              <span>Edit</span>
+            </button>
+          </nav>
+
+          <!-- Profile Header Section -->
+          <div class="profile-header-card">
+            <div class="profile-avatar-wrapper">
+              <img id="profileAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Customer Profile Photo" class="profile-avatar-img">
+              <button type="button" class="avatar-edit-badge" id="btnChangeAvatar" aria-label="Change photo">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+              </button>
+            </div>
+
+            <h3 class="profile-user-name" id="profileNameDisplay">Sarah Sen</h3>
+            <p class="profile-contact-line" id="profileContactDisplay">sarah.sen@maison.com • +91 98200 12345</p>
+
+            <!-- Global Customer ID Identity Badge (Day 1 Central Pillar) -->
+            <div class="global-identity-pill">
+              <span class="pill-dot"></span>
+              <span class="pill-label">CUSTOMER ID:</span>
+              <span class="pill-value" id="profileCustomerIdBadge">CUST-0001</span>
+            </div>
+          </div>
+
+          <!-- Menu Tiles Section (Direct match to Group 50.png) -->
+          <div class="menu-tiles-list">
+            <!-- 1. My Addresses -->
+            <div class="menu-tile-item" tabindex="0">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">My Addresses</span>
+                <span class="tile-value">2 Locations</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 2. Payment Methods -->
+            <div class="menu-tile-item" tabindex="0">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Payment Methods</span>
+                <span class="tile-value">Visa •••• 4242</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 3. Loyalty Points -->
+            <div class="menu-tile-item" tabindex="0">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Loyalty Points</span>
+                <span class="tile-value">1,250 Points</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 4. Beauty Profile -->
+            <div class="menu-tile-item" tabindex="0" id="tileBeautyProfile">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Beauty Profile</span>
+                <span class="tile-value">Complete</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 5. PREFERENCES TILE (GATEWAY TO DAY 2 PERSONAL PREFERENCES) -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tilePreferences" role="button" aria-label="Open Personal Preferences">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Preferences</span>
+                <span class="tile-value" id="profilePreferencesSummary">Silent Service</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 6. Help & Support -->
+            <div class="menu-tile-item" tabindex="0">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Help & Support</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 7. Terms & Privacy -->
+            <div class="menu-tile-item" tabindex="0">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Terms & Privacy</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 8. Sign Out -->
+            <div class="menu-tile-item tile-signout" tabindex="0" id="tileSignOut" role="button" aria-label="Sign Out">
+              <div class="tile-icon-box signout-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title signout-title">Sign Out</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 3: EDIT PROFILE VIEW / MODAL            -->
+        <!-- Permits updating Name, Phone, DOB, Photo       -->
+        <!-- Explicitly protects customerId, userId, role   -->
+        <!-- ============================================== -->
+        <section id="screenEditProfile" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnEditProfileBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Edit Profile</h2>
+            <button type="button" class="nav-text-btn save-action-btn" id="btnSaveProfileHeader" aria-label="Save Profile">
+              <span>Save</span>
+            </button>
+          </nav>
+
+          <form id="editProfileForm" class="screen-form" novalidate>
+            <!-- Protected Global Customer ID (Read-only) -->
+            <div class="form-group protected-field">
+              <div class="label-with-badge">
+                <label class="form-label" for="editCustomerId">GLOBAL CUSTOMER ID</label>
+                <span class="badge-locked">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                  Immutable
+                </span>
+              </div>
+              <input type="text" id="editCustomerId" class="form-input input-readonly" readonly aria-readonly="true">
+              <span class="form-hint">Universal identity recognized across all salon branches. Cannot be altered.</span>
+            </div>
+
+            <!-- Protected Account Email (Read-only) -->
+            <div class="form-group protected-field">
+              <div class="label-with-badge">
+                <label class="form-label" for="editEmail">ACCOUNT EMAIL</label>
+                <span class="badge-locked">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                  Locked
+                </span>
+              </div>
+              <input type="email" id="editEmail" class="form-input input-readonly" readonly aria-readonly="true">
+              <span class="form-hint">Connected to your member login account.</span>
+            </div>
+
+            <!-- Editable Full Name -->
+            <div class="form-group">
+              <label class="form-label" for="editName">FULL NAME <span class="required-star">*</span></label>
+              <input type="text" id="editName" class="form-input" placeholder="Sarah Sen" required maxlength="60">
+              <span class="field-error" id="editNameError"></span>
+            </div>
+
+            <!-- Editable Phone Number -->
+            <div class="form-group">
+              <label class="form-label" for="editPhone">PHONE NUMBER</label>
+              <input type="tel" id="editPhone" class="form-input" placeholder="+91 98200 12345" maxlength="20">
+              <span class="field-error" id="editPhoneError"></span>
+            </div>
+
+            <!-- Editable Date of Birth -->
+            <div class="form-group">
+              <label class="form-label" for="editDob">DATE OF BIRTH</label>
+              <input type="date" id="editDob" class="form-input">
+              <span class="field-error" id="editDobError"></span>
+            </div>
+
+            <!-- Editable Profile Photo URL -->
+            <div class="form-group">
+              <label class="form-label" for="editPhotoUrl">PROFILE PHOTO URL</label>
+              <input type="url" id="editPhotoUrl" class="form-input" placeholder="https://... photo link">
+              <span class="field-error" id="editPhotoUrlError"></span>
+
+              <!-- Preset Avatar Picker -->
+              <div class="preset-avatars-row">
+                <span class="preset-label">Or choose an avatar:</span>
+                <div class="preset-avatars-list">
+                  <button type="button" class="avatar-option-btn active" data-url="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar 1">
+                  </button>
+                  <button type="button" class="avatar-option-btn" data-url="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" alt="Avatar 2">
+                  </button>
+                  <button type="button" class="avatar-option-btn" data-url="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&auto=format&fit=crop&q=80">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=80" alt="Avatar 3">
+                  </button>
+                  <button type="button" class="avatar-option-btn" data-url="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80" alt="Avatar 4">
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Action Buttons -->
+            <div class="form-action-buttons">
+              <button type="submit" id="btnSaveProfile" class="btn-primary">
+                <span class="btn-text">SAVE PROFILE</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+              </button>
+              <button type="button" id="btnCancelEditProfile" class="btn-secondary">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 4: PERSONAL PREFERENCES UI              -->
+        <!-- Connects to GET /api/customers/preferences     -->
+        <!-- & PUT /api/customers/preferences               -->
+        <!-- ============================================== -->
+        <section id="screenPreferences" class="app-screen" style="display: none;">
+          <!-- Navigation Bar -->
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnPreferencesBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Personal Preferences</h2>
+            <button type="button" class="nav-text-btn save-action-btn" id="btnSavePreferencesHeader" aria-label="Save Preferences">
+              <span>Save</span>
+            </button>
+          </nav>
+
+          <!-- Preferences Description Hero -->
+          <div class="preferences-intro-card">
+            <div class="intro-badge">BESPOKE CLIENT EXPERIENCE</div>
+            <h3 class="intro-title">Your Tailored Preferences</h3>
+            <p class="intro-text">
+              Select your personal care preferences. These are synchronized across all VIORA salon branches so every stylist delivers your preferred treatments.
+            </p>
+          </div>
+
+          <!-- Preferences Categories Accordion / Sections -->
+          <div class="preferences-content">
+
+            <!-- 1. HAIR PREFERENCES -->
+            <div class="preference-category-card" data-category="hair">
+              <div class="category-header">
+                <div class="category-title-group">
+                  <span class="category-tag">HAIR</span>
+                  <h4 class="category-name">Hair Styling & Treatments</h4>
+                </div>
+                <span class="category-count-badge" id="hairCountBadge">0 selected</span>
+              </div>
+              <div class="chips-grid" id="hairChipsGrid">
+                <!-- Injected via JavaScript chips data -->
+              </div>
+              <!-- Custom tag input -->
+              <div class="custom-chip-row">
+                <input type="text" class="custom-chip-input" placeholder="Add custom hair preference..." id="customHairInput" maxlength="30">
+                <button type="button" class="btn-add-chip" data-category="hair" aria-label="Add custom hair tag">+</button>
+              </div>
+            </div>
+
+            <!-- 2. NAILS PREFERENCES -->
+            <div class="preference-category-card" data-category="nails">
+              <div class="category-header">
+                <div class="category-title-group">
+                  <span class="category-tag">NAILS</span>
+                  <h4 class="category-name">Nails & Finishes</h4>
+                </div>
+                <span class="category-count-badge" id="nailsCountBadge">0 selected</span>
+              </div>
+              <div class="chips-grid" id="nailsChipsGrid">
+                <!-- Injected via JavaScript chips data -->
+              </div>
+              <div class="custom-chip-row">
+                <input type="text" class="custom-chip-input" placeholder="Add custom nails preference..." id="customNailsInput" maxlength="30">
+                <button type="button" class="btn-add-chip" data-category="nails" aria-label="Add custom nails tag">+</button>
+              </div>
+            </div>
+
+            <!-- 3. SKIN PREFERENCES -->
+            <div class="preference-category-card" data-category="skin">
+              <div class="category-header">
+                <div class="category-title-group">
+                  <span class="category-tag">SKIN</span>
+                  <h4 class="category-name">Skin Care & Facials</h4>
+                </div>
+                <span class="category-count-badge" id="skinCountBadge">0 selected</span>
+              </div>
+              <div class="chips-grid" id="skinChipsGrid">
+                <!-- Injected via JavaScript chips data -->
+              </div>
+              <div class="custom-chip-row">
+                <input type="text" class="custom-chip-input" placeholder="Add custom skin preference..." id="customSkinInput" maxlength="30">
+                <button type="button" class="btn-add-chip" data-category="skin" aria-label="Add custom skin tag">+</button>
+              </div>
+            </div>
+
+            <!-- 4. MAKEUP PREFERENCES -->
+            <div class="preference-category-card" data-category="makeup">
+              <div class="category-header">
+                <div class="category-title-group">
+                  <span class="category-tag">MAKEUP</span>
+                  <h4 class="category-name">Makeup & Artistry</h4>
+                </div>
+                <span class="category-count-badge" id="makeupCountBadge">0 selected</span>
+              </div>
+              <div class="chips-grid" id="makeupChipsGrid">
+                <!-- Injected via JavaScript chips data -->
+              </div>
+              <div class="custom-chip-row">
+                <input type="text" class="custom-chip-input" placeholder="Add custom makeup preference..." id="customMakeupInput" maxlength="30">
+                <button type="button" class="btn-add-chip" data-category="makeup" aria-label="Add custom makeup tag">+</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Sticky Bottom Save Bar -->
+          <div class="sticky-footer-bar">
+            <button type="button" id="btnSavePreferences" class="btn-primary">
+              <span class="btn-text">SAVE PREFERENCES</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+            <button type="button" id="btnResetPreferences" class="btn-secondary">
+              Discard Changes
+            </button>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Global Loading Overlay -->
+      <div id="loadingOverlay" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-box">
+          <div class="luxury-spinner"></div>
+          <p class="loading-text" id="loadingText">Connecting to VIORA...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
