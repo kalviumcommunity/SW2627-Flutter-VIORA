@@ -150,6 +150,19 @@ class VioraApiService {
       body: JSON.stringify(preferencesData)
     });
   }
+
+  // Customer Treatment History APIs (Day 3 Integration)
+  async getHistory(category = null) {
+    let endpoint = '/api/customers/history';
+    if (category && category.toLowerCase() !== 'all') {
+      endpoint += `?category=${encodeURIComponent(category)}`;
+    }
+    return this.request(endpoint, { method: 'GET' });
+  }
+
+  async getRebookContext(appointmentId) {
+    return this.request(`/api/customers/history/${appointmentId}/rebook`, { method: 'GET' });
+  }
 }
 
 // Global instance

@@ -4,7 +4,9 @@ const {
   getProfile,
   updateProfile,
   getPreferences,
-  updatePreferences
+  updatePreferences,
+  getTreatmentHistory,
+  getRebookContext
 } = require('../controllers/customerController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -17,5 +19,12 @@ router.route('/profile')
 router.route('/preferences')
   .get(protect, getPreferences)
   .put(protect, updatePreferences);
+
+// Customer Treatment History endpoints (Protected - Centralized Multi-Branch Identity)
+router.route('/history')
+  .get(protect, getTreatmentHistory);
+
+router.route('/history/:appointmentId/rebook')
+  .get(protect, getRebookContext);
 
 module.exports = router;

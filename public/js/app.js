@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
       skin: [],
       makeup: []
     },
+    journeyHistory: [],
+    journeyFilter: 'all',
+    selectedRebookData: null,
     isLoading: false
   };
 
@@ -56,7 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     screenAuth: document.getElementById('screenAuth'),
     screenProfile: document.getElementById('screenProfile'),
     screenEditProfile: document.getElementById('screenEditProfile'),
-    screenPreferences: document.getElementById('screenPreferences')
+    screenPreferences: document.getElementById('screenPreferences'),
+    screenBeautyJourney: document.getElementById('screenBeautyJourney')
   };
 
   // Auth elements
@@ -95,6 +99,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSavePreferences = document.getElementById('btnSavePreferences');
   const btnSavePreferencesHeader = document.getElementById('btnSavePreferencesHeader');
   const btnResetPreferences = document.getElementById('btnResetPreferences');
+
+  // Beauty Journey elements (Day 3 - Group 51.png)
+  const tileBeautyJourney = document.getElementById('tileBeautyJourney');
+  const tileBeautyProfile = document.getElementById('tileBeautyProfile');
+  const profileJourneySummary = document.getElementById('profileJourneySummary');
+  const btnJourneyBack = document.getElementById('btnJourneyBack');
+  const journeyFilterPills = document.querySelectorAll('.journey-filter-pill');
+  const journeyLoadingBox = document.getElementById('journeyLoadingBox');
+  const journeyErrorBox = document.getElementById('journeyErrorBox');
+  const journeyErrorMessage = document.getElementById('journeyErrorMessage');
+  const journeyEmptyBox = document.getElementById('journeyEmptyBox');
+  const journeyTimelineContent = document.getElementById('journeyTimelineContent');
+  const btnRetryJourney = document.getElementById('btnRetryJourney');
+
+  // Rebook Modal elements (Day 3 Safe Integration)
+  const rebookModal = document.getElementById('rebookModal');
+  const rebookModalBody = document.getElementById('rebookModalBody');
+  const btnCloseRebookModal = document.getElementById('btnCloseRebookModal');
+  const btnProceedRebook = document.getElementById('btnProceedRebook');
+  const btnCancelRebook = document.getElementById('btnCancelRebook');
 
   // Loading & Feedback
   const loadingOverlay = document.getElementById('loadingOverlay');
@@ -410,6 +434,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         renderProfile(state.customerProfile);
+
+        // Background update for cross-branch journey count
+        window.vioraApi.getHistory('all').then(res => {
+          if (res && res.success && profileJourneySummary) {
+            const count = res.count || (res.data ? res.data.length : 0);
+            profileJourneySummary.textContent = `${count} Treatment${count === 1 ? '' : 's'}`;
+          }
+        }).catch(() => {});
+
         navigateTo('screenProfile');
       } else {
         throw new Error(response.message || 'Failed to load profile.');
@@ -511,6 +544,253 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderPreferencesScreen();
     showToast('Reverted to saved preferences.', 'info');
+  }
+
+  // ==========================================
+  // DAY 3: MY BEAUTY JOURNEY & REBOOK WORKFLOW
+  // Visual Source of Truth: Group 51.png
+  // ==========================================
+
+  function formatMonthHeader(dateVal) {
+    if (!dateVal) return 'PAST SERVICES';
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return 'PAST SERVICES';
+    const month = d.toLocaleString('en-US', { month: 'long' }).toUpperCase();
+    const year = d.getFullYear();
+    return `${month} ${year}`;
+  }
+
+  function formatCompletedDate(dateVal) {
+    if (!dateVal) return 'Completed';
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return 'Completed';
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = d.toLocaleString('en-US', { month: 'short' });
+    return `Completed on ${day} ${month}`;
+  }
+
+  function formatPrice(amount) {
+    if (typeof amount !== 'number') return '₹0';
+    return `₹${amount.toLocaleString('en-IN')}`;
+  }
+
+  async function loadBeautyJourney(category = 'all') {
+    state.journeyFilter = category;
+
+    // Update filter pills UI
+    journeyFilterPills.forEach(pill => {
+      const pillCat = pill.dataset.category;
+      const isActive = (pillCat === category) || (category === 'all' && pillCat === 'all');
+      pill.classList.toggle('active', isActive);
+      pill.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    // Show loading state, hide error, empty, timeline
+    if (journeyLoadingBox) journeyLoadingBox.style.display = 'flex';
+    if (journeyErrorBox) journeyErrorBox.style.display = 'none';
+    if (journeyEmptyBox) journeyEmptyBox.style.display = 'none';
+    if (journeyTimelineContent) journeyTimelineContent.innerHTML = '';
+
+    try {
+      const response = await window.vioraApi.getHistory(category);
+      if (response && response.success) {
+        state.journeyHistory = response.data || [];
+
+        if (profileJourneySummary) {
+          const count = response.count || state.journeyHistory.length;
+          profileJourneySummary.textContent = `${count} Treatment${count === 1 ? '' : 's'}`;
+        }
+
+        renderBeautyJourney(state.journeyHistory);
+      } else {
+        throw new Error(response.message || 'Failed to retrieve beauty journey.');
+      }
+    } catch (err) {
+      console.error('Error loading beauty journey:', err);
+      if (journeyLoadingBox) journeyLoadingBox.style.display = 'none';
+      if (journeyErrorBox) {
+        journeyErrorBox.style.display = 'flex';
+        if (journeyErrorMessage) {
+          journeyErrorMessage.textContent = err.message || 'Could not connect to retrieve cross-branch history.';
+        }
+      }
+      showToast(err.message || 'Failed to load treatment history.', 'error');
+    } finally {
+      if (journeyLoadingBox) journeyLoadingBox.style.display = 'none';
+    }
+  }
+
+  function renderBeautyJourney(items) {
+    if (!items || items.length === 0) {
+      if (journeyEmptyBox) journeyEmptyBox.style.display = 'flex';
+      if (journeyTimelineContent) journeyTimelineContent.innerHTML = '';
+      return;
+    }
+
+    if (journeyEmptyBox) journeyEmptyBox.style.display = 'none';
+    if (journeyErrorBox) journeyErrorBox.style.display = 'none';
+
+    // Group items by Month & Year (Group 51.png timeline)
+    const monthGroups = new Map();
+    items.forEach(item => {
+      const groupKey = formatMonthHeader(item.date);
+      if (!monthGroups.has(groupKey)) {
+        monthGroups.set(groupKey, []);
+      }
+      monthGroups.get(groupKey).push(item);
+    });
+
+    let html = '';
+    monthGroups.forEach((groupItems, monthTitle) => {
+      html += `
+        <div class="journey-month-group">
+          <div class="journey-month-header">${escapeHtml(monthTitle)}</div>
+          <div class="journey-cards-list">
+      `;
+
+      groupItems.forEach(item => {
+        const serviceName = item.service?.name || 'Salon Treatment';
+        const price = formatPrice(item.service?.price || 0);
+        const branchName = item.branch?.name || 'VIORA Salon';
+        const stylistName = item.stylist?.name || 'Salon Stylist';
+        const completedDate = formatCompletedDate(item.date);
+        const isAvailable = item.service?.availability !== false;
+
+        html += `
+          <div class="treatment-card" data-appointment-id="${escapeHtml(item.appointmentId)}">
+            <div class="treatment-card-header">
+              <h3 class="treatment-name">${escapeHtml(serviceName)}</h3>
+              <span class="treatment-price">${price}</span>
+            </div>
+            <div class="treatment-card-body">
+              <div class="treatment-meta-line">
+                <span class="treatment-branch">${escapeHtml(branchName)}</span>
+                <span class="meta-dot">•</span>
+                <span class="treatment-stylist">${escapeHtml(stylistName)}</span>
+              </div>
+              <div class="treatment-sub-line">
+                <span class="treatment-date">${escapeHtml(completedDate)}</span>
+                <button type="button" 
+                  class="btn-rebook ${!isAvailable ? 'unavailable' : ''}" 
+                  data-appointment-id="${escapeHtml(item.appointmentId)}"
+                  data-available="${isAvailable}">
+                  ${isAvailable ? 'Rebook' : 'Unavailable'}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+    });
+
+    if (journeyTimelineContent) {
+      journeyTimelineContent.innerHTML = html;
+
+      // Attach rebook click listeners
+      journeyTimelineContent.querySelectorAll('.btn-rebook').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const apptId = btn.dataset.appointmentId;
+          const isAvail = btn.dataset.available === 'true';
+          handleRebookClick(apptId, isAvail);
+        });
+      });
+    }
+  }
+
+  async function handleRebookClick(appointmentId, isAvailable) {
+    if (!isAvailable) {
+      showToast('This service is currently unavailable for online rebooking. Please contact the salon directly.', 'error');
+      return;
+    }
+
+    setGlobalLoading(true, 'Preparing rebooking context...');
+    try {
+      const response = await window.vioraApi.getRebookContext(appointmentId);
+      if (response && response.success && response.data) {
+        state.selectedRebookData = response.data;
+        openRebookModal(response.data);
+      } else {
+        const localRecord = state.journeyHistory.find(i => i.appointmentId === appointmentId);
+        if (localRecord) {
+          state.selectedRebookData = {
+            service: localRecord.service,
+            branch: localRecord.branch,
+            preferredStylist: localRecord.stylist,
+            sourceAppointmentId: localRecord.appointmentId
+          };
+          openRebookModal(state.selectedRebookData);
+        } else {
+          throw new Error('Unable to prepare rebook context.');
+        }
+      }
+    } catch (err) {
+      console.error('Error preparing rebook context:', err);
+      showToast(err.message || 'Could not prepare rebook context.', 'error');
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  function openRebookModal(rebookData) {
+    const service = rebookData.service || {};
+    const branch = rebookData.branch || {};
+    const stylist = rebookData.preferredStylist || {};
+
+    rebookModalBody.innerHTML = `
+      <div class="rebook-detail-card">
+        <h4 class="rebook-service-name">${escapeHtml(service.name || 'Salon Treatment')}</h4>
+        <div class="rebook-service-price">${formatPrice(service.price || 0)}</div>
+
+        <div class="rebook-info-row">
+          <span class="rebook-info-label">Category</span>
+          <span class="rebook-info-val">${escapeHtml(service.category || 'General')}</span>
+        </div>
+        <div class="rebook-info-row">
+          <span class="rebook-info-label">Duration</span>
+          <span class="rebook-info-val">${service.duration || 60} mins</span>
+        </div>
+        <div class="rebook-info-row">
+          <span class="rebook-info-label">Branch</span>
+          <span class="rebook-info-val">${escapeHtml(branch.name || 'VIORA Salon')}</span>
+        </div>
+        <div class="rebook-info-row">
+          <span class="rebook-info-label">Preferred Stylist</span>
+          <span class="rebook-info-val">${escapeHtml(stylist.name || 'Any Senior Stylist')}</span>
+        </div>
+      </div>
+
+      <div class="rebook-integration-badge">
+        <strong>BOOKING FLOW INTEGRATION HOOK</strong>
+        Selected service and branch parameters are prefilled. Proceeding transfers context to the booking flow for slot scheduling and stylist confirmation without creating unconfirmed duplicates.
+      </div>
+    `;
+
+    if (rebookModal) rebookModal.style.display = 'flex';
+  }
+
+  function closeRebookModal() {
+    if (rebookModal) rebookModal.style.display = 'none';
+    state.selectedRebookData = null;
+  }
+
+  function handleProceedRebook() {
+    if (!state.selectedRebookData) return;
+
+    const rebookPayload = { ...state.selectedRebookData };
+    closeRebookModal();
+
+    // Dispatch custom event for modular booking integration
+    window.dispatchEvent(new CustomEvent('viora:rebook-initiated', {
+      detail: rebookPayload
+    }));
+
+    showToast(`Rebook context for "${rebookPayload.service?.name || 'treatment'}" prepared for booking flow!`, 'success');
   }
 
   // ==========================================
@@ -726,6 +1006,57 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+  // ==========================================
+  // DAY 3 EVENT LISTENERS: BEAUTY JOURNEY & REBOOK
+  // ==========================================
+
+  if (tileBeautyJourney) {
+    tileBeautyJourney.addEventListener('click', () => {
+      navigateTo('screenBeautyJourney');
+      loadBeautyJourney(state.journeyFilter || 'all');
+    });
+  }
+
+  if (tileBeautyProfile) {
+    tileBeautyProfile.addEventListener('click', () => {
+      navigateTo('screenBeautyJourney');
+      loadBeautyJourney(state.journeyFilter || 'all');
+    });
+  }
+
+  if (btnJourneyBack) {
+    btnJourneyBack.addEventListener('click', () => {
+      navigateTo('screenProfile');
+    });
+  }
+
+  if (btnRetryJourney) {
+    btnRetryJourney.addEventListener('click', () => {
+      loadBeautyJourney(state.journeyFilter || 'all');
+    });
+  }
+
+  // Category Filter Pills Toggle
+  journeyFilterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const cat = pill.dataset.category;
+      loadBeautyJourney(cat);
+    });
+  });
+
+  // Rebook Modal Buttons
+  if (btnCloseRebookModal) {
+    btnCloseRebookModal.addEventListener('click', closeRebookModal);
+  }
+
+  if (btnCancelRebook) {
+    btnCancelRebook.addEventListener('click', closeRebookModal);
+  }
+
+  if (btnProceedRebook) {
+    btnProceedRebook.addEventListener('click', handleProceedRebook);
+  }
 
   // Utility to escape HTML
   function escapeHtml(str) {

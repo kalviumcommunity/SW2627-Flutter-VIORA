@@ -1,5 +1,10 @@
+const mongoose = require('mongoose');
 const Customer = require('../models/Customer');
 const User = require('../models/User');
+const Appointment = require('../models/Appointment');
+const Branch = require('../models/Branch');
+const Service = require('../models/Service');
+const Stylist = require('../models/Stylist');
 
 // @desc    Get current authenticated customer profile
 // @route   GET /api/customers/profile
@@ -216,3 +221,234 @@ exports.updatePreferences = async (req, res) => {
     });
   }
 };
+
+// @desc    Get customer treatment history across all salon branches (Centralized Identity)
+// @route   GET /api/customers/history
+// @access  Private (Customer)
+exports.getTreatmentHistory = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Resolve authenticated customer from JWT session
+    let customer = await Customer.findOne({ userId });
+
+    // Self-healing: if customer profile doesn't exist yet for a customer user
+    if (!customer) {
+      if (req.user.role === 'customer') {
+        const globalCustomerId = await Customer.generateGlobalCustomerId();
+        customer = await Customer.create({
+          customerId: globalCustomerId,
+          userId: req.user._id,
+          name: req.user.name,
+          email: req.user.email,
+          phone: req.user.phone || '',
+          preferences: { hair: [], nails: [], skin: [], makeup: [] }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: 'Customer profile not found for this account'
+        });
+      }
+    }
+
+    // Query completed appointments strictly scoped to the authenticated customer's global customerId
+    // Centralized customer identity: retrieves eligible records across ALL branches
+    const query = {
+      customerId: customer.customerId,
+      status: 'Completed'
+    };
+
+    if (req.query.branchId) {
+      query.branchId = req.query.branchId;
+    }
+
+    const appointments = await Appointment.find(query)
+      .sort({ date: -1, createdAt: -1 })
+      .populate('branchId', 'branchId name address phone openingTime closingTime status')
+      .populate('serviceId', 'serviceId name description duration price category availability')
+      .populate({
+        path: 'stylistId',
+        select: 'stylistId specialization experience rating userId',
+        populate: {
+          path: 'userId',
+          select: 'name email'
+        }
+      });
+
+    // Format records safely, handling missing optional references gracefully
+    let formattedRecords = appointments.map((appt) => {
+      const service = appt.serviceId || null;
+      const branch = appt.branchId || null;
+      const stylist = appt.stylistId || null;
+      const stylistUser = stylist && stylist.userId ? stylist.userId : null;
+
+      return {
+        id: appt._id,
+        appointmentId: appt.appointmentId,
+        date: appt.date,
+        startTime: appt.startTime,
+        endTime: appt.endTime,
+        status: appt.status,
+        service: {
+          id: service ? service._id : null,
+          serviceId: service ? service.serviceId : 'N/A',
+          name: service ? service.name : 'Bespoke Salon Treatment',
+          description: service ? service.description : '',
+          duration: service ? service.duration : 60,
+          price: service ? service.price : 0,
+          category: service ? service.category : 'Other',
+          availability: service ? (service.availability !== false) : true
+        },
+        branch: {
+          id: branch ? branch._id : null,
+          branchId: branch ? branch.branchId : 'N/A',
+          name: branch ? branch.name : 'VIORA Salon',
+          address: branch ? branch.address : 'Salon Branch',
+          phone: branch ? branch.phone : ''
+        },
+        stylist: {
+          id: stylist ? stylist._id : null,
+          stylistId: stylist ? stylist.stylistId : null,
+          name: stylistUser ? stylistUser.name : 'Assigned Stylist',
+          rating: stylist ? stylist.rating : 5.0
+        }
+      };
+    });
+
+    // Optional category filtering
+    if (req.query.category && req.query.category.toLowerCase() !== 'all') {
+      const targetCategory = req.query.category.toLowerCase();
+      formattedRecords = formattedRecords.filter(item =>
+        item.service.category.toLowerCase() === targetCategory
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      customerId: customer.customerId,
+      count: formattedRecords.length,
+      data: formattedRecords
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Server error while fetching treatment history'
+    });
+  }
+};
+
+// @desc    Retrieve rebook context and prefill data for an eligible past service
+// @route   GET /api/customers/history/:appointmentId/rebook
+// @access  Private (Customer)
+exports.getRebookContext = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { appointmentId } = req.params;
+
+    const customer = await Customer.findOne({ userId });
+    if (!customer) {
+      return res.status(404).json({
+        success: false,
+        message: 'Customer not found'
+      });
+    }
+
+    // Find the appointment by appointmentId or mongo _id
+    let appointment;
+    if (mongoose.Types.ObjectId.isValid(appointmentId)) {
+      appointment = await Appointment.findOne({
+        _id: appointmentId,
+        customerId: customer.customerId
+      });
+    }
+    if (!appointment) {
+      appointment = await Appointment.findOne({
+        appointmentId,
+        customerId: customer.customerId
+      });
+    }
+
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        message: 'Appointment record not found in customer history'
+      });
+    }
+
+    // Only completed appointments can be rebooked from treatment history
+    if (appointment.status !== 'Completed') {
+      return res.status(400).json({
+        success: false,
+        message: `Only completed treatments can be rebooked. Current status: ${appointment.status}`
+      });
+    }
+
+    // Populate service, branch, stylist
+    await appointment.populate([
+      { path: 'branchId', select: 'branchId name address phone status' },
+      { path: 'serviceId', select: 'serviceId name description duration price category availability' },
+      {
+        path: 'stylistId',
+        select: 'stylistId specialization rating userId',
+        populate: { path: 'userId', select: 'name email' }
+      }
+    ]);
+
+    const service = appointment.serviceId;
+    const branch = appointment.branchId;
+    const stylist = appointment.stylistId;
+    const stylistUser = stylist && stylist.userId ? stylist.userId : null;
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: 'Original service record is no longer available'
+      });
+    }
+
+    // Check service availability and branch status
+    const isServiceAvailable = service.availability !== false;
+    const isBranchActive = !branch || branch.status !== 'inactive';
+
+    const rebookData = {
+      service: {
+        id: service._id,
+        serviceId: service.serviceId,
+        name: service.name,
+        price: service.price,
+        duration: service.duration,
+        category: service.category,
+        available: isServiceAvailable
+      },
+      branch: {
+        id: branch ? branch._id : null,
+        branchId: branch ? branch.branchId : null,
+        name: branch ? branch.name : 'VIORA Salon',
+        address: branch ? branch.address : '',
+        active: isBranchActive
+      },
+      preferredStylist: stylist ? {
+        id: stylist._id,
+        stylistId: stylist.stylistId,
+        name: stylistUser ? stylistUser.name : 'Preferred Stylist',
+        rating: stylist.rating
+      } : null,
+      sourceAppointmentId: appointment.appointmentId
+    };
+
+    return res.status(200).json({
+      success: true,
+      eligible: isServiceAvailable && isBranchActive,
+      data: rebookData,
+      bookingModuleAvailable: false,
+      integrationStatus: 'Ready for integration with Booking Module flow (availability scheduling and stylist selection)'
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Server error while preparing rebook context'
+    });
+  }
+};
+

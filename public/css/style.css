@@ -1089,3 +1089,421 @@ body {
   font-weight: 500;
   color: var(--color-text-muted);
 }
+
+/* ==========================================================================
+   MY BEAUTY JOURNEY (Group 51.png) & REBOOK WORKFLOW
+   ========================================================================== */
+
+.journey-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 8px 20px;
+}
+
+.journey-nav-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--color-text-main);
+  letter-spacing: -0.3px;
+  text-align: center;
+  flex: 1;
+}
+
+.back-circle-btn {
+  background: var(--color-surface-soft);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+}
+
+.back-circle-btn:hover {
+  background: var(--color-surface-muted);
+}
+
+/* Filter Pills Bar */
+.journey-filter-bar {
+  display: flex;
+  gap: 10px;
+  padding: 10px 20px 14px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.journey-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.journey-filter-pill {
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-soft);
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.journey-filter-pill:hover {
+  color: var(--color-text-main);
+  background: var(--color-surface-muted);
+}
+
+.journey-filter-pill.active {
+  background: #B8865B;
+  color: #FFFFFF;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(184, 134, 91, 0.28);
+}
+
+/* Journey Scroll Area */
+.journey-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 20px 40px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Month Timeline Group */
+.journey-month-group {
+  margin-top: 18px;
+}
+
+.journey-month-group:first-child {
+  margin-top: 6px;
+}
+
+.journey-month-header {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #78716C;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 12px;
+  padding-left: 2px;
+}
+
+/* Treatment Card (Group 51.png) */
+.treatment-card {
+  background: var(--color-surface);
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(28, 25, 23, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.treatment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(28, 25, 23, 0.06);
+  border-color: var(--color-border-dark);
+}
+
+.treatment-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.treatment-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 1.25;
+}
+
+.treatment-price {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+.treatment-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #78716C;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.treatment-branch {
+  font-weight: 500;
+  color: #57534E;
+}
+
+.meta-dot {
+  color: #A8A29E;
+  font-size: 12px;
+}
+
+.treatment-stylist {
+  color: #78716C;
+}
+
+.treatment-sub-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.treatment-date {
+  font-size: 13px;
+  color: #A8A29E;
+  font-weight: 400;
+}
+
+/* Rebook Button */
+.btn-rebook {
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  background: #F6EDE6;
+  color: #B8865B;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-rebook:hover {
+  background: #EEDFD3;
+  color: #9B6C43;
+  transform: scale(1.02);
+}
+
+.btn-rebook:active {
+  transform: scale(0.98);
+}
+
+.btn-rebook.unavailable {
+  background: #F3F4F6;
+  color: #9CA3AF;
+  cursor: not-allowed;
+}
+
+/* Journey State Boxes (Loading, Empty, Error) */
+.journey-state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 56px 20px;
+}
+
+.journey-state-text {
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  margin-top: 14px;
+}
+
+.state-icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.empty-circle {
+  background: var(--color-surface-soft);
+  color: var(--color-bronze);
+  border: 1px solid var(--color-border);
+}
+
+.error-circle {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+.state-title {
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--color-text-main);
+}
+
+.state-desc {
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  max-width: 290px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.btn-retry {
+  min-width: 140px;
+}
+
+/* Modal Overlay & Card (Rebook Integration) */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(28, 25, 23, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-card {
+  background: var(--color-surface);
+  width: 100%;
+  border-radius: 28px 28px 0 0;
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  max-height: 85%;
+  overflow-y: auto;
+  animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.modal-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--color-bronze);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.modal-close-btn {
+  background: var(--color-surface-soft);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background: var(--color-surface-muted);
+  color: var(--color-text-main);
+}
+
+.modal-body {
+  margin-bottom: 22px;
+}
+
+.rebook-detail-card {
+  background: var(--color-surface-soft);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--color-border);
+}
+
+.rebook-service-name {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 4px;
+}
+
+.rebook-service-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-bronze);
+  margin-bottom: 12px;
+}
+
+.rebook-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 6px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.rebook-info-label {
+  color: var(--color-text-muted);
+}
+
+.rebook-info-val {
+  font-weight: 600;
+  color: var(--color-text-main);
+  text-align: right;
+}
+
+.rebook-integration-badge {
+  background: #FDF8F3;
+  border: 1px dashed var(--color-bronze);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 12.5px;
+  color: #78716C;
+  line-height: 1.45;
+}
+
+.rebook-integration-badge strong {
+  color: var(--color-bronze);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
