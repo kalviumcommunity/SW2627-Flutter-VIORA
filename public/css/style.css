@@ -1507,3 +1507,537 @@ body {
   gap: 10px;
 }
 
+/* ==========================================================================
+   DAY 4: BEAUTY QUIZ & PERSONALIZED RECOMMENDATIONS (PERSON 2)
+   Visual Source of Truth: Group 52.png & Group 53.png
+   ========================================================================== */
+
+/* --- QUIZ NAVIGATION & STEP HEADER --- */
+.quiz-nav-bar,
+.results-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--color-canvas);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.quiz-nav-title,
+.results-nav-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-main);
+  text-align: center;
+}
+
+.quiz-step-header {
+  padding: 12px 20px 4px;
+}
+
+.step-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.step-number-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--color-bronze);
+  text-transform: uppercase;
+}
+
+.step-category-tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.quiz-progress-track {
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-surface-muted);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background-color: var(--color-bronze);
+  border-radius: var(--radius-pill);
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- QUIZ QUESTION & OPTIONS (Group 52.png) --- */
+.quiz-question-container {
+  padding: 24px 20px 16px;
+  flex: 1;
+}
+
+.quiz-question-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--color-text-main);
+  margin-bottom: 6px;
+}
+
+.quiz-question-subtitle {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 22px;
+}
+
+.quiz-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quiz-option-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 18px;
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+  width: 100%;
+}
+
+.quiz-option-card:hover {
+  border-color: #D8CEBE;
+  transform: translateY(-1px);
+}
+
+.quiz-option-card.selected {
+  border-color: var(--color-bronze);
+  background: #FCFAF7;
+  box-shadow: 0 4px 14px rgba(184, 134, 91, 0.12);
+}
+
+.quiz-option-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  background: var(--color-surface-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-bronze);
+  transition: background var(--transition-fast);
+}
+
+.quiz-option-card.selected .quiz-option-icon {
+  background: #F3ECE3;
+}
+
+.quiz-option-content {
+  flex: 1;
+}
+
+.quiz-option-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 2px;
+}
+
+.quiz-option-desc {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+}
+
+.quiz-option-check {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  color: transparent;
+}
+
+.quiz-option-card.selected .quiz-option-check {
+  background-color: var(--color-bronze);
+  border-color: var(--color-bronze);
+  color: #FFFFFF;
+}
+
+.quiz-footer-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 26px;
+  line-height: 1.45;
+  padding: 0 10px;
+}
+
+.quiz-actions-footer {
+  position: sticky;
+  bottom: 0;
+  padding: 16px 20px 24px;
+  background: linear-gradient(180deg, rgba(249, 247, 244, 0) 0%, rgba(249, 247, 244, 0.95) 25%, #F9F7F4 100%);
+  display: flex;
+  gap: 12px;
+  z-index: 5;
+}
+
+.btn-quiz-prev {
+  flex: 0 0 110px;
+  padding: 14px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.btn-quiz-next {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* --- QUIZ RESULTS & PERSONALIZED RECOMMENDATIONS (Group 53.png) --- */
+.results-scroll-container {
+  padding: 16px 20px 40px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.results-state-box {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.results-state-text {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 14px;
+}
+
+/* 1. YOUR BEAUTY PROFILE CARD */
+.beauty-profile-summary-card {
+  background-color: #F6F3EE;
+  border: 1px solid #ECE7DF;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.summary-card-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--color-bronze);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.profile-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.profile-chip {
+  background: #FFFFFF;
+  border: 1px solid #EFECE6;
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text-main);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.archetype-narrative-box {
+  border-top: 1px solid #ECE7DF;
+  padding-top: 14px;
+}
+
+.archetype-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 4px;
+}
+
+.archetype-summary-text {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* 2. RESULTS SECTIONS & HEADINGS */
+.results-section {
+  margin-bottom: 26px;
+}
+
+.section-heading-eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* RECOMMENDED SERVICES CARDS (Group 53.png) */
+.recommended-services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rec-service-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.rec-service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.rec-service-name {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--color-text-main);
+}
+
+.rec-service-price {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--color-bronze);
+}
+
+.rec-service-desc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+.rec-service-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+}
+
+.rec-service-duration {
+  font-size: 12.5px;
+  color: var(--color-text-light);
+}
+
+.btn-rec-book {
+  background-color: var(--color-bronze);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.btn-rec-book:hover {
+  background-color: var(--color-bronze-hover);
+}
+
+/* PRESCRIBED PRODUCTS GRID (Group 53.png) */
+.prescribed-products-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.rec-product-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+.rec-product-img-box {
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  background-color: var(--color-surface-soft);
+}
+
+.rec-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.rec-product-card:hover .rec-product-img {
+  transform: scale(1.04);
+}
+
+.rec-product-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.rec-product-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.rec-product-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-bronze);
+  margin-bottom: 6px;
+}
+
+.rec-product-reason {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+}
+
+/* RECOMMENDED STYLISTS CARDS (Feature D) */
+.recommended-stylists-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rec-stylist-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.rec-stylist-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: var(--color-surface-soft);
+  color: var(--color-bronze);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.rec-stylist-info {
+  flex: 1;
+}
+
+.rec-stylist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.rec-stylist-name {
+  font-family: var(--font-serif);
+  font-size: 16.5px;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.rec-stylist-rating {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-bronze);
+}
+
+.rec-stylist-branch {
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+  margin-bottom: 3px;
+}
+
+.rec-stylist-reason {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+  font-style: italic;
+}
+
+/* RETAKE QUIZ BOTTOM BUTTON (Group 53.png) */
+.results-bottom-actions {
+  margin-top: 12px;
+  padding-bottom: 16px;
+}
+
+.btn-retake-quiz {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-bronze);
+  color: var(--color-bronze);
+  padding: 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.btn-retake-quiz:hover {
+  background-color: var(--color-bronze-light);
+}
+
+.btn-retake-quiz:active {
+  background-color: #EFE4D6;
+}
+
+

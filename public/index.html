@@ -243,16 +243,16 @@
               </svg>
             </div>
 
-            <!-- 4. Beauty Profile -->
-            <div class="menu-tile-item" tabindex="0" id="tileBeautyProfile">
+            <!-- 4. Beauty Profile / Beauty Quiz -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tileBeautyProfile" role="button" aria-label="Open Beauty Quiz and Recommendations">
               <div class="tile-icon-box">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
               </div>
               <div class="tile-text-group">
-                <span class="tile-title">Beauty Profile</span>
-                <span class="tile-value">Complete</span>
+                <span class="tile-title">Beauty Quiz & Results</span>
+                <span class="tile-value" id="profileQuizSummary">Personalized Care</span>
               </div>
               <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 18l6-6-6-6"></path>
@@ -636,6 +636,153 @@
             </div>
           </div>
         </section>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 6: BEAUTY QUIZ                          -->
+        <!-- Exact match of Group 52.png                    -->
+        <!-- Multi-Step Interactive Personalized Quiz       -->
+        <!-- ============================================== -->
+        <section id="screenBeautyQuiz" class="app-screen" style="display: none;">
+          <!-- Navigation Bar (Matches Group 52.png) -->
+          <nav class="nav-bar quiz-nav-bar">
+            <button type="button" class="nav-icon-btn back-circle-btn" id="btnQuizBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title quiz-nav-title">Beauty Quiz</h2>
+            <div class="nav-spacer" style="width: 40px;"></div>
+          </nav>
+
+          <!-- Step Progress Indicator (Group 52.png) -->
+          <div class="quiz-step-header">
+            <div class="step-meta-row">
+              <span class="step-number-tag" id="quizStepNumberTag">STEP 1 OF 5</span>
+              <span class="step-category-tag" id="quizStepCategoryTag">Hair Texture</span>
+            </div>
+            <div class="quiz-progress-track">
+              <div class="quiz-progress-fill" id="quizProgressFill" style="width: 20%;"></div>
+            </div>
+          </div>
+
+          <!-- Dynamic Quiz Question Card -->
+          <div class="quiz-question-container">
+            <h3 class="quiz-question-title" id="quizQuestionTitle">What is your primary hair concern?</h3>
+            <p class="quiz-question-subtitle" id="quizQuestionSubtitle">Select one or more concerns for personalized treatment.</p>
+
+            <!-- Interactive Options Grid (Group 52.png) -->
+            <div class="quiz-options-list" id="quizOptionsList">
+              <!-- Dynamically populated options -->
+            </div>
+
+            <!-- Quiz Bottom Explainer Note (Group 52.png) -->
+            <p class="quiz-footer-note">
+              Your answers combined with your service history help us personalize recommendations.
+            </p>
+          </div>
+
+          <!-- Quiz Sticky Navigation Controls -->
+          <div class="quiz-actions-footer">
+            <button type="button" class="btn-secondary btn-quiz-prev" id="btnQuizPrev" style="display: none;">
+              PREVIOUS
+            </button>
+            <button type="button" class="btn-primary btn-quiz-next" id="btnQuizNext">
+              <span class="btn-text" id="btnQuizNextText">NEXT</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 7: PERSONALIZED RECOMMENDATIONS (RESULTS)-->
+        <!-- Exact match of Group 53.png                    -->
+        <!-- Profile, Services, Prescribed Products & Stylists -->
+        <!-- ============================================== -->
+        <section id="screenQuizResults" class="app-screen" style="display: none;">
+          <!-- Navigation Bar (Matches Group 53.png) -->
+          <nav class="nav-bar results-nav-bar">
+            <button type="button" class="nav-icon-btn back-circle-btn" id="btnResultsBack" aria-label="Back to Profile">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title results-nav-title">Personalized Recommendations</h2>
+            <div class="nav-spacer" style="width: 40px;"></div>
+          </nav>
+
+          <!-- Loading State -->
+          <div class="results-state-box" id="resultsLoadingBox" style="display: none;">
+            <div class="luxury-spinner"></div>
+            <p class="results-state-text">Synthesizing your beauty profile and recommendations...</p>
+          </div>
+
+          <!-- Error State -->
+          <div class="results-state-box results-error-box" id="resultsErrorBox" style="display: none;">
+            <div class="state-icon-circle error-circle">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="state-title">Unable to Load Recommendations</h3>
+            <p class="state-desc" id="resultsErrorMessage">There was an issue loading your results. Please retry.</p>
+            <button type="button" class="btn-primary btn-retry" id="btnRetryResults">
+              <span class="btn-text">RETRY</span>
+            </button>
+          </div>
+
+          <!-- Main Scrollable Results Content -->
+          <div class="results-scroll-container" id="resultsScrollContainer">
+
+            <!-- 1. YOUR BEAUTY PROFILE CARD (Group 53.png) -->
+            <div class="beauty-profile-summary-card">
+              <span class="summary-card-eyebrow">YOUR BEAUTY PROFILE</span>
+              <div class="profile-chips-grid" id="profileChipsContainer">
+                <!-- Dynamically populated chips e.g. Hair: 2B Wavy, Skin: Combination -->
+              </div>
+              <div class="archetype-narrative-box">
+                <h4 class="archetype-title" id="archetypeTitle">Luminous Glow & Hydration</h4>
+                <p class="archetype-summary-text" id="archetypeSummaryText">
+                  Specifically curated to restore hydration and reduce frizz for your 2B Wavy hair texture.
+                </p>
+              </div>
+            </div>
+
+            <!-- 2. RECOMMENDED SERVICES SECTION (Group 53.png) -->
+            <div class="results-section">
+              <h3 class="section-heading-eyebrow">RECOMMENDED SERVICES</h3>
+              <div class="recommended-services-list" id="recommendedServicesList">
+                <!-- Dynamically populated service cards -->
+              </div>
+            </div>
+
+            <!-- 3. PRESCRIBED PRODUCTS SECTION (Group 53.png) -->
+            <div class="results-section">
+              <h3 class="section-heading-eyebrow">PRESCRIBED PRODUCTS</h3>
+              <div class="prescribed-products-grid" id="prescribedProductsGrid">
+                <!-- Dynamically populated 2-column product cards -->
+              </div>
+            </div>
+
+            <!-- 4. MATCHED SALON SPECIALISTS (STYLISTS - Day 4 Feature D) -->
+            <div class="results-section">
+              <h3 class="section-heading-eyebrow">MATCHED SALON SPECIALISTS</h3>
+              <div class="recommended-stylists-list" id="recommendedStylistsList">
+                <!-- Dynamically populated stylist cards -->
+              </div>
+            </div>
+
+            <!-- 5. RETAKE QUIZ ACTION BUTTON (Group 53.png) -->
+            <div class="results-bottom-actions">
+              <button type="button" class="btn-retake-quiz" id="btnRetakeQuiz">
+                RETAKE QUIZ
+              </button>
+            </div>
+
+          </div>
+        </section>
+
 
         <!-- ============================================== -->
         <!-- REBOOK INTEGRATION MODAL / BOTTOM SHEET        -->

@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
     journeyHistory: [],
     journeyFilter: 'all',
     selectedRebookData: null,
+    quizQuestions: [],
+    currentQuizStepIndex: 0,
+    quizAnswers: {
+      hairType: '',
+      hairConcerns: [],
+      skinType: '',
+      goals: [],
+      sensitivities: []
+    },
+    quizResult: null,
+    isSubmittingQuiz: false,
     isLoading: false
   };
 
@@ -60,7 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
     screenProfile: document.getElementById('screenProfile'),
     screenEditProfile: document.getElementById('screenEditProfile'),
     screenPreferences: document.getElementById('screenPreferences'),
-    screenBeautyJourney: document.getElementById('screenBeautyJourney')
+    screenBeautyJourney: document.getElementById('screenBeautyJourney'),
+    screenBeautyQuiz: document.getElementById('screenBeautyQuiz'),
+    screenQuizResults: document.getElementById('screenQuizResults')
   };
 
   // Auth elements
@@ -119,6 +132,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseRebookModal = document.getElementById('btnCloseRebookModal');
   const btnProceedRebook = document.getElementById('btnProceedRebook');
   const btnCancelRebook = document.getElementById('btnCancelRebook');
+
+  // Day 4 Beauty Quiz & Recommendations elements (Group 52.png & Group 53.png)
+  const profileQuizSummary = document.getElementById('profileQuizSummary');
+  const btnQuizBack = document.getElementById('btnQuizBack');
+  const quizStepNumberTag = document.getElementById('quizStepNumberTag');
+  const quizStepCategoryTag = document.getElementById('quizStepCategoryTag');
+  const quizProgressFill = document.getElementById('quizProgressFill');
+  const quizQuestionTitle = document.getElementById('quizQuestionTitle');
+  const quizQuestionSubtitle = document.getElementById('quizQuestionSubtitle');
+  const quizOptionsList = document.getElementById('quizOptionsList');
+  const btnQuizPrev = document.getElementById('btnQuizPrev');
+  const btnQuizNext = document.getElementById('btnQuizNext');
+  const btnQuizNextText = document.getElementById('btnQuizNextText');
+
+  const btnResultsBack = document.getElementById('btnResultsBack');
+  const resultsLoadingBox = document.getElementById('resultsLoadingBox');
+  const resultsErrorBox = document.getElementById('resultsErrorBox');
+  const resultsErrorMessage = document.getElementById('resultsErrorMessage');
+  const btnRetryResults = document.getElementById('btnRetryResults');
+  const resultsScrollContainer = document.getElementById('resultsScrollContainer');
+  const profileChipsContainer = document.getElementById('profileChipsContainer');
+  const archetypeTitle = document.getElementById('archetypeTitle');
+  const archetypeSummaryText = document.getElementById('archetypeSummaryText');
+  const recommendedServicesList = document.getElementById('recommendedServicesList');
+  const prescribedProductsGrid = document.getElementById('prescribedProductsGrid');
+  const recommendedStylistsList = document.getElementById('recommendedStylistsList');
+  const btnRetakeQuiz = document.getElementById('btnRetakeQuiz');
 
   // Loading & Feedback
   const loadingOverlay = document.getElementById('loadingOverlay');
@@ -442,6 +482,9 @@ document.addEventListener('DOMContentLoaded', () => {
             profileJourneySummary.textContent = `${count} Treatment${count === 1 ? '' : 's'}`;
           }
         }).catch(() => {});
+
+        // Background update for beauty quiz results
+        loadQuizState();
 
         navigateTo('screenProfile');
       } else {
@@ -1018,10 +1061,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // DAY 4: Beauty Quiz tile in Profile opens Quiz or Results directly
   if (tileBeautyProfile) {
     tileBeautyProfile.addEventListener('click', () => {
-      navigateTo('screenBeautyJourney');
-      loadBeautyJourney(state.journeyFilter || 'all');
+      if (state.quizResult) {
+        navigateTo('screenQuizResults');
+        renderQuizResults(state.quizResult);
+      } else {
+        startQuiz();
+      }
     });
   }
 
@@ -1058,14 +1106,446 @@ document.addEventListener('DOMContentLoaded', () => {
     btnProceedRebook.addEventListener('click', handleProceedRebook);
   }
 
-  // Utility to escape HTML
-  function escapeHtml(str) {
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+  // ==========================================
+  // DAY 4: BEAUTY QUIZ & RECOMMENDATIONS CONTROLLER
+  // ==========================================
+
+  // SVG Icon generator for quiz cards matching Group 52.png
+  function getOptionIconSvg(iconKey) {
+    switch (iconKey) {
+      case 'frizz':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path></svg>`;
+      case 'volume':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+      case 'color':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`;
+      case 'damage':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
+      case 'scalp':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>`;
+      case 'straight':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="22"></line><line x1="16" y1="2" x2="16" y2="22"></line></svg>`;
+      case 'wavy':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c2.5-3 5.5-3 8 0s5.5 3 8 0 5.5-3 8 0"></path></svg>`;
+      case 'curly':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"></circle><path d="M12 8a4 4 0 1 0 4 4"></path></svg>`;
+      case 'coily':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a4 4 0 0 1 8 0 4 4 0 0 1 8 0"></path><path d="M4 16a4 4 0 0 0 8 0 4 4 0 0 0 8 0"></path></svg>`;
+      case 'combination':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 0 0 20z"></path></svg>`;
+      case 'dry':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"></path></svg>`;
+      case 'normal':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12s1.5 2 4 2 4-2 4-2"></path></svg>`;
+      case 'sensitive':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>`;
+      case 'oily':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path><circle cx="12" cy="14" r="2"></circle></svg>`;
+      case 'hydration':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`;
+      case 'glow':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"></path></svg>`;
+      case 'fortify':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`;
+      case 'style':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line></svg>`;
+      case 'sulfate_free':
+      case 'all_clear':
+      case 'vegan':
+      case 'fragrance_free':
+      case 'ammonia_free':
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>`;
+      default:
+        return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>`;
+    }
+  }
+
+  async function loadQuizState() {
+    try {
+      const res = await window.vioraApi.getQuizResult();
+      if (res && res.success && res.data) {
+        state.quizResult = res.data;
+        if (profileQuizSummary) {
+          profileQuizSummary.textContent = res.data.profileArchetype || 'Completed';
+        }
+      } else {
+        state.quizResult = null;
+        if (profileQuizSummary) {
+          profileQuizSummary.textContent = 'Take Quiz';
+        }
+      }
+    } catch {
+      // Graceful background fallback
+    }
+  }
+
+  async function startQuiz() {
+    try {
+      setGlobalLoading(true, 'Preparing your Beauty Quiz...');
+      if (!state.quizQuestions || state.quizQuestions.length === 0) {
+        const res = await window.vioraApi.getQuizQuestions();
+        if (res && res.success && Array.isArray(res.data)) {
+          state.quizQuestions = res.data;
+        } else {
+          throw new Error('Failed to retrieve quiz questions.');
+        }
+      }
+
+      // Prefill previous answers if available for retake convenience
+      if (state.quizResult && state.quizResult.answers) {
+        const a = state.quizResult.answers;
+        state.quizAnswers = {
+          hairType: a.hairType || '',
+          hairConcerns: Array.isArray(a.hairConcerns) ? [...a.hairConcerns] : [],
+          skinType: a.skinType || '',
+          goals: Array.isArray(a.goals) ? [...a.goals] : [],
+          sensitivities: Array.isArray(a.sensitivities) ? [...a.sensitivities] : []
+        };
+      } else {
+        state.quizAnswers = {
+          hairType: '',
+          hairConcerns: [],
+          skinType: '',
+          goals: [],
+          sensitivities: []
+        };
+      }
+
+      state.currentQuizStepIndex = 0;
+      renderQuizStep(state.currentQuizStepIndex);
+      navigateTo('screenBeautyQuiz');
+    } catch (err) {
+      console.error('Error starting quiz:', err);
+      showToast(err.message || 'Could not load quiz questions.', 'error');
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  function renderQuizStep(stepIndex) {
+    if (!state.quizQuestions || stepIndex >= state.quizQuestions.length) return;
+
+    const q = state.quizQuestions[stepIndex];
+    const totalSteps = state.quizQuestions.length;
+
+    // Header & Progress (Group 52.png)
+    quizStepNumberTag.textContent = `STEP ${stepIndex + 1} OF ${totalSteps}`;
+    quizStepCategoryTag.textContent = q.category || 'Profile';
+    const progressPercent = Math.round(((stepIndex + 1) / totalSteps) * 100);
+    quizProgressFill.style.width = `${progressPercent}%`;
+
+    // Question title & subtitle
+    quizQuestionTitle.textContent = q.title;
+    quizQuestionSubtitle.textContent = q.subtitle;
+
+    // Build Options
+    quizOptionsList.innerHTML = '';
+    const currentVal = state.quizAnswers[q.id];
+
+    q.options.forEach(opt => {
+      const isSelected = q.isMultiSelect
+        ? (Array.isArray(currentVal) && currentVal.includes(opt.id))
+        : (currentVal === opt.id);
+
+      const card = document.createElement('div');
+      card.className = `quiz-option-card ${isSelected ? 'selected' : ''}`;
+      card.setAttribute('role', q.isMultiSelect ? 'checkbox' : 'radio');
+      card.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+      card.tabIndex = 0;
+
+      card.innerHTML = `
+        <div class="quiz-option-icon">
+          ${getOptionIconSvg(opt.icon)}
+        </div>
+        <div class="quiz-option-content">
+          <div class="quiz-option-name">${escapeHtml(opt.title)}</div>
+          <div class="quiz-option-desc">${escapeHtml(opt.description || '')}</div>
+        </div>
+        <div class="quiz-option-check">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        handleOptionSelection(q, opt.id);
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOptionSelection(q, opt.id);
+        }
+      });
+
+      quizOptionsList.appendChild(card);
+    });
+
+    // Navigation buttons state
+    if (stepIndex > 0) {
+      btnQuizPrev.style.display = 'block';
+    } else {
+      btnQuizPrev.style.display = 'none';
+    }
+
+    if (stepIndex === totalSteps - 1) {
+      btnQuizNextText.textContent = 'SUBMIT QUIZ';
+    } else {
+      btnQuizNextText.textContent = 'NEXT';
+    }
+  }
+
+  function handleOptionSelection(question, optionId) {
+    if (question.isMultiSelect) {
+      let currentArr = Array.isArray(state.quizAnswers[question.id]) ? [...state.quizAnswers[question.id]] : [];
+
+      if (optionId === 'No Sensitivities') {
+        currentArr = ['No Sensitivities'];
+      } else {
+        // If clicking another option while 'No Sensitivities' is checked, remove it
+        currentArr = currentArr.filter(id => id !== 'No Sensitivities');
+
+        if (currentArr.includes(optionId)) {
+          currentArr = currentArr.filter(id => id !== optionId);
+        } else {
+          currentArr.push(optionId);
+        }
+      }
+      state.quizAnswers[question.id] = currentArr;
+    } else {
+      state.quizAnswers[question.id] = optionId;
+    }
+
+    renderQuizStep(state.currentQuizStepIndex);
+  }
+
+  function validateCurrentQuizStep() {
+    const q = state.quizQuestions[state.currentQuizStepIndex];
+    if (!q || !q.required) return true;
+
+    const val = state.quizAnswers[q.id];
+    if (q.isMultiSelect) {
+      if (!Array.isArray(val) || val.length === 0) {
+        showToast('Please select at least one option to continue.', 'info');
+        return false;
+      }
+    } else {
+      if (!val || typeof val !== 'string' || !val.trim()) {
+        showToast('Please select an option to continue.', 'info');
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function handleQuizNextStep() {
+    if (!validateCurrentQuizStep()) {
+      return;
+    }
+
+    if (state.currentQuizStepIndex < state.quizQuestions.length - 1) {
+      state.currentQuizStepIndex++;
+      renderQuizStep(state.currentQuizStepIndex);
+      const container = document.getElementById('appContainer');
+      if (container) container.scrollTop = 0;
+    } else {
+      submitQuizForm();
+    }
+  }
+
+  function handleQuizPrevStep() {
+    if (state.currentQuizStepIndex > 0) {
+      state.currentQuizStepIndex--;
+      renderQuizStep(state.currentQuizStepIndex);
+      const container = document.getElementById('appContainer');
+      if (container) container.scrollTop = 0;
+    }
+  }
+
+  async function submitQuizForm() {
+    if (state.isSubmittingQuiz) return;
+
+    state.isSubmittingQuiz = true;
+    setButtonLoading(btnQuizNext, true);
+
+    try {
+      const response = await window.vioraApi.submitQuiz(state.quizAnswers);
+      if (response && response.success && response.data) {
+        state.quizResult = response.data;
+        showToast('Your personalized recommendations are ready!', 'success');
+        if (profileQuizSummary) {
+          profileQuizSummary.textContent = response.data.profileArchetype || 'Completed';
+        }
+        renderQuizResults(state.quizResult);
+        navigateTo('screenQuizResults');
+      } else {
+        throw new Error(response.message || 'Failed to submit quiz.');
+      }
+    } catch (err) {
+      console.error('Error submitting quiz:', err);
+      showToast(err.message || 'Submission failed. Please check required fields.', 'error');
+    } finally {
+      state.isSubmittingQuiz = false;
+      setButtonLoading(btnQuizNext, false);
+    }
+  }
+
+  function renderQuizResults(result) {
+    if (!result) {
+      resultsScrollContainer.style.display = 'none';
+      resultsErrorBox.style.display = 'block';
+      resultsErrorMessage.textContent = 'No quiz results found. Take the quiz to generate personalized recommendations.';
+      return;
+    }
+
+    resultsLoadingBox.style.display = 'none';
+    resultsErrorBox.style.display = 'none';
+    resultsScrollContainer.style.display = 'block';
+
+    // 1. Profile Summary & Chips (Group 53.png)
+    profileChipsContainer.innerHTML = '';
+    const chips = Array.isArray(result.profileChips) && result.profileChips.length > 0
+      ? result.profileChips
+      : [
+          `Hair: ${result.answers?.hairType || 'Custom'}`,
+          `Skin: ${result.answers?.skinType || 'Custom'}`,
+          ...(result.answers?.hairConcerns || []).map(c => `Concern: ${c}`)
+        ];
+
+    chips.forEach(chipText => {
+      const chipEl = document.createElement('span');
+      chipEl.className = 'profile-chip';
+      chipEl.textContent = chipText;
+      profileChipsContainer.appendChild(chipEl);
+    });
+
+    archetypeTitle.textContent = result.profileArchetype || 'Luminous Glow & Hydration';
+    archetypeSummaryText.textContent = result.summary || 'Specifically curated to restore hydration and enhance natural texture.';
+
+    // 2. Recommended Services (Group 53.png)
+    recommendedServicesList.innerHTML = '';
+    const services = result.recommendations?.services || [];
+    if (services.length === 0) {
+      recommendedServicesList.innerHTML = `<p class="state-desc" style="text-align: left; margin: 0;">Our salon stylists are tailoring bespoke services for your profile.</p>`;
+    } else {
+      services.forEach(srv => {
+        const card = document.createElement('div');
+        card.className = 'rec-service-card';
+        card.innerHTML = `
+          <div class="rec-service-header">
+            <span class="rec-service-name">${escapeHtml(srv.name)}</span>
+            <span class="rec-service-price">${escapeHtml(srv.formattedPrice || ('From ₹' + srv.price))}</span>
+          </div>
+          <p class="rec-service-desc">${escapeHtml(srv.description)}</p>
+          <div class="rec-service-footer">
+            <span class="rec-service-duration">Duration: ${srv.duration || 60} mins</span>
+            <button type="button" class="btn-rec-book" data-service="${escapeHtml(srv.name)}">Book Now</button>
+          </div>
+        `;
+
+        const btnBook = card.querySelector('.btn-rec-book');
+        if (btnBook) {
+          btnBook.addEventListener('click', () => {
+            showToast(`Concierge booked: ${srv.name}. Connecting to booking calendar.`, 'info');
+          });
+        }
+
+        recommendedServicesList.appendChild(card);
+      });
+    }
+
+    // 3. Prescribed Products (Group 53.png)
+    prescribedProductsGrid.innerHTML = '';
+    const products = result.recommendations?.products || [];
+    if (products.length === 0) {
+      prescribedProductsGrid.innerHTML = `<p class="state-desc" style="grid-column: 1 / -1; text-align: left; margin: 0;">Gentle all-around products will be recommended at your next consultation.</p>`;
+    } else {
+      products.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'rec-product-card';
+        card.innerHTML = `
+          <div class="rec-product-img-box">
+            <img src="${prod.imageUrl}" alt="${escapeHtml(prod.name)}" class="rec-product-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1608248597359-2ff99479b188?w=300&auto=format&fit=crop&q=80'">
+          </div>
+          <div class="rec-product-info">
+            <div class="rec-product-name">${escapeHtml(prod.name)}</div>
+            <div class="rec-product-price">${escapeHtml(prod.formattedPrice || ('₹' + prod.price))}</div>
+            <div class="rec-product-reason">${escapeHtml(prod.matchReason || '')}</div>
+          </div>
+        `;
+        prescribedProductsGrid.appendChild(card);
+      });
+    }
+
+    // 4. Matched Stylists (Day 4 Feature D)
+    recommendedStylistsList.innerHTML = '';
+    const stylists = result.recommendations?.stylists || [];
+    if (stylists.length === 0) {
+      recommendedStylistsList.innerHTML = `<p class="state-desc" style="text-align: left; margin: 0;">Specialists matching your criteria will be listed as branch schedules become available.</p>`;
+    } else {
+      stylists.forEach(st => {
+        const card = document.createElement('div');
+        card.className = 'rec-stylist-card';
+        const initials = (st.name || 'S').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        card.innerHTML = `
+          <div class="rec-stylist-avatar">${initials}</div>
+          <div class="rec-stylist-info">
+            <div class="rec-stylist-header">
+              <span class="rec-stylist-name">${escapeHtml(st.name)}</span>
+              <span class="rec-stylist-rating">★ ${st.rating ? st.rating.toFixed(1) : '5.0'}</span>
+            </div>
+            <div class="rec-stylist-branch">${escapeHtml(st.branchName || 'VIORA Salon')}</div>
+            <div class="rec-stylist-reason">${escapeHtml(st.matchReason || '')}</div>
+          </div>
+        `;
+        recommendedStylistsList.appendChild(card);
+      });
+    }
+  }
+
+  // --- DAY 4 EVENT LISTENERS ---
+  if (btnQuizBack) {
+    btnQuizBack.addEventListener('click', () => {
+      navigateTo('screenProfile');
+    });
+  }
+
+  if (btnQuizPrev) {
+    btnQuizPrev.addEventListener('click', handleQuizPrevStep);
+  }
+
+  if (btnQuizNext) {
+    btnQuizNext.addEventListener('click', handleQuizNextStep);
+  }
+
+  if (btnResultsBack) {
+    btnResultsBack.addEventListener('click', () => {
+      navigateTo('screenProfile');
+    });
+  }
+
+  if (btnRetakeQuiz) {
+    btnRetakeQuiz.addEventListener('click', startQuiz);
+  }
+
+  if (btnRetryResults) {
+    btnRetryResults.addEventListener('click', async () => {
+      setGlobalLoading(true, 'Refreshing recommendations...');
+      try {
+        const res = await window.vioraApi.getQuizResult();
+        if (res && res.success && res.data) {
+          state.quizResult = res.data;
+          renderQuizResults(state.quizResult);
+        } else {
+          startQuiz();
+        }
+      } catch (err) {
+        showToast(err.message || 'Failed to refresh.', 'error');
+      } finally {
+        setGlobalLoading(false);
+      }
+    });
   }
 
   // ==========================================

@@ -163,7 +163,32 @@ class VioraApiService {
   async getRebookContext(appointmentId) {
     return this.request(`/api/customers/history/${appointmentId}/rebook`, { method: 'GET' });
   }
+
+  // Customer Beauty Quiz & Recommendations APIs (Day 4 Integration)
+  async getQuizQuestions() {
+    return this.request('/api/customers/quiz/questions', { method: 'GET' });
+  }
+
+  async getQuizResult() {
+    return this.request('/api/customers/quiz', { method: 'GET' });
+  }
+
+  async submitQuiz(answers) {
+    return this.request('/api/customers/quiz', {
+      method: 'POST',
+      body: JSON.stringify(answers)
+    });
+  }
+
+  async retakeQuiz() {
+    return this.request('/api/customers/quiz/retake', { method: 'POST' });
+  }
+
+  async getRecommendations() {
+    return this.request('/api/customers/recommendations', { method: 'GET' });
+  }
 }
+
 
 // Global instance
 window.vioraApi = new VioraApiService();

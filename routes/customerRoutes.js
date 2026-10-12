@@ -6,7 +6,12 @@ const {
   getPreferences,
   updatePreferences,
   getTreatmentHistory,
-  getRebookContext
+  getRebookContext,
+  getQuizQuestions,
+  submitQuiz,
+  getQuizResult,
+  getRecommendations,
+  retakeQuiz
 } = require('../controllers/customerController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -27,4 +32,16 @@ router.route('/history')
 router.route('/history/:appointmentId/rebook')
   .get(protect, getRebookContext);
 
+// Customer Beauty Quiz & Recommendations endpoints (Protected - Day 4 Person 2)
+router.get('/quiz/questions', protect, getQuizQuestions);
+
+router.route('/quiz')
+  .get(protect, getQuizResult)
+  .post(protect, submitQuiz);
+
+router.post('/quiz/retake', protect, retakeQuiz);
+
+router.get('/recommendations', protect, getRecommendations);
+
 module.exports = router;
+
