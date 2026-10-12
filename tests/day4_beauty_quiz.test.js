@@ -124,6 +124,52 @@ async function runDay4Tests() {
       throw new Error('api.js is missing Day 4 client methods');
     }
 
+    const jsAppRes = await request({ method: 'GET', path: '/js/app.js' });
+    if (
+      jsAppRes.status === 200 &&
+      jsAppRes.rawBody.includes('function escapeHtml') &&
+      jsAppRes.rawBody.includes('window.escapeHtml = escapeHtml')
+    ) {
+      console.log('✓ GET /js/app.js successfully served safe escapeHtml sanitization helper');
+
+      // Execute actual served app.js in VM sandbox to exercise the real production implementation
+      const vm = require('vm');
+      const sandbox = { window: {}, document: { addEventListener: () => {} } };
+      vm.createContext(sandbox);
+      vm.runInContext(jsAppRes.rawBody, sandbox);
+
+      const fn = sandbox.window.escapeHtml;
+      if (typeof fn !== 'function') throw new Error('escapeHtml was not exposed on window by served app.js');
+
+      // Test 1: Ampersands, less-than, greater-than, double and single quotes
+      if (fn('&') !== '&amp;') throw new Error('escapeHtml failed & escaping');
+      if (fn('<') !== '&lt;') throw new Error('escapeHtml failed < escaping');
+      if (fn('>') !== '&gt;') throw new Error('escapeHtml failed > escaping');
+      if (fn('"') !== '&quot;') throw new Error('escapeHtml failed " escaping');
+      if (fn("'") !== '&#039;') throw new Error('escapeHtml failed \' escaping');
+
+      // Test 2: Full XSS-style input containing HTML tags and quotes
+      const xssInput = `<script>alert("test & 'xss'")</script>`;
+      const expectedOutput = `&lt;script&gt;alert(&quot;test &amp; &#039;xss&#039;&quot;)&lt;/script&gt;`;
+      if (fn(xssInput) !== expectedOutput) {
+        throw new Error(`escapeHtml failed XSS payload escaping. Got: ${fn(xssInput)}`);
+      }
+
+      // Test 3: null and undefined handling
+      if (fn(null) !== '') throw new Error('escapeHtml failed null safety check (expected empty string)');
+      if (fn(undefined) !== '') throw new Error('escapeHtml failed undefined safety check (expected empty string)');
+
+      // Test 4: Numbers and booleans
+      if (fn(0) !== '0') throw new Error('escapeHtml failed numeric 0 conversion');
+      if (fn(1500) !== '1500') throw new Error('escapeHtml failed number conversion');
+      if (fn(false) !== 'false') throw new Error('escapeHtml failed boolean false conversion');
+      if (fn(true) !== 'true') throw new Error('escapeHtml failed boolean true conversion');
+
+      console.log('✓ Production escapeHtml sanitization helper thoroughly verified (XSS characters, null/undefined, numbers, booleans)');
+    } else {
+      throw new Error('app.js is missing escapeHtml helper definition');
+    }
+
     // --- TEST 2: Security - Unauthenticated Request Rejection ---
     console.log('\n--- TEST 2: Security - Unauthenticated Request Rejection ---');
     const unauthQuizRes = await request({ method: 'GET', path: '/api/customers/quiz' });

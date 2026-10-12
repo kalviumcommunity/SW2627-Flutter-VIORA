@@ -3,6 +3,24 @@
  * Manages State, UI Views, Validations, and Day 1 API Integrations.
  */
 
+// ==========================================
+// HTML ESCAPING SANITIZATION HELPER
+// ==========================================
+function escapeHtml(value) {
+  if (value === null || value === undefined) {
+    return '';
+  }
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Expose on window for global accessibility in browsers
+window.escapeHtml = escapeHtml;
+
 document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // STATE MANAGEMENT
