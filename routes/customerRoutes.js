@@ -11,9 +11,13 @@ const {
   submitQuiz,
   getQuizResult,
   getRecommendations,
-  retakeQuiz
+  retakeQuiz,
+  getAdminOverview,
+  getAdminCustomerList,
+  getAdminCustomerDetails,
+  getAdminCustomerHistory
 } = require('../controllers/customerController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/authMiddleware');
 
 // Customer Profile endpoints (Protected)
 router.route('/profile')
@@ -42,6 +46,15 @@ router.route('/quiz')
 router.post('/quiz/retake', protect, retakeQuiz);
 
 router.get('/recommendations', protect, getRecommendations);
+
+// ========================================================
+// Day 5: Admin Customer Management Endpoints
+// Role-based authorization: admin or branch_manager
+// ========================================================
+router.get('/admin/overview', protect, authorize('admin', 'branch_manager'), getAdminOverview);
+router.get('/admin/list', protect, authorize('admin', 'branch_manager'), getAdminCustomerList);
+router.get('/admin/:customerId', protect, authorize('admin', 'branch_manager'), getAdminCustomerDetails);
+router.get('/admin/:customerId/history', protect, authorize('admin', 'branch_manager'), getAdminCustomerHistory);
 
 module.exports = router;
 

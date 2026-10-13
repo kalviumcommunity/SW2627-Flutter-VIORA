@@ -146,6 +146,12 @@
                 </svg>
                 <span>Quick Demo Customer</span>
               </button>
+              <button type="button" class="btn-social" id="btnDemoAdminLogin">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                <span>Quick Demo Admin</span>
+              </button>
             </div>
           </div>
         </section>
@@ -319,6 +325,25 @@
               </div>
               <div class="tile-text-group">
                 <span class="tile-title">Terms & Privacy</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- 7b. ADMIN CUSTOMER MANAGEMENT TILE (Visible for authorized admin/staff) -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tileAdminCustomers" style="display: none;" role="button" aria-label="Open Admin Customer Management">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Admin Customer Management</span>
+                <span class="tile-value">Directory & Retention</span>
               </div>
               <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 18l6-6-6-6"></path>
@@ -780,6 +805,299 @@
               </button>
             </div>
 
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 8: ADMIN CUSTOMER MANAGEMENT (DAY 5)    -->
+        <!-- Directory, Retention, Search, Segments         -->
+        <!-- ============================================== -->
+        <section id="screenAdminCustomers" class="app-screen" style="display: none;">
+          <!-- Top Navigation Bar -->
+          <nav class="nav-bar admin-nav-bar">
+            <button type="button" class="nav-icon-btn back-circle-btn" id="btnAdminBackToClient" aria-label="Return to Client View" title="Client View">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <div class="nav-title-group">
+              <h2 class="nav-title">Customer Intelligence</h2>
+              <span class="nav-subtitle-badge">ADMIN PORTAL</span>
+            </div>
+            <button type="button" class="nav-icon-btn admin-logout-btn" id="btnAdminSignOut" aria-label="Sign Out" title="Sign Out">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </button>
+          </nav>
+
+          <!-- Scrollable Content Area -->
+          <div class="admin-scroll-container" id="adminScrollContainer">
+            
+            <!-- Admin Hero Banner -->
+            <div class="admin-hero-card">
+              <div class="admin-hero-eyebrow">CENTRALIZED CLIENT INTELLIGENCE</div>
+              <h3 class="admin-hero-title">Multi-Branch Customer Directory</h3>
+              <p class="admin-hero-subtitle">
+                Unified client records, completed visit retention, and authorized preference visibility across all salon locations.
+              </p>
+            </div>
+
+            <!-- Analytics & Retention Summary KPI Cards -->
+            <div class="admin-kpi-grid">
+              <div class="admin-kpi-card">
+                <span class="kpi-label">TOTAL CLIENTS</span>
+                <span class="kpi-value" id="kpiTotalCustomers">--</span>
+                <span class="kpi-subtext" id="kpiVisitsCount">-- completed visits</span>
+              </div>
+              <div class="admin-kpi-card">
+                <span class="kpi-label">REPEAT RETENTION</span>
+                <span class="kpi-value" id="kpiRepeatRate">--%</span>
+                <span class="kpi-subtext" id="kpiReturningCount">-- repeat clients</span>
+              </div>
+              <div class="admin-kpi-card">
+                <span class="kpi-label">ACTIVE (&le;30D)</span>
+                <span class="kpi-value" id="kpiActiveClients">--</span>
+                <span class="kpi-subtext">Recent salon visits</span>
+              </div>
+              <div class="admin-kpi-card">
+                <span class="kpi-label">MULTI-BRANCH</span>
+                <span class="kpi-value" id="kpiMultiBranch">--</span>
+                <span class="kpi-subtext">Cross-branch patrons</span>
+              </div>
+            </div>
+
+            <!-- Search and Segment Filter Controls -->
+            <div class="admin-controls-card">
+              <div class="admin-search-wrapper">
+                <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" id="adminSearchInput" class="admin-search-input" placeholder="Search by name, ID (CUST-...), email, phone..." aria-label="Search customers">
+                <button type="button" class="btn-clear-search" id="btnClearAdminSearch" style="display: none;" aria-label="Clear search">&times;</button>
+              </div>
+
+              <!-- Segment Filter Pills -->
+              <div class="admin-filter-pills-bar" id="adminSegmentFilterBar" role="tablist" aria-label="Customer Segments">
+                <button type="button" class="admin-filter-pill active" data-segment="all" role="tab" aria-selected="true">All</button>
+                <button type="button" class="admin-filter-pill" data-segment="active" role="tab" aria-selected="false">Active (&le;30d)</button>
+                <button type="button" class="admin-filter-pill" data-segment="returning" role="tab" aria-selected="false">Returning (2+)</button>
+                <button type="button" class="admin-filter-pill" data-segment="at_risk" role="tab" aria-selected="false">At-Risk (&gt;90d)</button>
+                <button type="button" class="admin-filter-pill" data-segment="new" role="tab" aria-selected="false">New (0-1)</button>
+                <button type="button" class="admin-filter-pill" data-segment="multi_branch" role="tab" aria-selected="false">Multi-Branch</button>
+              </div>
+            </div>
+
+            <!-- Customer Management Cards List -->
+            <div class="admin-list-section">
+              <div class="admin-list-header-row">
+                <span class="admin-list-count" id="adminCustomerCountLabel">Loading clients...</span>
+                <button type="button" class="btn-refresh-list" id="btnRefreshAdminList" aria-label="Refresh customer list">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                  </svg>
+                  <span>Refresh</span>
+                </button>
+              </div>
+
+              <!-- Loading State -->
+              <div class="admin-state-box" id="adminLoadingBox" style="display: none;">
+                <div class="luxury-spinner"></div>
+                <p class="admin-state-text">Retrieving centralized customer records...</p>
+              </div>
+
+              <!-- Error State -->
+              <div class="admin-state-box admin-error-box" id="adminErrorBox" style="display: none;">
+                <div class="state-icon-circle error-circle">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </div>
+                <h3 class="state-title">Unable to Load Customer Directory</h3>
+                <p class="state-desc" id="adminErrorMessage">Error connecting to the administrative directory API.</p>
+                <button type="button" class="btn-primary btn-retry" id="btnRetryAdminCustomers">
+                  <span class="btn-text">RETRY</span>
+                </button>
+              </div>
+
+              <!-- Empty State -->
+              <div class="admin-state-box admin-empty-box" id="adminEmptyBox" style="display: none;">
+                <div class="state-icon-circle empty-circle">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                  </svg>
+                </div>
+                <h3 class="state-title">No Customers Found</h3>
+                <p class="state-desc">No customer records match your active search and segment filters.</p>
+              </div>
+
+              <!-- Dynamic Customer List -->
+              <div class="admin-customers-list" id="adminCustomersList">
+                <!-- Dynamically rendered customer cards -->
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 9: ADMIN CUSTOMER DETAILS & HISTORY     -->
+        <!-- Profile, Retention, Preferences, Treatments    -->
+        <!-- ============================================== -->
+        <section id="screenAdminCustomerDetail" class="app-screen" style="display: none;">
+          <!-- Navigation Bar -->
+          <nav class="nav-bar admin-nav-bar">
+            <button type="button" class="nav-icon-btn back-circle-btn" id="btnAdminCustomerDetailBack" aria-label="Back to Customer List">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <div class="nav-title-group">
+              <h2 class="nav-title">Client Details</h2>
+              <span class="nav-subtitle-id" id="adminDetailCustomerIdBadge">CUST-0000</span>
+            </div>
+            <div class="nav-spacer" style="width: 40px;"></div>
+          </nav>
+
+          <!-- Detail Scroll Container -->
+          <div class="admin-detail-scroll-container" id="adminDetailScrollContainer">
+
+            <!-- Detail Loading State -->
+            <div class="admin-state-box" id="adminDetailLoadingBox" style="display: none;">
+              <div class="luxury-spinner"></div>
+              <p class="admin-state-text">Loading client profile and cross-branch history...</p>
+            </div>
+
+            <!-- Detail Error State -->
+            <div class="admin-state-box admin-error-box" id="adminDetailErrorBox" style="display: none;">
+              <div class="state-icon-circle error-circle">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <h3 class="state-title">Unable to Load Client Record</h3>
+              <p class="state-desc" id="adminDetailErrorMessage">Could not fetch client data.</p>
+              <button type="button" class="btn-primary btn-retry" id="btnRetryAdminDetail">
+                <span class="btn-text">RETRY</span>
+              </button>
+            </div>
+
+            <!-- Detail Content Wrapper -->
+            <div class="admin-detail-content" id="adminDetailContent" style="display: none;">
+
+              <!-- 1. Customer Profile Card -->
+              <div class="admin-detail-profile-card">
+                <div class="detail-avatar-wrapper">
+                  <img id="adminDetailAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Customer Avatar" class="detail-avatar-img">
+                </div>
+                <h3 class="detail-name" id="adminDetailName">Sarah Sen</h3>
+                <p class="detail-contact" id="adminDetailContact">sarah.sen@maison.com • +91 98200 12345</p>
+
+                <div class="detail-identity-row">
+                  <span class="detail-id-pill" id="adminDetailIdPill">CUST-0001</span>
+                  <span class="detail-meta-pill" id="adminDetailMemberSince">Member since Oct 2026</span>
+                  <span class="detail-meta-pill" id="adminDetailDobPill" style="display: none;">DOB: --</span>
+                </div>
+              </div>
+
+              <!-- 2. Retention & Loyalty Analytics Matrix -->
+              <div class="admin-detail-section-card">
+                <span class="detail-section-eyebrow">RETENTION & VALUE PROFILE</span>
+                <div class="retention-kpi-row">
+                  <div class="retention-stat-item">
+                    <span class="stat-num" id="adminDetailCompletedVisits">0</span>
+                    <span class="stat-text">Completed Visits</span>
+                  </div>
+                  <div class="retention-stat-item">
+                    <span class="stat-num" id="adminDetailTotalSpend">₹0</span>
+                    <span class="stat-text">Total Spend</span>
+                  </div>
+                  <div class="retention-stat-item">
+                    <span class="stat-num" id="adminDetailRetentionStatusPill">New</span>
+                    <span class="stat-text">Retention Status</span>
+                  </div>
+                </div>
+
+                <!-- Last Visit & Branch Info -->
+                <div class="retention-info-box">
+                  <div class="retention-info-row">
+                    <span class="retention-info-key">Last Completed Visit:</span>
+                    <span class="retention-info-val" id="adminDetailLastVisitText">No visits recorded</span>
+                  </div>
+                  <div class="retention-info-row">
+                    <span class="retention-info-key">Cross-Branch Patronage:</span>
+                    <span class="retention-info-val" id="adminDetailBranchesText">1 Branch</span>
+                  </div>
+                  <div class="retention-tags-row" id="adminDetailSegmentTags">
+                    <!-- Badges injected via JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Authorized Personal Preferences -->
+              <div class="admin-detail-section-card">
+                <div class="section-title-with-badge">
+                  <span class="detail-section-eyebrow">PERSONAL PREFERENCES (SYNCHRONIZED)</span>
+                  <span class="badge-authorized">Authorized Visibility</span>
+                </div>
+                <p class="section-explainer">
+                  Client preferences accessible to authorized personnel to tailor treatment delivery across branches.
+                </p>
+                <div class="admin-preferences-categories" id="adminDetailPreferencesContainer">
+                  <!-- Preference categories & chips rendered via JS -->
+                </div>
+              </div>
+
+              <!-- 4. Beauty Consultation Quiz Profile (if taken) -->
+              <div class="admin-detail-section-card" id="adminDetailQuizCard" style="display: none;">
+                <span class="detail-section-eyebrow">BEAUTY CONSULTATION ARCHETYPE</span>
+                <div class="archetype-narrative-box">
+                  <h4 class="archetype-title" id="adminDetailArchetypeTitle">Signature Profile</h4>
+                  <p class="archetype-summary-text" id="adminDetailArchetypeSummary">--</p>
+                </div>
+                <div class="profile-chips-grid" id="adminDetailQuizChipsContainer">
+                  <!-- Quiz profile chips -->
+                </div>
+              </div>
+
+              <!-- 5. Cross-Branch Treatment & Service History -->
+              <div class="admin-detail-section-card">
+                <div class="section-title-with-badge">
+                  <span class="detail-section-eyebrow">CROSS-BRANCH SERVICE HISTORY</span>
+                  <span class="badge-count" id="adminHistoryTotalBadge">0 Records</span>
+                </div>
+
+                <!-- History Status Filter Tabs -->
+                <div class="admin-history-filter-bar" id="adminHistoryFilterBar" role="tablist">
+                  <button type="button" class="history-filter-pill active" data-history-status="all" role="tab" aria-selected="true">All (<span id="countHistAll">0</span>)</button>
+                  <button type="button" class="history-filter-pill" data-history-status="Completed" role="tab" aria-selected="false">Completed (<span id="countHistCompleted">0</span>)</button>
+                  <button type="button" class="history-filter-pill" data-history-status="Upcoming" role="tab" aria-selected="false">Upcoming (<span id="countHistUpcoming">0</span>)</button>
+                  <button type="button" class="history-filter-pill" data-history-status="Cancelled" role="tab" aria-selected="false">Cancelled (<span id="countHistCancelled">0</span>)</button>
+                </div>
+
+                <!-- History Timeline List -->
+                <div class="admin-history-timeline-container" id="adminHistoryTimelineContent">
+                  <!-- Rendered dynamically -->
+                </div>
+
+                <!-- Empty State for History -->
+                <div class="admin-history-empty" id="adminHistoryEmptyBox" style="display: none;">
+                  <p class="state-desc">No appointment records for this client in the selected status filter.</p>
+                </div>
+
+              </div>
+
+            </div>
           </div>
         </section>
 

@@ -105,20 +105,20 @@ class VioraApiService {
 
     if (res && res.token) {
       this.setToken(res.token);
-      this.setUser(res.data);
+      this.setUser(res.user || res.data);
     }
     return res;
   }
 
-  async register({ name, email, phone, password }) {
+  async register({ name, email, phone, password, role = 'customer' }) {
     const res = await this.request('/api/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ name, email, phone, password, role: 'customer' })
+      body: JSON.stringify({ name, email, phone, password, role })
     });
 
     if (res && res.token) {
       this.setToken(res.token);
-      this.setUser(res.data);
+      this.setUser(res.user || res.data);
     }
     return res;
   }
@@ -187,8 +187,38 @@ class VioraApiService {
   async getRecommendations() {
     return this.request('/api/customers/recommendations', { method: 'GET' });
   }
-}
 
+  // ==========================================
+  // Day 5 Admin Customer Management APIs
+  // ==========================================
+  async getAdminOverview() {
+    return this.request('/api/customers/admin/overview', { method: 'GET' });
+  }
+
+  async getAdminCustomers({ search = '', segment = 'all', page = 1, limit = 50 } = {}) {
+    const params = new URLSearchParams();
+    if (search && search.trim()) params.append('search', search.trim());
+    if (segment && segment !== 'all') params.append('segment', segment);
+    if (page) params.append('page', page);
+    if (limit) params.append('limit', limit);
+
+    const queryString = params.toString();
+    const endpoint = `/api/customers/admin/list${queryString ? '?' + queryString : ''}`;
+    return this.request(endpoint, { method: 'GET' });
+  }
+
+  async getAdminCustomerDetails(customerId) {
+    return this.request(`/api/customers/admin/${encodeURIComponent(customerId)}`, { method: 'GET' });
+  }
+
+  async getAdminCustomerHistory(customerId, status = 'all') {
+    let endpoint = `/api/customers/admin/${encodeURIComponent(customerId)}/history`;
+    if (status && status !== 'all') {
+      endpoint += `?status=${encodeURIComponent(status)}`;
+    }
+    return this.request(endpoint, { method: 'GET' });
+  }
+}
 
 // Global instance
 window.vioraApi = new VioraApiService();

@@ -54,7 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     quizResult: null,
     isSubmittingQuiz: false,
-    isLoading: false
+    isLoading: false,
+    // Day 5 Admin state
+    adminOverview: null,
+    adminCustomers: [],
+    adminSearch: '',
+    adminSegment: 'all',
+    selectedAdminCustomer: null,
+    selectedAdminCustomerHistory: [],
+    adminHistoryFilter: 'all'
   };
 
   // Predefined salon preference options from Viora UI/UX design catalog
@@ -91,7 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
     screenPreferences: document.getElementById('screenPreferences'),
     screenBeautyJourney: document.getElementById('screenBeautyJourney'),
     screenBeautyQuiz: document.getElementById('screenBeautyQuiz'),
-    screenQuizResults: document.getElementById('screenQuizResults')
+    screenQuizResults: document.getElementById('screenQuizResults'),
+    screenAdminCustomers: document.getElementById('screenAdminCustomers'),
+    screenAdminCustomerDetail: document.getElementById('screenAdminCustomerDetail')
   };
 
   // Auth elements
@@ -100,6 +110,70 @@ document.addEventListener('DOMContentLoaded', () => {
   const signInForm = document.getElementById('signInForm');
   const signUpForm = document.getElementById('signUpForm');
   const btnDemoLogin = document.getElementById('btnDemoLogin');
+  const btnDemoAdminLogin = document.getElementById('btnDemoAdminLogin');
+
+  // Day 5 Admin Management Selectors
+  const tileAdminCustomers = document.getElementById('tileAdminCustomers');
+  const btnAdminBackToClient = document.getElementById('btnAdminBackToClient');
+  const btnAdminSignOut = document.getElementById('btnAdminSignOut');
+
+  const kpiTotalCustomers = document.getElementById('kpiTotalCustomers');
+  const kpiVisitsCount = document.getElementById('kpiVisitsCount');
+  const kpiRepeatRate = document.getElementById('kpiRepeatRate');
+  const kpiReturningCount = document.getElementById('kpiReturningCount');
+  const kpiActiveClients = document.getElementById('kpiActiveClients');
+  const kpiMultiBranch = document.getElementById('kpiMultiBranch');
+
+  const adminSearchInput = document.getElementById('adminSearchInput');
+  const btnClearAdminSearch = document.getElementById('btnClearAdminSearch');
+  const adminSegmentFilterBar = document.getElementById('adminSegmentFilterBar');
+  const adminCustomerCountLabel = document.getElementById('adminCustomerCountLabel');
+  const btnRefreshAdminList = document.getElementById('btnRefreshAdminList');
+
+  const adminLoadingBox = document.getElementById('adminLoadingBox');
+  const adminErrorBox = document.getElementById('adminErrorBox');
+  const adminErrorMessage = document.getElementById('adminErrorMessage');
+  const btnRetryAdminCustomers = document.getElementById('btnRetryAdminCustomers');
+  const adminEmptyBox = document.getElementById('adminEmptyBox');
+  const adminCustomersList = document.getElementById('adminCustomersList');
+
+  // Day 5 Customer Detail Selectors
+  const btnAdminCustomerDetailBack = document.getElementById('btnAdminCustomerDetailBack');
+  const adminDetailCustomerIdBadge = document.getElementById('adminDetailCustomerIdBadge');
+  const adminDetailLoadingBox = document.getElementById('adminDetailLoadingBox');
+  const adminDetailErrorBox = document.getElementById('adminDetailErrorBox');
+  const adminDetailErrorMessage = document.getElementById('adminDetailErrorMessage');
+  const btnRetryAdminDetail = document.getElementById('btnRetryAdminDetail');
+  const adminDetailContent = document.getElementById('adminDetailContent');
+
+  const adminDetailAvatarImg = document.getElementById('adminDetailAvatarImg');
+  const adminDetailName = document.getElementById('adminDetailName');
+  const adminDetailContact = document.getElementById('adminDetailContact');
+  const adminDetailIdPill = document.getElementById('adminDetailIdPill');
+  const adminDetailMemberSince = document.getElementById('adminDetailMemberSince');
+  const adminDetailDobPill = document.getElementById('adminDetailDobPill');
+
+  const adminDetailCompletedVisits = document.getElementById('adminDetailCompletedVisits');
+  const adminDetailTotalSpend = document.getElementById('adminDetailTotalSpend');
+  const adminDetailRetentionStatusPill = document.getElementById('adminDetailRetentionStatusPill');
+  const adminDetailLastVisitText = document.getElementById('adminDetailLastVisitText');
+  const adminDetailBranchesText = document.getElementById('adminDetailBranchesText');
+  const adminDetailSegmentTags = document.getElementById('adminDetailSegmentTags');
+
+  const adminDetailPreferencesContainer = document.getElementById('adminDetailPreferencesContainer');
+  const adminDetailQuizCard = document.getElementById('adminDetailQuizCard');
+  const adminDetailArchetypeTitle = document.getElementById('adminDetailArchetypeTitle');
+  const adminDetailArchetypeSummary = document.getElementById('adminDetailArchetypeSummary');
+  const adminDetailQuizChipsContainer = document.getElementById('adminDetailQuizChipsContainer');
+
+  const adminHistoryTotalBadge = document.getElementById('adminHistoryTotalBadge');
+  const countHistAll = document.getElementById('countHistAll');
+  const countHistCompleted = document.getElementById('countHistCompleted');
+  const countHistUpcoming = document.getElementById('countHistUpcoming');
+  const countHistCancelled = document.getElementById('countHistCancelled');
+  const adminHistoryFilterBar = document.getElementById('adminHistoryFilterBar');
+  const adminHistoryTimelineContent = document.getElementById('adminHistoryTimelineContent');
+  const adminHistoryEmptyBox = document.getElementById('adminHistoryEmptyBox');
 
   // Profile elements
   const profileAvatarImg = document.getElementById('profileAvatarImg');
@@ -882,7 +956,16 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       await window.vioraApi.login(email, password);
       showToast('Welcome back to VIORA!', 'success');
-      await loadCustomerProfile();
+
+      const user = window.vioraApi.getUser();
+      if (user && (user.role === 'admin' || user.role === 'branch_manager')) {
+        if (tileAdminCustomers) tileAdminCustomers.style.display = 'flex';
+        navigateTo('screenAdminCustomers');
+        await loadAdminDashboard();
+      } else {
+        if (tileAdminCustomers) tileAdminCustomers.style.display = 'none';
+        await loadCustomerProfile();
+      }
     } catch (err) {
       showToast(err.message || 'Login failed. Please check credentials.', 'error');
     } finally {
@@ -922,6 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       await window.vioraApi.register({ name, email, phone, password });
       showToast('Account created successfully!', 'success');
+      if (tileAdminCustomers) tileAdminCustomers.style.display = 'none';
       await loadCustomerProfile();
     } catch (err) {
       showToast(err.message || 'Registration failed.', 'error');
@@ -930,7 +1014,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Quick Demo Access Helper
+  // Quick Demo Access Helper (Customer)
   async function handleDemoLogin() {
     setGlobalLoading(true, 'Entering luxury demo experience...');
     const demoEmail = 'sarah.sen@maison.com';
@@ -945,11 +1029,13 @@ document.addEventListener('DOMContentLoaded', () => {
           name: 'Sarah Sen',
           email: demoEmail,
           phone: '+91 98200 12345',
-          password: demoPassword
+          password: demoPassword,
+          role: 'customer'
         });
       }
 
       showToast('Connected as Sarah Sen', 'success');
+      if (tileAdminCustomers) tileAdminCustomers.style.display = 'none';
       await loadCustomerProfile();
     } catch (err) {
       console.error('Demo login error:', err);
@@ -959,10 +1045,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Quick Demo Access Helper (Administrator - Day 5)
+  async function handleDemoAdminLogin() {
+    setGlobalLoading(true, 'Entering VIORA Admin Intelligence...');
+    const adminEmail = 'admin@viora.com';
+    const adminPassword = 'AdminPass123!';
+
+    try {
+      try {
+        await window.vioraApi.login(adminEmail, adminPassword);
+      } catch (loginErr) {
+        // If admin demo user does not exist yet, auto-register as admin
+        await window.vioraApi.register({
+          name: 'Executive Administrator',
+          email: adminEmail,
+          phone: '+91 98000 00000',
+          password: adminPassword,
+          role: 'admin'
+        });
+      }
+
+      showToast('Welcome, Administrator', 'success');
+      if (tileAdminCustomers) tileAdminCustomers.style.display = 'flex';
+      navigateTo('screenAdminCustomers');
+      await loadAdminDashboard();
+    } catch (err) {
+      console.error('Demo admin login error:', err);
+      showToast('Could not launch admin portal: ' + err.message, 'error');
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
   function handleSignOut() {
     if (confirm('Are you sure you want to sign out of your VIORA account?')) {
       window.vioraApi.clearSession();
       state.customerProfile = null;
+      state.adminOverview = null;
+      state.adminCustomers = [];
+      state.selectedAdminCustomer = null;
       showToast('You have signed out.', 'info');
       navigateTo('screenAuth');
     }
@@ -1567,10 +1688,489 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
+  // DAY 5: ADMIN CUSTOMER MANAGEMENT CONTROLLER
+  // Unified identity, retention, segments & history
+  // ==========================================
+
+  function formatShortDate(dateVal) {
+    if (!dateVal) return '--';
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return '--';
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = d.toLocaleString('en-US', { month: 'short' });
+    const year = d.getFullYear();
+    return `${day} ${month} ${year}`;
+  }
+
+  function getRetentionBadgeClass(status) {
+    switch (status) {
+      case 'Active': return 'badge-active';
+      case 'Needs Engagement': return 'badge-needs-engagement';
+      case 'At-Risk': return 'badge-at-risk';
+      case 'New': return 'badge-new';
+      default: return 'badge-novisits';
+    }
+  }
+
+  async function loadAdminDashboard() {
+    if (adminLoadingBox) adminLoadingBox.style.display = 'flex';
+    if (adminErrorBox) adminErrorBox.style.display = 'none';
+    if (adminEmptyBox) adminEmptyBox.style.display = 'none';
+    if (adminCustomersList) adminCustomersList.innerHTML = '';
+    if (adminCustomerCountLabel) adminCustomerCountLabel.textContent = 'Loading directory...';
+
+    try {
+      // 1. Fetch overview analytics (non-blocking)
+      window.vioraApi.getAdminOverview().then(res => {
+        if (res && res.success && res.data) {
+          state.adminOverview = res.data;
+          renderAdminOverview(res.data);
+        }
+      }).catch(err => console.warn('Admin overview fetch warning:', err));
+
+      // 2. Fetch customer list
+      const listRes = await window.vioraApi.getAdminCustomers({
+        search: state.adminSearch,
+        segment: state.adminSegment
+      });
+
+      if (listRes && listRes.success) {
+        state.adminCustomers = listRes.data || [];
+        renderAdminCustomersList(state.adminCustomers, listRes.totalCount);
+      } else {
+        throw new Error(listRes.message || 'Failed to load customer list.');
+      }
+    } catch (err) {
+      console.error('Error in loadAdminDashboard:', err);
+      if (adminLoadingBox) adminLoadingBox.style.display = 'none';
+      if (adminErrorBox) {
+        adminErrorBox.style.display = 'flex';
+        if (adminErrorMessage) adminErrorMessage.textContent = err.message || 'Could not connect to admin customer directory.';
+      }
+      showToast(err.message || 'Failed to load customers.', 'error');
+    } finally {
+      if (adminLoadingBox) adminLoadingBox.style.display = 'none';
+    }
+  }
+
+  function renderAdminOverview(overview) {
+    if (!overview) return;
+    if (kpiTotalCustomers) kpiTotalCustomers.textContent = overview.totalCustomers || 0;
+    if (kpiVisitsCount) kpiVisitsCount.textContent = `${overview.totalCompletedVisits || 0} completed visits`;
+    if (kpiRepeatRate) kpiRepeatRate.textContent = `${overview.repeatCustomerRate || 0}%`;
+    if (kpiReturningCount) kpiReturningCount.textContent = `${overview.segments?.returning || 0} repeat clients`;
+    if (kpiActiveClients) kpiActiveClients.textContent = overview.segments?.active || 0;
+    if (kpiMultiBranch) kpiMultiBranch.textContent = overview.segments?.multiBranch || 0;
+  }
+
+  function renderAdminCustomersList(customers, totalCount) {
+    if (adminLoadingBox) adminLoadingBox.style.display = 'none';
+
+    const count = totalCount !== undefined ? totalCount : (customers ? customers.length : 0);
+    if (adminCustomerCountLabel) {
+      adminCustomerCountLabel.textContent = `${count} Client${count === 1 ? '' : 's'} in Directory`;
+    }
+
+    if (!customers || customers.length === 0) {
+      if (adminEmptyBox) adminEmptyBox.style.display = 'flex';
+      if (adminCustomersList) adminCustomersList.innerHTML = '';
+      return;
+    }
+
+    if (adminEmptyBox) adminEmptyBox.style.display = 'none';
+    if (adminErrorBox) adminErrorBox.style.display = 'none';
+
+    let html = '';
+    customers.forEach(c => {
+      const initials = (c.name || 'C').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      const badgeClass = getRetentionBadgeClass(c.retentionStatus);
+      const visitsText = `${c.totalCompletedVisits || 0} Visit${c.totalCompletedVisits === 1 ? '' : 's'}`;
+
+      let lastVisitInfo = 'No completed visits yet';
+      if (c.lastCompletedVisit) {
+        const visitDate = formatShortDate(c.lastCompletedVisit.date);
+        lastVisitInfo = `${visitDate} • ${escapeHtml(c.lastCompletedVisit.serviceName)} (${escapeHtml(c.lastCompletedVisit.branchName)})`;
+      }
+
+      html += `
+        <div class="admin-customer-card" data-customer-id="${escapeHtml(c.customerId)}" tabindex="0" role="button" aria-label="View ${escapeHtml(c.name)} details">
+          <div class="admin-customer-card-top">
+            <div class="admin-customer-identity">
+              ${c.profilePhoto ? `<img src="${escapeHtml(c.profilePhoto)}" alt="${escapeHtml(c.name)}" class="admin-customer-avatar" onerror="this.outerHTML='<div class=\\'admin-avatar-initials\\'>${initials}</div>'">` : `<div class="admin-avatar-initials">${initials}</div>`}
+              <div class="admin-customer-meta">
+                <h4 class="admin-customer-name">${escapeHtml(c.name)}</h4>
+                <span class="admin-customer-id-pill">${escapeHtml(c.customerId)}</span>
+                <span class="admin-customer-contact">${escapeHtml(c.email)} ${c.phone ? '• ' + escapeHtml(c.phone) : ''}</span>
+              </div>
+            </div>
+            <span class="admin-retention-badge ${badgeClass}">${escapeHtml(c.retentionStatus || 'New')}</span>
+          </div>
+          <div class="admin-customer-metrics-row">
+            <div class="admin-metric-left">
+              <span class="admin-visits-pill">${visitsText}</span>
+              ${c.branchesVisited && c.branchesVisited.length >= 2 ? `<span class="tag-pill" style="font-size: 9px; padding: 1px 6px;">Multi-Branch (${c.branchesVisited.length})</span>` : ''}
+            </div>
+            <div class="admin-metric-right">
+              <span>Inspect</span>
+              <svg class="chevron-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    if (adminCustomersList) {
+      adminCustomersList.innerHTML = html;
+
+      adminCustomersList.querySelectorAll('.admin-customer-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const cId = card.dataset.customerId;
+          openAdminCustomerDetail(cId);
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const cId = card.dataset.customerId;
+            openAdminCustomerDetail(cId);
+          }
+        });
+      });
+    }
+  }
+
+  async function openAdminCustomerDetail(customerId) {
+    if (!customerId) return;
+    state.selectedAdminCustomer = customerId;
+    state.adminHistoryFilter = 'all';
+
+    navigateTo('screenAdminCustomerDetail');
+
+    if (adminDetailLoadingBox) adminDetailLoadingBox.style.display = 'flex';
+    if (adminDetailErrorBox) adminDetailErrorBox.style.display = 'none';
+    if (adminDetailContent) adminDetailContent.style.display = 'none';
+
+    try {
+      const [detailRes, historyRes] = await Promise.all([
+        window.vioraApi.getAdminCustomerDetails(customerId),
+        window.vioraApi.getAdminCustomerHistory(customerId, 'all')
+      ]);
+
+      if (detailRes && detailRes.success && detailRes.data) {
+        populateAdminCustomerDetail(detailRes.data);
+      } else {
+        throw new Error(detailRes.message || 'Could not retrieve customer details.');
+      }
+
+      if (historyRes && historyRes.success) {
+        state.selectedAdminCustomerHistory = historyRes.data || [];
+        updateHistoryCounts(historyRes.counts);
+        renderAdminCustomerHistory(state.selectedAdminCustomerHistory, 'all');
+      }
+
+      if (adminDetailContent) adminDetailContent.style.display = 'flex';
+    } catch (err) {
+      console.error('Error in openAdminCustomerDetail:', err);
+      if (adminDetailErrorBox) {
+        adminDetailErrorBox.style.display = 'flex';
+        if (adminDetailErrorMessage) adminDetailErrorMessage.textContent = err.message || 'Could not load client details.';
+      }
+      showToast(err.message || 'Failed to load client record.', 'error');
+    } finally {
+      if (adminDetailLoadingBox) adminDetailLoadingBox.style.display = 'none';
+    }
+  }
+
+  function populateAdminCustomerDetail(data) {
+    const profile = data.profile || {};
+    const retention = data.retention || {};
+    const prefs = data.preferences || {};
+    const quiz = data.beautyQuiz;
+
+    if (adminDetailCustomerIdBadge) adminDetailCustomerIdBadge.textContent = profile.customerId || 'CUST-0000';
+    if (adminDetailIdPill) adminDetailIdPill.textContent = profile.customerId || 'CUST-0000';
+    if (adminDetailName) adminDetailName.textContent = profile.name || 'Client';
+    if (adminDetailContact) {
+      adminDetailContact.textContent = `${profile.email || ''} ${profile.phone ? '• ' + profile.phone : ''}`;
+    }
+
+    const defaultAvatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80';
+    if (adminDetailAvatarImg) {
+      adminDetailAvatarImg.src = profile.profilePhoto && profile.profilePhoto.trim() ? profile.profilePhoto : defaultAvatar;
+      adminDetailAvatarImg.onerror = () => { adminDetailAvatarImg.src = defaultAvatar; };
+    }
+
+    if (adminDetailMemberSince) {
+      adminDetailMemberSince.textContent = `Member since ${formatShortDate(profile.createdAt)}`;
+    }
+    if (adminDetailDobPill) {
+      if (profile.dateOfBirth) {
+        adminDetailDobPill.style.display = 'inline-block';
+        adminDetailDobPill.textContent = `DOB: ${formatShortDate(profile.dateOfBirth)}`;
+      } else {
+        adminDetailDobPill.style.display = 'none';
+      }
+    }
+
+    // Retention metrics
+    if (adminDetailCompletedVisits) adminDetailCompletedVisits.textContent = retention.totalCompletedVisits || 0;
+    if (adminDetailTotalSpend) adminDetailTotalSpend.textContent = formatPrice(retention.totalSpend || 0);
+    if (adminDetailRetentionStatusPill) {
+      adminDetailRetentionStatusPill.textContent = retention.retentionStatus || 'New';
+    }
+
+    if (adminDetailLastVisitText) {
+      if (retention.lastCompletedVisit) {
+        adminDetailLastVisitText.textContent = `${formatShortDate(retention.lastCompletedVisit.date)} (${escapeHtml(retention.lastCompletedVisit.serviceName)} at ${escapeHtml(retention.lastCompletedVisit.branchName)})`;
+      } else {
+        adminDetailLastVisitText.textContent = 'No completed visits recorded';
+      }
+    }
+
+    if (adminDetailBranchesText) {
+      const branches = retention.branchesVisited || [];
+      if (branches.length === 0) {
+        adminDetailBranchesText.textContent = 'None yet';
+      } else {
+        adminDetailBranchesText.textContent = `${branches.length} Branch${branches.length === 1 ? '' : 'es'}: ${branches.join(', ')}`;
+      }
+    }
+
+    // Segment tags
+    if (adminDetailSegmentTags) {
+      const tags = retention.segmentTags || [];
+      adminDetailSegmentTags.innerHTML = tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('');
+    }
+
+    // Preferences categories
+    if (adminDetailPreferencesContainer) {
+      const categories = [
+        { key: 'hair', label: 'Hair Styling & Care', items: prefs.hair || [] },
+        { key: 'nails', label: 'Nails & Finishes', items: prefs.nails || [] },
+        { key: 'skin', label: 'Skin & Facials', items: prefs.skin || [] },
+        { key: 'makeup', label: 'Makeup & Artistry', items: prefs.makeup || [] }
+      ];
+
+      let prefHtml = '';
+      categories.forEach(cat => {
+        prefHtml += `
+          <div class="admin-pref-category-block">
+            <span class="admin-pref-cat-name">${cat.label}</span>
+            <div class="admin-pref-chips-list">
+              ${cat.items && cat.items.length > 0 ? cat.items.map(i => `<span class="admin-view-chip">${escapeHtml(i)}</span>`).join('') : '<span class="state-desc" style="font-size: 11px; margin: 0;">No preferences recorded</span>'}
+            </div>
+          </div>
+        `;
+      });
+      adminDetailPreferencesContainer.innerHTML = prefHtml;
+    }
+
+    // Beauty Quiz
+    if (adminDetailQuizCard) {
+      if (quiz) {
+        adminDetailQuizCard.style.display = 'flex';
+        if (adminDetailArchetypeTitle) adminDetailArchetypeTitle.textContent = quiz.archetype || 'Personalized Care';
+        if (adminDetailArchetypeSummary) adminDetailArchetypeSummary.textContent = quiz.summary || '';
+        if (adminDetailQuizChipsContainer) {
+          const chips = quiz.profileChips || [];
+          adminDetailQuizChipsContainer.innerHTML = chips.map(ch => `<span class="beauty-profile-chip">${escapeHtml(ch)}</span>`).join('');
+        }
+      } else {
+        adminDetailQuizCard.style.display = 'none';
+      }
+    }
+  }
+
+  function updateHistoryCounts(counts) {
+    if (!counts) return;
+    if (countHistAll) countHistAll.textContent = counts.total || 0;
+    if (countHistCompleted) countHistCompleted.textContent = counts.completed || 0;
+    if (countHistUpcoming) countHistUpcoming.textContent = counts.upcoming || 0;
+    if (countHistCancelled) countHistCancelled.textContent = counts.cancelled || 0;
+    if (adminHistoryTotalBadge) adminHistoryTotalBadge.textContent = `${counts.total || 0} Records`;
+  }
+
+  function renderAdminCustomerHistory(historyItems, statusFilter = 'all') {
+    state.adminHistoryFilter = statusFilter;
+
+    if (adminHistoryFilterBar) {
+      adminHistoryFilterBar.querySelectorAll('.history-filter-pill').forEach(pill => {
+        const isActive = pill.dataset.historyStatus === statusFilter;
+        pill.classList.toggle('active', isActive);
+        pill.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    let filtered = historyItems;
+    if (statusFilter === 'Completed') {
+      filtered = historyItems.filter(h => h.status === 'Completed');
+    } else if (statusFilter === 'Upcoming') {
+      filtered = historyItems.filter(h => h.status === 'Pending' || h.status === 'Confirmed');
+    } else if (statusFilter === 'Cancelled') {
+      filtered = historyItems.filter(h => h.status === 'Cancelled' || h.status === 'No-show');
+    }
+
+    if (!filtered || filtered.length === 0) {
+      if (adminHistoryEmptyBox) adminHistoryEmptyBox.style.display = 'block';
+      if (adminHistoryTimelineContent) adminHistoryTimelineContent.innerHTML = '';
+      return;
+    }
+
+    if (adminHistoryEmptyBox) adminHistoryEmptyBox.style.display = 'none';
+
+    let html = '';
+    filtered.forEach(h => {
+      const serviceName = h.service ? h.service.name : 'Salon Treatment';
+      const category = h.service ? h.service.category : 'General';
+      const price = h.service ? formatPrice(h.service.price) : '₹0';
+      const branchName = h.branch ? h.branch.name : 'VIORA Salon';
+      const branchAddress = h.branch ? h.branch.address : '';
+      const stylistName = h.stylist ? h.stylist.name : 'VIORA Specialist';
+      const apptDate = formatShortDate(h.date);
+      const apptTime = h.startTime ? `${h.startTime} - ${h.endTime || ''}` : '';
+
+      let statusBadgeClass = 'status-completed';
+      if (h.status === 'Pending' || h.status === 'Confirmed') statusBadgeClass = 'status-upcoming';
+      if (h.status === 'Cancelled' || h.status === 'No-show') statusBadgeClass = 'status-cancelled';
+
+      html += `
+        <div class="admin-history-card">
+          <div class="admin-hist-header">
+            <h4 class="admin-hist-service-name">${escapeHtml(serviceName)}</h4>
+            <span class="admin-hist-status-badge ${statusBadgeClass}">${escapeHtml(h.status)}</span>
+          </div>
+          <div class="admin-hist-details">
+            <div><strong>Branch:</strong> ${escapeHtml(branchName)} ${branchAddress ? `<span style="color: var(--color-text-light);">(${escapeHtml(branchAddress)})</span>` : ''}</div>
+            <div><strong>Stylist:</strong> ${escapeHtml(stylistName)}</div>
+            <div><strong>Category:</strong> ${escapeHtml(category)} • <strong>Price:</strong> ${price}</div>
+          </div>
+          <div class="admin-hist-meta-row">
+            <span>Date: ${apptDate} ${apptTime ? '• ' + apptTime : ''}</span>
+            <span>ID: ${escapeHtml(h.appointmentId)}</span>
+          </div>
+        </div>
+      `;
+    });
+
+    if (adminHistoryTimelineContent) {
+      adminHistoryTimelineContent.innerHTML = html;
+    }
+  }
+
+  // --- DAY 5 ADMIN EVENT LISTENERS ---
+  if (btnDemoAdminLogin) {
+    btnDemoAdminLogin.addEventListener('click', handleDemoAdminLogin);
+  }
+
+  if (tileAdminCustomers) {
+    tileAdminCustomers.addEventListener('click', () => {
+      navigateTo('screenAdminCustomers');
+      loadAdminDashboard();
+    });
+  }
+
+  if (btnAdminBackToClient) {
+    btnAdminBackToClient.addEventListener('click', () => {
+      if (state.customerProfile) {
+        navigateTo('screenProfile');
+      } else {
+        loadCustomerProfile();
+      }
+    });
+  }
+
+  if (btnAdminSignOut) {
+    btnAdminSignOut.addEventListener('click', handleSignOut);
+  }
+
+  if (btnAdminCustomerDetailBack) {
+    btnAdminCustomerDetailBack.addEventListener('click', () => {
+      navigateTo('screenAdminCustomers');
+    });
+  }
+
+  if (btnRefreshAdminList) {
+    btnRefreshAdminList.addEventListener('click', () => {
+      loadAdminDashboard();
+    });
+  }
+
+  if (btnRetryAdminCustomers) {
+    btnRetryAdminCustomers.addEventListener('click', () => {
+      loadAdminDashboard();
+    });
+  }
+
+  if (btnRetryAdminDetail) {
+    btnRetryAdminDetail.addEventListener('click', () => {
+      openAdminCustomerDetail(state.selectedAdminCustomer);
+    });
+  }
+
+  // Search Input Debounce
+  if (adminSearchInput) {
+    let searchDebounceTimer;
+    adminSearchInput.addEventListener('input', () => {
+      clearTimeout(searchDebounceTimer);
+      state.adminSearch = adminSearchInput.value.trim();
+      if (btnClearAdminSearch) {
+        btnClearAdminSearch.style.display = state.adminSearch ? 'block' : 'none';
+      }
+      searchDebounceTimer = setTimeout(() => {
+        loadAdminDashboard();
+      }, 300);
+    });
+  }
+
+  if (btnClearAdminSearch) {
+    btnClearAdminSearch.addEventListener('click', () => {
+      adminSearchInput.value = '';
+      state.adminSearch = '';
+      btnClearAdminSearch.style.display = 'none';
+      loadAdminDashboard();
+    });
+  }
+
+  // Segment Filter Bar Pills
+  if (adminSegmentFilterBar) {
+    adminSegmentFilterBar.querySelectorAll('.admin-filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        adminSegmentFilterBar.querySelectorAll('.admin-filter-pill').forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-selected', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+        state.adminSegment = pill.dataset.segment;
+        loadAdminDashboard();
+      });
+    });
+  }
+
+  // History Filter Bar Pills
+  if (adminHistoryFilterBar) {
+    adminHistoryFilterBar.querySelectorAll('.history-filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const status = pill.dataset.historyStatus;
+        renderAdminCustomerHistory(state.selectedAdminCustomerHistory, status);
+      });
+    });
+  }
+
+  // ==========================================
   // INITIALIZATION
   // ==========================================
   if (window.vioraApi.isAuthenticated()) {
-    loadCustomerProfile();
+    const user = window.vioraApi.getUser();
+    if (user && (user.role === 'admin' || user.role === 'branch_manager')) {
+      if (tileAdminCustomers) tileAdminCustomers.style.display = 'flex';
+      navigateTo('screenAdminCustomers');
+      loadAdminDashboard();
+    } else {
+      if (tileAdminCustomers) tileAdminCustomers.style.display = 'none';
+      loadCustomerProfile();
+    }
   } else {
     navigateTo('screenAuth');
   }
