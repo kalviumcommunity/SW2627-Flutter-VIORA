@@ -1703,13 +1703,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getRetentionBadgeClass(status) {
-    switch (status) {
-      case 'Active': return 'badge-active';
-      case 'Needs Engagement': return 'badge-needs-engagement';
-      case 'At-Risk': return 'badge-at-risk';
-      case 'New': return 'badge-new';
-      default: return 'badge-novisits';
-    }
+    const s = String(status || '').trim().toLowerCase();
+    if (s === 'active') return 'badge-active';
+    if (s.includes('engagement')) return 'badge-needs-engagement';
+    if (s.includes('risk')) return 'badge-at-risk';
+    if (s === 'new') return 'badge-new';
+    return 'badge-novisits';
   }
 
   async function loadAdminDashboard() {
@@ -1803,7 +1802,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="admin-customer-contact">${escapeHtml(c.email)} ${c.phone ? '• ' + escapeHtml(c.phone) : ''}</span>
               </div>
             </div>
-            <span class="admin-retention-badge ${badgeClass}">${escapeHtml(c.retentionStatus || 'New')}</span>
+            <div class="admin-customer-status-field">
+              <span class="admin-retention-badge ${badgeClass}">${escapeHtml(c.retentionStatus || 'New')}</span>
+            </div>
           </div>
           <div class="admin-customer-metrics-row">
             <div class="admin-metric-left">

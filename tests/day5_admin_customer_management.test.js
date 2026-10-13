@@ -111,7 +111,17 @@ async function runTests() {
 
     const cssRes = await request({ method: 'GET', path: '/css/style.css' });
     if (cssRes.status === 200 && cssRes.rawBody && cssRes.rawBody.includes('.admin-customer-card')) {
-      console.log('✓ GET /css/style.css successfully served Day 5 luxury admin styles');
+      const css = cssRes.rawBody;
+      if (!css.includes('.admin-customer-status-field')) {
+        throw new Error('style.css missing .admin-customer-status-field rule');
+      }
+      if (!css.includes('.admin-retention-badge') || !css.includes('display: inline-flex')) {
+        throw new Error('style.css missing aligned .admin-retention-badge rule');
+      }
+      if (!css.includes('badge-active') || !css.includes('badge-at-risk') || !css.includes('badge-needs-engagement') || !css.includes('badge-new') || !css.includes('badge-novisits')) {
+        throw new Error('style.css missing retention status badge color classes');
+      }
+      console.log('✓ GET /css/style.css successfully served Day 5 luxury admin styles & aligned status badge rules');
     } else {
       throw new Error('Failed to serve Day 5 styles in style.css');
     }
