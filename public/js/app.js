@@ -1078,15 +1078,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleSignOut() {
-    if (confirm('Are you sure you want to sign out of your VIORA account?')) {
-      window.vioraApi.clearSession();
-      state.customerProfile = null;
-      state.adminOverview = null;
-      state.adminCustomers = [];
-      state.selectedAdminCustomer = null;
-      showToast('You have signed out.', 'info');
-      navigateTo('screenAuth');
-    }
+    window.vioraApi.clearSession();
+    state.customerProfile = null;
+    state.adminOverview = null;
+    state.adminCustomers = [];
+    state.selectedAdminCustomer = null;
+    showToast('You have signed out.', 'info');
+    navigateTo('screenAuth');
   }
 
   // ==========================================
