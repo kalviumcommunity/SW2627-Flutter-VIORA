@@ -416,12 +416,16 @@ body {
   font-weight: 500;
   color: var(--color-text-main);
   margin-bottom: 4px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .profile-contact-line {
   font-size: 13px;
   color: var(--color-text-muted);
   margin-bottom: 12px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .global-identity-pill {
@@ -2606,12 +2610,16 @@ body {
   font-weight: 600;
   color: var(--color-text-main);
   margin-bottom: 4px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .detail-contact {
   font-size: 12px;
   color: var(--color-text-muted);
   margin-bottom: 10px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .detail-identity-row {

@@ -125,7 +125,15 @@ exports.updateProfile = async (req, res) => {
     }
 
     // Apply allowed updates
-    if (name !== undefined) customer.name = name.trim();
+    if (name !== undefined) {
+      if (typeof name !== 'string' || !name.trim()) {
+        return res.status(400).json({
+          success: false,
+          message: 'Name cannot be empty'
+        });
+      }
+      customer.name = name.trim();
+    }
     if (phone !== undefined) customer.phone = phone.trim();
     if (dateOfBirth !== undefined) customer.dateOfBirth = dateOfBirth;
     if (profilePhoto !== undefined) customer.profilePhoto = profilePhoto.trim();
@@ -270,6 +278,12 @@ exports.getTreatmentHistory = async (req, res) => {
     };
 
     if (req.query.branchId) {
+      if (!mongoose.Types.ObjectId.isValid(req.query.branchId)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid branch identifier format'
+        });
+      }
       query.branchId = req.query.branchId;
     }
 
@@ -308,14 +322,15 @@ exports.getTreatmentHistory = async (req, res) => {
           duration: service ? service.duration : 60,
           price: service ? service.price : 0,
           category: service ? service.category : 'Other',
-          availability: service ? (service.availability !== false) : true
+          availability: service ? (service.availability !== false) : false
         },
         branch: {
           id: branch ? branch._id : null,
           branchId: branch ? branch.branchId : 'N/A',
           name: branch ? branch.name : 'VIORA Salon',
           address: branch ? branch.address : 'Salon Branch',
-          phone: branch ? branch.phone : ''
+          phone: branch ? branch.phone : '',
+          status: branch ? (branch.status || 'active') : 'inactive'
         },
         stylist: {
           id: stylist ? stylist._id : null,
@@ -355,6 +370,13 @@ exports.getRebookContext = async (req, res) => {
   try {
     const userId = req.user._id;
     const { appointmentId } = req.params;
+
+    if (!appointmentId || !appointmentId.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Appointment identifier is required'
+      });
+    }
 
     const customer = await Customer.findOne({ userId });
     if (!customer) {
@@ -419,7 +441,7 @@ exports.getRebookContext = async (req, res) => {
 
     // Check service availability and branch status
     const isServiceAvailable = service.availability !== false;
-    const isBranchActive = !branch || branch.status !== 'inactive';
+    const isBranchActive = Boolean(branch && branch.status !== 'inactive');
 
     const rebookData = {
       service: {
@@ -860,7 +882,9 @@ exports.getAdminCustomerList = async (req, res) => {
     let customerQuery = {};
     if (search && search.trim()) {
       const s = search.trim();
-      const regex = new RegExp(s, 'i');
+      // Safely escape special regex characters to avoid SyntaxError and ReDoS attacks
+      const safePattern = s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(safePattern, 'i');
       customerQuery.$or = [
         { name: regex },
         { email: regex },
@@ -956,8 +980,8 @@ exports.getAdminCustomerList = async (req, res) => {
     }
 
     const totalCount = enrichedList.length;
-    const pageNum = parseInt(page, 10) || 1;
-    const limitNum = parseInt(limit, 10) || 50;
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 50));
     const startIndex = (pageNum - 1) * limitNum;
     const paginated = enrichedList.slice(startIndex, startIndex + limitNum);
 
@@ -991,7 +1015,10 @@ exports.getAdminCustomerDetails = async (req, res) => {
       });
     }
 
-    const customer = await Customer.findOne({ customerId });
+    let customer = await Customer.findOne({ customerId });
+    if (!customer && mongoose.Types.ObjectId.isValid(customerId)) {
+      customer = await Customer.findById(customerId);
+    }
     if (!customer) {
       return res.status(404).json({
         success: false,
@@ -999,8 +1026,10 @@ exports.getAdminCustomerDetails = async (req, res) => {
       });
     }
 
+    const resolvedCustomerId = customer.customerId;
+
     // Completed appointments for retention metrics
-    const completedAppts = await Appointment.find({ customerId, status: 'Completed' })
+    const completedAppts = await Appointment.find({ customerId: resolvedCustomerId, status: 'Completed' })
       .populate('branchId', 'name address')
       .populate('serviceId', 'name category price');
 
@@ -1041,7 +1070,7 @@ exports.getAdminCustomerDetails = async (req, res) => {
     if (retentionStatus === 'At-Risk') segmentTags.push('At-Risk');
 
     // Retrieve quiz results if available
-    const quizResult = await QuizResult.findOne({ customerId });
+    const quizResult = await QuizResult.findOne({ customerId: resolvedCustomerId });
 
     return res.status(200).json({
       success: true,
@@ -1099,7 +1128,10 @@ exports.getAdminCustomerHistory = async (req, res) => {
       });
     }
 
-    const customer = await Customer.findOne({ customerId });
+    let customer = await Customer.findOne({ customerId });
+    if (!customer && mongoose.Types.ObjectId.isValid(customerId)) {
+      customer = await Customer.findById(customerId);
+    }
     if (!customer) {
       return res.status(404).json({
         success: false,
@@ -1107,7 +1139,8 @@ exports.getAdminCustomerHistory = async (req, res) => {
       });
     }
 
-    const filter = { customerId };
+    const resolvedCustomerId = customer.customerId;
+    const filter = { customerId: resolvedCustomerId };
     if (status && status !== 'all') {
       filter.status = status;
     }
@@ -1126,7 +1159,7 @@ exports.getAdminCustomerHistory = async (req, res) => {
       });
 
     // Count summary
-    const allCustomerAppts = await Appointment.find({ customerId });
+    const allCustomerAppts = await Appointment.find({ customerId: resolvedCustomerId });
     const completedCount = allCustomerAppts.filter(a => a.status === 'Completed').length;
     const upcomingCount = allCustomerAppts.filter(a => a.status === 'Pending' || a.status === 'Confirmed').length;
     const cancelledCount = allCustomerAppts.filter(a => a.status === 'Cancelled' || a.status === 'No-show').length;

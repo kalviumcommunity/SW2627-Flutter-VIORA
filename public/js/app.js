@@ -789,7 +789,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const branchName = item.branch?.name || 'VIORA Salon';
         const stylistName = item.stylist?.name || 'Salon Stylist';
         const completedDate = formatCompletedDate(item.date);
-        const isAvailable = item.service?.availability !== false;
+        const isAvailable = (item.service?.availability !== false) && (item.branch?.status !== 'inactive');
 
         html += `
           <div class="treatment-card" data-appointment-id="${escapeHtml(item.appointmentId)}">
@@ -876,6 +876,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const service = rebookData.service || {};
     const branch = rebookData.branch || {};
     const stylist = rebookData.preferredStylist || {};
+    const isEligible = (rebookData.eligible !== false) && (service.available !== false) && (branch.active !== false);
+
+    let warningNotice = '';
+    if (!isEligible) {
+      warningNotice = `
+        <div class="rebook-unavailable-notice" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #DC2626; padding: 10px 14px; border-radius: 8px; font-size: 12px; margin-top: 12px; line-height: 1.4;">
+          <strong>Service Currently Unavailable:</strong> This treatment or salon branch is currently not accepting automated rebookings. Please contact the salon directly.
+        </div>
+      `;
+    }
 
     rebookModalBody.innerHTML = `
       <div class="rebook-detail-card">
@@ -892,12 +902,13 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="rebook-info-row">
           <span class="rebook-info-label">Branch</span>
-          <span class="rebook-info-val">${escapeHtml(branch.name || 'VIORA Salon')}</span>
+          <span class="rebook-info-val">${escapeHtml(branch.name || 'VIORA Salon')}${branch.active === false ? ' (Inactive)' : ''}</span>
         </div>
         <div class="rebook-info-row">
           <span class="rebook-info-label">Preferred Stylist</span>
           <span class="rebook-info-val">${escapeHtml(stylist.name || 'Any Senior Stylist')}</span>
         </div>
+        ${warningNotice}
       </div>
 
       <div class="rebook-integration-badge">
@@ -906,16 +917,33 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
+    if (btnProceedRebook) {
+      btnProceedRebook.disabled = !isEligible;
+      btnProceedRebook.style.opacity = isEligible ? '1' : '0.5';
+      btnProceedRebook.style.cursor = isEligible ? 'pointer' : 'not-allowed';
+    }
+
     if (rebookModal) rebookModal.style.display = 'flex';
   }
 
   function closeRebookModal() {
     if (rebookModal) rebookModal.style.display = 'none';
+    if (btnProceedRebook) {
+      btnProceedRebook.disabled = false;
+      btnProceedRebook.style.opacity = '1';
+      btnProceedRebook.style.cursor = 'pointer';
+    }
     state.selectedRebookData = null;
   }
 
   function handleProceedRebook() {
     if (!state.selectedRebookData) return;
+
+    const data = state.selectedRebookData;
+    if (data.eligible === false || data.service?.available === false || data.branch?.active === false) {
+      showToast('This service or branch is currently unavailable for rebooking.', 'error');
+      return;
+    }
 
     const rebookPayload = { ...state.selectedRebookData };
     closeRebookModal();
