@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIORA — Luxury Salon Flow | Person 1 Full Visual Scope</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background: #121110;
+      --foreground: #F5F1EB;
+      --card: #1C1A18;
+      --border: #2E2A27;
+      --muted-foreground: #A69F97;
+      --gold: #C59265;
+      --gold-light: #F7EFE8;
+      --gold-dark: #A57247;
+    }
+    body {
+      background: radial-gradient(circle at 50% 0%, #24201C 0%, #0E0D0C 100%);
+      color: #F5F1EB;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .font-serif-luxury { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .font-sans-clean { font-family: 'Inter', -apple-system, sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .gold-gradient {
+      background: linear-gradient(135deg, #D4A373 0%, #C59265 50%, #9C6A3D 100%);
+    }
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #C59265;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #C59265;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased p-2 md:p-6 text-[#1F1E1C]">
+
+  <!-- Top Hero Bar & Persona Navigator -->
+  <div class="max-w-6xl mx-auto mb-4 bg-[#1A1816]/90 backdrop-blur-md text-white border border-[#2E2A27] rounded-2xl p-4 shadow-2xl">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#2E2A27]">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#9C6A3D] to-[#D4A373] text-white flex items-center justify-center font-serif-luxury font-bold text-xl shadow-md">
+          V
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-serif-luxury text-2xl font-bold tracking-wide text-[#F5F1EB]">VIORA — Person 1 Full Visual Scope</h1>
+            <span class="px-2 py-0.5 rounded-full bg-[#C59265]/20 text-[#D4A373] text-[10px] font-bold border border-[#C59265]/40 uppercase">Interactive</span>
+          </div>
+          <p class="text-xs text-[#A69F97] mt-0.5">Customer (Discovery + Booking) • Stylist Dashboard • Admin (Operational Web Dashboard)</p>
+        </div>
+      </div>
+
+      <!-- Scope Switcher Tabs -->
+      <div class="flex bg-[#262320] p-1 rounded-xl border border-[#3A3530] space-x-1 shrink-0">
+        <button onclick="setScopeMode('customer')" id="btn-scope-customer" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#C59265] text-white transition-all flex items-center space-x-1.5 shadow-sm">
+          <span>📱</span>
+          <span>Customer App</span>
+        </button>
+        <button onclick="setScopeMode('stylist')" id="btn-scope-stylist" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A69F97] hover:text-white transition-all flex items-center space-x-1.5">
+          <span>✂️</span>
+          <span>Stylist App</span>
+        </button>
+        <button onclick="setScopeMode('admin')" id="btn-scope-admin" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A69F97] hover:text-white transition-all flex items-center space-x-1.5">
+          <span>🖥️</span>
+          <span>Admin Portal</span>
+        </button>
+        <a href="/" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A69F97] hover:text-white transition-all flex items-center space-x-1 border-l border-[#3A3530] pl-2">
+          <span>Customer Intel ↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Mini-Screen Navigator Pills -->
+    <div class="mt-3 flex items-center justify-between text-xs">
+      <span class="text-[11px] font-bold text-[#A69F97] uppercase tracking-wider hidden lg:inline">Quick Jump:</span>
+      <div id="sub-nav-container" class="flex space-x-1 overflow-x-auto no-scrollbar py-1 w-full lg:w-auto">
+        <!-- Dynamically managed by setScopeMode -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN WRAPPER -->
+  <div class="max-w-6xl mx-auto flex justify-center">
+
+    <!-- ============================================================== -->
+    <!-- 1. CUSTOMER MOBILE APP VIEWPORT (Phone Simulation)             -->
+    <!-- ============================================================== -->
+    <div id="wrapper-customer-app" class="flex justify-center transition-all">
+      <div class="w-[360px] h-[740px] rounded-[42px] bg-[#FAF8F5] border-[10px] border-[#222] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] overflow-hidden relative flex flex-col select-none text-[#1F1E1C]">
+        
+        <!-- Mobile Status Bar -->
+        <div class="h-7 px-5 flex items-center justify-between text-[10px] font-semibold bg-[#FAF8F5]/90 shrink-0 z-30">
+          <span>9:41</span>
+          <!-- Dynamic Island / Speaker Pill -->
+          <div class="w-20 h-4 bg-black rounded-full mx-auto -mt-1 flex items-center justify-end px-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#C59265]"></span>
+          </div>
+          <div class="flex items-center space-x-1.5 text-[9px]">
+            <span>5G</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="c-toast" class="hidden absolute top-9 left-4 right-4 bg-[#1F1E1C] text-white p-2.5 rounded-xl shadow-xl z-50 text-[10px] flex items-center justify-between animate-bounce">
+          <span id="c-toast-msg">Appointment Confirmed!</span>
+          <button onclick="document.getElementById('c-toast').classList.add('hidden')" class="text-white/60 text-xs">✕</button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 0: ONBOARDING                            -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-onboarding" class="customer-screen flex-1 flex flex-col justify-between overflow-hidden hidden bg-[#FAF8F5]">
+          <div class="h-[55%] w-full relative overflow-hidden shrink-0">
+            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=80" onerror="this.src='./salon_hero.png'" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
+            <div class="absolute top-4 left-4">
+              <span class="px-2.5 py-1 rounded-full bg-white/80 backdrop-blur-md text-[9px] font-bold text-[#1F1E1C] uppercase tracking-wider">MAISON VIORA</span>
+            </div>
+          </div>
+          <div class="h-[45%] flex flex-col justify-between p-5 text-center">
+            <div>
+              <div class="font-serif-luxury text-3xl tracking-widest text-[#1F1E1C] uppercase font-light">VIORA</div>
+              <div class="text-[9px] tracking-[0.25em] font-semibold text-[#7A7672] uppercase mt-1">YOUR BEAUTY, PERFECTED</div>
+              <p class="text-[11px] text-[#7A7672] mt-3 leading-relaxed px-2">Experience signature balayage, couture nail art, and holistic skincare across Punjab's premier salons.</p>
+            </div>
+            <div class="flex justify-center space-x-1.5 my-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#C59265]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#E8E2D9]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#E8E2D9]"></span>
+            </div>
+            <button onclick="setCustomerScreen('login')" class="w-full py-3 rounded-full bg-[#C59265] hover:bg-[#B37F52] text-white font-bold text-[10px] uppercase tracking-wider shadow-md active:scale-98 transition-all">
+              GET STARTED
+            </button>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 1: LOGIN                                 -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-login" class="customer-screen flex-1 flex flex-col justify-between p-5 bg-[#FAF8F5] hidden overflow-y-auto no-scrollbar">
+          <div class="text-center pt-2">
+            <div class="font-serif-luxury text-2xl uppercase tracking-wider font-semibold">VIORA</div>
+            <div class="text-[8px] tracking-[0.2em] text-[#7A7672] uppercase font-medium mt-0.5">EXCLUSIVE SALON MEMBER ACCESS</div>
+          </div>
+
+          <div class="space-y-3 my-auto">
+            <div>
+              <label class="text-[8px] font-bold text-[#5A5652] uppercase tracking-wider block mb-1">EMAIL ADDRESS</label>
+              <input type="email" id="c-login-email" value="sarah.kothari@gmail.com" class="w-full bg-white rounded-xl border border-[#EDE8E1] px-3 py-2 text-[11px] focus:outline-none focus:border-[#C59265]" />
+            </div>
+            <div>
+              <label class="text-[8px] font-bold text-[#5A5652] uppercase tracking-wider block mb-1">PASSWORD</label>
+              <div class="relative">
+                <input type="password" id="c-login-pass" value="password123" class="w-full bg-white rounded-xl border border-[#EDE8E1] px-3 py-2 text-[11px] focus:outline-none focus:border-[#C59265]" />
+                <span class="absolute right-3 top-2 text-[10px] text-[#7A7672] cursor-pointer">👁</span>
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <a href="javascript:void(0)" class="text-[9px] text-[#C59265] font-semibold">Forgot Password?</a>
+            </div>
+
+            <div class="space-y-2 pt-2">
+              <button onclick="setCustomerScreen('location')" class="w-full py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[10px] uppercase tracking-wider shadow-sm active:scale-98">
+                SIGN IN
+              </button>
+              <button onclick="setCustomerScreen('location')" class="w-full py-2.5 rounded-full bg-white border border-[#EDE8E1] text-[#1F1E1C] font-bold text-[10px] uppercase tracking-wider hover:bg-stone-50">
+                CREATE ACCOUNT
+              </button>
+            </div>
+          </div>
+
+          <div class="text-center pb-2">
+            <span class="text-[9px] text-[#7A7672]">By signing in, you agree to VIORA Luxury Care Terms.</span>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 2: LOCATION ACCESS                       -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-location" class="customer-screen flex-1 flex flex-col justify-between p-6 bg-[#FAF8F5] hidden">
+          <div class="text-center pt-2">
+            <span class="font-serif-luxury text-2xl font-normal">Welcome to VIORA</span>
+            <div class="text-[8px] text-[#7A7672] uppercase tracking-widest mt-0.5">LOCATION PERMISSION</div>
+          </div>
+          <div class="flex flex-col items-center justify-center my-auto">
+            <div class="w-24 h-24 rounded-full bg-[#F5ECE8] flex items-center justify-center animate-pulse">
+              <div class="w-16 h-16 rounded-full bg-white shadow-md flex items-center justify-center border border-[#EDE8E1]">
+                <span class="text-2xl">📍</span>
+              </div>
+            </div>
+            <div class="font-serif-luxury text-lg font-semibold mt-4">Find Your Nearest Salon</div>
+            <p class="text-[10px] text-[#7A7672] text-center mt-1.5 leading-relaxed px-4">
+              Please allow access to your device location for accurate salon distances, stylists availability, and immediate reservations.
+            </p>
+          </div>
+          <div class="flex flex-col space-y-2 pb-2">
+            <button onclick="setCustomerScreen('home')" class="w-full py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[10px] uppercase tracking-wider shadow-sm">
+              ALLOW LOCATION ACCESS
+            </button>
+            <button onclick="setCustomerScreen('branch')" class="text-[9px] text-[#C59265] underline text-center font-medium">
+              Enter Location / Choose Branch Manually
+            </button>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 3: HOME SCREEN                           -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-home" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-1.5">
+            <div>
+              <h3 class="font-serif-luxury text-lg font-semibold leading-tight">Good Morning, Sarah</h3>
+              <div class="text-[9px] text-[#7A7672] flex items-center space-x-1 cursor-pointer" onclick="setCustomerScreen('branch')">
+                <span class="text-[#C59265]">📍</span>
+                <span id="c-current-branch-label" class="font-medium">Model Town, Jalandhar</span>
+                <span class="text-[8px] text-[#C59265]">▾ Change</span>
+              </div>
+            </div>
+            <div onclick="setCustomerScreen('appointments')" class="w-9 h-9 rounded-full overflow-hidden border-2 border-[#C59265]/40 p-0.5 shadow-sm cursor-pointer shrink-0">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" onerror="this.src='./avatar_sarah.png'" class="w-full h-full rounded-full object-cover" />
+            </div>
+          </div>
+
+          <!-- Hero Banner -->
+          <div class="mt-2.5 gold-gradient rounded-2xl p-3.5 text-white flex items-center justify-between shadow-md relative overflow-hidden">
+            <div class="pr-2 z-10">
+              <div class="font-serif-luxury text-base italic leading-tight">Look Good Feel Like You</div>
+              <div class="text-[9px] text-white/90 mt-1">Book premier hair, skin &amp; nail experiences.</div>
+              <div class="text-[8px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded-full inline-block mt-2 font-medium">Nearest: Model Town</div>
+            </div>
+            <button onclick="setCustomerScreen('categories')" class="z-10 shrink-0 px-3 py-1.5 rounded-full bg-white text-[#C59265] font-bold text-[9px] uppercase tracking-wider shadow-sm hover:bg-stone-50">
+              BOOK NOW
+            </button>
+            <div class="absolute -right-4 -bottom-6 w-24 h-24 rounded-full bg-white/10 pointer-events-none"></div>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="mt-3 flex items-center bg-white rounded-xl border border-[#EDE8E1] px-3 py-2 text-[10px] text-[#7A7672] shadow-2xs">
+            <span class="mr-2 text-xs">🔍</span>
+            <input type="text" placeholder="Search services, stylists, looks..." class="bg-transparent w-full focus:outline-none text-[10px] text-[#1F1E1C]" />
+          </div>
+
+          <!-- Category Quick Icons -->
+          <div class="mt-3.5">
+            <div class="flex items-center justify-between text-[8px] font-bold mb-1.5">
+              <span class="tracking-wider text-[#7A7672] uppercase">DISCOVER BY CATEGORY</span>
+              <span class="text-[#C59265] cursor-pointer" onclick="setCustomerScreen('categories')">View All →</span>
+            </div>
+            <div class="grid grid-cols-4 gap-2 text-center">
+              <div onclick="setCustomerScreen('hair')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <div class="w-9 h-9 mx-auto rounded-full bg-[#FAF5F0] flex items-center justify-center text-base mb-1">💇‍♀️</div>
+                <div class="text-[8.5px] font-bold">Hair</div>
+              </div>
+              <div onclick="setCustomerScreen('nails-menu')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <div class="w-9 h-9 mx-auto rounded-full bg-[#FAF5F0] flex items-center justify-center text-base mb-1">💅</div>
+                <div class="text-[8.5px] font-bold">Nails</div>
+              </div>
+              <div onclick="setCustomerScreen('categories')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <div class="w-9 h-9 mx-auto rounded-full bg-[#FAF5F0] flex items-center justify-center text-base mb-1">✨</div>
+                <div class="text-[8.5px] font-bold">Skin</div>
+              </div>
+              <div onclick="setCustomerScreen('categories')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <div class="w-9 h-9 mx-auto rounded-full bg-[#FAF5F0] flex items-center justify-center text-base mb-1">👁</div>
+                <div class="text-[8.5px] font-bold">Threading</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Upcoming Appointment Card -->
+          <div class="mt-3.5">
+            <div class="flex items-center justify-between text-[8px] font-bold mb-1.5">
+              <span class="tracking-wider text-[#7A7672] uppercase">UPCOMING APPOINTMENT</span>
+              <span class="text-[#C59265] cursor-pointer" onclick="setCustomerScreen('appointments')">View (2)</span>
+            </div>
+            <div class="bg-white rounded-2xl border border-[#EDE8E1] p-3 shadow-2xs">
+              <div class="flex items-center justify-between text-[9px] font-bold">
+                <span class="flex items-center space-x-1.5">
+                  <span class="text-[#C59265]">📅</span>
+                  <span id="c-home-apt-datetime">Tue, 12 Aug 2026 • 11:00 AM</span>
+                </span>
+                <span class="px-2 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[7.5px] font-bold uppercase tracking-wider">CONFIRMED</span>
+              </div>
+              <div class="my-2 border-b border-[#F0EAE1]"></div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2.5">
+                  <div class="w-8 h-8 rounded-full border border-[#EDE8E1] overflow-hidden shrink-0">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80" onerror="this.src='./avatar_jessica.png'" class="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold text-[#1F1E1C]" id="c-home-apt-service">Gel Polish with Jessica</div>
+                    <div class="text-[8px] text-[#7A7672]" id="c-home-apt-branch">Model Town • 60 mins • ₹1,200</div>
+                  </div>
+                </div>
+                <button onclick="setCustomerScreen('appointments')" class="px-2 py-1 rounded-lg bg-[#FAF8F5] border border-[#EDE8E1] text-[8px] font-semibold text-[#5A5652]">
+                  Manage
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nearest Salons Carousel -->
+          <div class="mt-3.5">
+            <div class="flex items-center justify-between text-[8px] font-bold mb-1.5">
+              <span class="tracking-wider text-[#7A7672] uppercase">YOUR NEAREST SALONS</span>
+              <span class="text-[#C59265] cursor-pointer" onclick="setCustomerScreen('branch')">Change Branch</span>
+            </div>
+            <div class="flex space-x-2.5 overflow-x-auto no-scrollbar pb-1">
+              <div onclick="selectBranchName('Model Town')" class="w-36 shrink-0 bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden shadow-2xs cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=400&auto=format&fit=crop&q=80" onerror="this.src='./salon_khar.png'" class="h-18 w-full object-cover" />
+                <div class="p-2">
+                  <div class="flex justify-between items-center text-[9px] font-bold">
+                    <span class="truncate">Model Town</span>
+                    <span class="text-[#C59265]">★ 4.9</span>
+                  </div>
+                  <div class="text-[7.5px] text-[#7A7672] mt-0.5">2.5 km • Open 9 AM-9 PM</div>
+                </div>
+              </div>
+              <div onclick="selectBranchName('Phagwara')" class="w-36 shrink-0 bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1629701670648-9f170428d084?w=400&auto=format&fit=crop&q=80" onerror="this.src='./salon_juhu.png'" class="h-18 w-full object-cover" />
+                <div class="p-2">
+                  <div class="flex justify-between items-center text-[9px] font-bold">
+                    <span class="truncate">Phagwara</span>
+                    <span class="text-[#C59265]">★ 4.8</span>
+                  </div>
+                  <div class="text-[7.5px] text-[#7A7672] mt-0.5">12 km • GT Road</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Collections -->
+          <div class="mt-3.5 mb-2">
+            <div class="text-[8px] font-bold tracking-wider text-[#7A7672] uppercase mb-1.5">TRENDING LOOKS</div>
+            <div class="grid grid-cols-2 gap-2">
+              <div onclick="openServiceDetail('Gel Polish', 1200, 'Nails')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 flex items-center space-x-2 cursor-pointer shadow-2xs hover:border-[#C59265]">
+                <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=200&auto=format&fit=crop&q=80" onerror="this.src='./service_nail_art.png'" class="w-10 h-10 rounded-lg object-cover shrink-0" />
+                <div class="overflow-hidden">
+                  <div class="text-[8.5px] font-bold truncate">Gel Polish</div>
+                  <div class="text-[7.5px] text-[#C59265] font-semibold">₹1,200 • 60m</div>
+                </div>
+              </div>
+              <div onclick="setCustomerScreen('layer-cut-detail')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 flex items-center space-x-2 cursor-pointer shadow-2xs hover:border-[#C59265]">
+                <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=200&auto=format&fit=crop&q=80" onerror="this.src='./layer_cut_front.jpg'" class="w-10 h-10 rounded-lg object-cover shrink-0" />
+                <div class="overflow-hidden">
+                  <div class="text-[8.5px] font-bold truncate">Layer Cut</div>
+                  <div class="text-[7.5px] text-[#C59265] font-semibold">₹2,400 • 360°</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 4: SERVICE CATEGORIES (Person 1 Step 2)  -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-categories" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('home')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Services</span>
+            <div class="w-7"></div>
+          </div>
+          <div class="my-2">
+            <span class="text-[8px] font-bold text-[#C59265] uppercase tracking-wider">CURATED BEAUTY MENU</span>
+            <div class="font-serif-luxury text-lg font-semibold">Select Category</div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5 pb-2">
+            <!-- Hair -->
+            <div onclick="setCustomerScreen('hair')" class="bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden shadow-2xs cursor-pointer hover:shadow-md transition-all">
+              <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_hair.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold text-[#1F1E1C]">Hair</span>
+                <span class="text-[10px] text-[#C59265] font-bold">→</span>
+              </div>
+            </div>
+            <!-- Nails -->
+            <div onclick="setCustomerScreen('nails-menu')" class="bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden shadow-2xs cursor-pointer hover:shadow-md transition-all">
+              <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_nails.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold text-[#C59265]">Nails</span>
+                <span class="text-[10px] text-[#C59265] font-bold">→</span>
+              </div>
+            </div>
+            <!-- Skin -->
+            <div onclick="openServiceDetail('Facial', 2000, 'Skin')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_skin.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold">Skin Care</span>
+                <span class="text-[9px] text-[#7A7672]">From ₹1,500</span>
+              </div>
+            </div>
+            <!-- Threading / Eyes & Brows -->
+            <div onclick="openServiceDetail('Threading', 300, 'Eyes & Brows')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_brows.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold">Eyes &amp; Brows</span>
+                <span class="text-[9px] text-[#7A7672]">From ₹300</span>
+              </div>
+            </div>
+            <!-- Hair Removal / Waxing -->
+            <div onclick="openServiceDetail('Full Body Waxing', 1800, 'Hair Removal')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1512290900672-1f5beab15f21?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_removal.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold">Hair Removal</span>
+                <span class="text-[9px] text-[#7A7672]">From ₹900</span>
+              </div>
+            </div>
+            <!-- Body Care / Massage -->
+            <div onclick="openServiceDetail('Aromatherapy Massage', 2500, 'Massage')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_massage.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold">Body Care &amp; Spa</span>
+                <span class="text-[9px] text-[#7A7672]">From ₹2,000</span>
+              </div>
+            </div>
+            <!-- Makeup -->
+            <div onclick="openServiceDetail('Editorial Bridal Makeup', 4500, 'Makeup')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_makeup.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold">Makeup</span>
+                <span class="text-[9px] text-[#7A7672]">From ₹3,500</span>
+              </div>
+            </div>
+            <!-- Men's Grooming -->
+            <div onclick="openServiceDetail('Classic Men Grooming', 1500, 'Men')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&auto=format&fit=crop&q=80" onerror="this.src='./service_grooming.png'" class="h-20 w-full object-cover" />
+              <div class="p-2 flex justify-between items-center">
+                <span class="text-[10px] font-bold">Men's Grooming</span>
+                <span class="text-[9px] text-[#7A7672]">From ₹1,200</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 5: NAILS SUBCATEGORIES (Step 3)          -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-nails-menu" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('categories')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Nails</span>
+            <div class="w-7"></div>
+          </div>
+          <div class="my-2">
+            <span class="text-[8px] font-bold text-[#C59265] uppercase tracking-wider">SUBCATEGORIES</span>
+            <div class="font-serif-luxury text-lg font-semibold">Nail Services Menu</div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5 pb-2">
+            <div onclick="openServiceDetail('French Tip', 1400, 'Nails')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=300&auto=format&fit=crop&q=80" class="h-20 w-full object-cover" />
+              <div class="p-2 text-center font-bold text-[9px]">French Tip</div>
+            </div>
+            <div onclick="openServiceDetail('Anime / 3D Nail Art', 2200, 'Nails')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&auto=format&fit=crop&q=80" class="h-20 w-full object-cover" />
+              <div class="p-2 text-center font-bold text-[9px]">Anime Nails</div>
+            </div>
+            <div onclick="openServiceDetail('Gel Polish', 1200, 'Nails')" class="bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden shadow-xs cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=300&auto=format&fit=crop&q=80" class="h-20 w-full object-cover" />
+              <div class="p-2 text-center font-bold text-[9.5px] text-[#C59265]">Gel Polish (Popular)</div>
+            </div>
+            <div onclick="setCustomerScreen('nail-art-flow')" class="bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden shadow-xs cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=300&auto=format&fit=crop&q=80" class="h-20 w-full object-cover" />
+              <div class="p-2 text-center font-bold text-[9.5px] text-[#C59265]">Nail Art Gallery →</div>
+            </div>
+            <div onclick="openServiceDetail('Basic Manicure', 900, 'Nails')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300&auto=format&fit=crop&q=80" class="h-20 w-full object-cover" />
+              <div class="p-2 text-center font-bold text-[9px]">Basic Manicure</div>
+            </div>
+            <div onclick="openServiceDetail('Spa Pedicure', 1500, 'Nails')" class="bg-white rounded-2xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=300&auto=format&fit=crop&q=80" class="h-20 w-full object-cover" />
+              <div class="p-2 text-center font-bold text-[9px]">Spa Pedicure</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 6: SERVICE DETAILS (Person 1 Step 4)     -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-service-details" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('nails-menu')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold" id="c-det-title-nav">Service Details</span>
+            <div class="w-7"></div>
+          </div>
+
+          <div class="mt-2.5 h-44 w-full rounded-2xl overflow-hidden shadow-sm border border-[#EDE8E1] relative">
+            <img id="c-det-hero-img" src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=800&auto=format&fit=crop&q=80" class="w-full h-full object-cover" />
+            <div class="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-full bg-black/60 text-white text-[8px] font-semibold backdrop-blur-xs">
+              ⏱ <span id="c-det-duration">60 mins</span>
+            </div>
+          </div>
+
+          <div class="mt-3 flex items-start justify-between">
+            <div>
+              <h2 class="font-serif-luxury text-xl font-bold text-[#1F1E1C]" id="c-det-name">Gel Polish</h2>
+              <div class="text-[9px] text-[#7A7672]">A long-lasting, high-gloss finish with wide range of couture colours.</div>
+            </div>
+            <div class="text-right">
+              <span class="font-serif-luxury text-xl font-bold text-[#C59265]" id="c-det-price">₹1,200</span>
+            </div>
+          </div>
+
+          <!-- Branch Availability Pill (Matches Screenshot) -->
+          <div class="mt-3 p-2.5 bg-white rounded-2xl border border-[#EDE8E1] flex items-center justify-between">
+            <div>
+              <span class="text-[7.5px] font-bold text-[#7A7672] uppercase tracking-wider block">AVAILABLE AT BRANCH</span>
+              <div class="text-[10px] font-bold text-[#1F1E1C] flex items-center space-x-1 mt-0.5">
+                <span class="text-[#C59265]">📍</span>
+                <span id="c-det-branch-name">Model Town</span>
+                <span class="text-[8px] text-[#7A7672] font-normal">• 2.5 km</span>
+              </div>
+            </div>
+            <button onclick="setCustomerScreen('branch')" class="px-2.5 py-1 rounded-full bg-[#FAF8F5] border border-[#EDE8E1] text-[#C59265] text-[8.5px] font-bold">
+              Change
+            </button>
+          </div>
+
+          <!-- Stylist Selection (Matches Screenshot Step 4) -->
+          <div class="mt-3.5">
+            <div class="flex items-center justify-between text-[8px] font-bold mb-1.5">
+              <span class="tracking-wider text-[#7A7672] uppercase">SELECT STYLIST</span>
+              <span class="text-[#C59265] text-[7.5px]">Artisan Tier</span>
+            </div>
+            <div class="space-y-2">
+              <div onclick="selectDetailStylist('Jessica Alba', 'Senior Nail Artist', 0)" id="c-sel-stylist-jessica" class="p-2.5 bg-[#FFFDF9] rounded-2xl border-2 border-[#C59265] flex items-center justify-between cursor-pointer">
+                <div class="flex items-center space-x-2.5">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80" onerror="this.src='./avatar_jessica.png'" class="w-9 h-9 rounded-full object-cover border border-[#C59265]" />
+                  <div>
+                    <div class="flex items-center space-x-1.5">
+                      <span class="font-serif-luxury text-xs font-bold">Jessica Alba</span>
+                      <span class="px-1.5 py-0.2 rounded-full bg-[#F5ECE8] text-[#C59265] text-[7px] font-bold">PREMIUM</span>
+                    </div>
+                    <div class="text-[8px] text-[#7A7672]">★ 4.8 (128 reviews) • Senior Nail Artist</div>
+                  </div>
+                </div>
+                <div class="w-4 h-4 rounded-full border-2 border-[#C59265] flex items-center justify-center p-0.5">
+                  <div class="w-full h-full bg-[#C59265] rounded-full"></div>
+                </div>
+              </div>
+
+              <div onclick="selectDetailStylist('Maya', 'Hair & Nail Specialist', 0)" id="c-sel-stylist-maya" class="p-2.5 bg-white rounded-2xl border border-[#EDE8E1] flex items-center justify-between cursor-pointer">
+                <div class="flex items-center space-x-2.5">
+                  <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" class="w-9 h-9 rounded-full object-cover border border-[#EDE8E1]" />
+                  <div>
+                    <div class="flex items-center space-x-1.5">
+                      <span class="font-serif-luxury text-xs font-bold">Maya</span>
+                      <span class="px-1.5 py-0.2 rounded-full bg-[#FAF5F0] text-[#7A7672] text-[7px] font-bold">TOP RATED</span>
+                    </div>
+                    <div class="text-[8px] text-[#7A7672]">★ 4.6 (94 reviews) • Model Town</div>
+                  </div>
+                </div>
+                <div class="w-4 h-4 rounded-full border border-[#EDE8E1]"></div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="setCustomerScreen('datetime')" class="w-full mt-4 py-3 rounded-full bg-[#C59265] text-white font-bold text-[10px] uppercase tracking-wider shadow-md active:scale-98">
+            BOOK NOW • <span id="c-det-book-price">₹1,200</span>
+          </button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 7: SELECT BRANCH (Person 1 Step 5)       -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-branch" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('home')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Select Branch</span>
+            <div class="w-7"></div>
+          </div>
+
+          <div class="mt-2.5 flex items-center bg-white rounded-xl border border-[#EDE8E1] px-3 py-2 text-[10px] text-[#7A7672] shadow-2xs">
+            <span class="mr-2">🔍</span>
+            <input type="text" placeholder="Search branch or area in Punjab..." class="bg-transparent w-full focus:outline-none text-[10px]" />
+          </div>
+
+          <!-- Branch List matching Screenshot -->
+          <div class="mt-3 space-y-2.5 pb-2">
+            <!-- Model Town -->
+            <div onclick="confirmBranchSelection('Model Town')" class="bg-white rounded-2xl border-2 border-[#C59265] p-3 shadow-2xs flex space-x-3 cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=200&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-xl object-cover shrink-0" />
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div class="font-serif-luxury text-sm font-bold">Model Town</div>
+                  <span class="px-2 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[7.5px] font-bold">SELECTED</span>
+                </div>
+                <div class="text-[8px] text-[#7A7672] mt-0.5">2.5 km • Model Town Market, Jalandhar</div>
+                <div class="text-[8px] text-[#1F1E1C] font-semibold mt-1">Open • 9 AM - 9 PM</div>
+              </div>
+            </div>
+
+            <!-- Phagwara -->
+            <div onclick="confirmBranchSelection('Phagwara')" class="bg-white rounded-2xl border border-[#EDE8E1] p-3 shadow-2xs flex space-x-3 cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1629701670648-9f170428d084?w=200&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-xl object-cover shrink-0" />
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div class="font-serif-luxury text-sm font-bold">Phagwara</div>
+                  <span class="text-[8px] text-[#7A7672]">12 km</span>
+                </div>
+                <div class="text-[8px] text-[#7A7672] mt-0.5">GT Road, Phagwara</div>
+                <div class="text-[8px] text-[#1F1E1C] font-semibold mt-1">Open • 9 AM - 9 PM</div>
+              </div>
+            </div>
+
+            <!-- Jalandhar Civil Lines -->
+            <div onclick="confirmBranchSelection('Jalandhar')" class="bg-white rounded-2xl border border-[#EDE8E1] p-3 shadow-2xs flex space-x-3 cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=200&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-xl object-cover shrink-0" />
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div class="font-serif-luxury text-sm font-bold">Jalandhar</div>
+                  <span class="text-[8px] text-[#7A7672]">4 km</span>
+                </div>
+                <div class="text-[8px] text-[#7A7672] mt-0.5">Civil Lines, Jalandhar</div>
+                <div class="text-[8px] text-[#1F1E1C] font-semibold mt-1">Open • 9 AM - 9 PM</div>
+              </div>
+            </div>
+
+            <!-- Ludhiana -->
+            <div onclick="confirmBranchSelection('Ludhiana')" class="bg-white rounded-2xl border border-[#EDE8E1] p-3 shadow-2xs flex space-x-3 cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=200&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-xl object-cover shrink-0" />
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div class="font-serif-luxury text-sm font-bold">Ludhiana</div>
+                  <span class="text-[8px] text-[#7A7672]">32 km</span>
+                </div>
+                <div class="text-[8px] text-[#7A7672] mt-0.5">Ferozepur Road, Ludhiana</div>
+                <div class="text-[8px] text-[#1F1E1C] font-semibold mt-1">Open • 9 AM - 9 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 8: SELECT DATE & TIME (Person 1 Step 6)  -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-datetime" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('service-details')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Choose Date &amp; Time</span>
+            <div class="w-7"></div>
+          </div>
+
+          <div class="mt-2.5 flex items-center space-x-1.5 text-[9px] text-[#7A7672]">
+            <span class="text-[#C59265]">📍</span>
+            <span id="c-dt-branch-label" class="font-semibold text-[#1F1E1C]">Model Town</span>
+          </div>
+
+          <!-- Month Selector -->
+          <div class="flex justify-between items-center my-2">
+            <span class="font-serif-luxury text-sm font-bold">August 2026</span>
+            <div class="text-xs space-x-2 text-[#7A7672]">
+              <button class="px-1.5 py-0.5 rounded bg-white border border-[#EDE8E1]">‹</button>
+              <button class="px-1.5 py-0.5 rounded bg-white border border-[#EDE8E1]">›</button>
+            </div>
+          </div>
+
+          <!-- Date Horizontal Picker -->
+          <div class="flex space-x-1.5 overflow-x-auto no-scrollbar pb-1 text-center text-[9px]">
+            <div onclick="selectBookingDate('Mon', 11)" id="c-date-11" class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl cursor-pointer">
+              <div class="text-[#7A7672]">Mon</div>
+              <div class="font-bold text-[11px] mt-0.5">11</div>
+            </div>
+            <div onclick="selectBookingDate('Tue', 12)" id="c-date-12" class="w-11 py-2 bg-[#C59265] text-white rounded-xl shadow-xs cursor-pointer font-bold">
+              <div>Tue</div>
+              <div class="font-bold text-[11px] mt-0.5">12</div>
+            </div>
+            <div onclick="selectBookingDate('Wed', 13)" id="c-date-13" class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl cursor-pointer">
+              <div class="text-[#7A7672]">Wed</div>
+              <div class="font-bold text-[11px] mt-0.5">13</div>
+            </div>
+            <div onclick="selectBookingDate('Thu', 14)" id="c-date-14" class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl cursor-pointer">
+              <div class="text-[#7A7672]">Thu</div>
+              <div class="font-bold text-[11px] mt-0.5">14</div>
+            </div>
+            <div onclick="selectBookingDate('Fri', 15)" id="c-date-15" class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl cursor-pointer">
+              <div class="text-[#7A7672]">Fri</div>
+              <div class="font-bold text-[11px] mt-0.5">15</div>
+            </div>
+          </div>
+
+          <!-- Period Tabs (Morning / Afternoon / Evening) -->
+          <div class="flex bg-[#F5ECE8]/60 p-1 rounded-xl my-2.5 text-[8.5px] font-bold text-center">
+            <button onclick="setSlotPeriod('morning')" id="c-btn-period-m" class="flex-1 py-1 rounded-lg bg-white shadow-2xs text-[#C59265]">Morning</button>
+            <button onclick="setSlotPeriod('afternoon')" id="c-btn-period-a" class="flex-1 py-1 rounded-lg text-[#7A7672]">Afternoon</button>
+            <button onclick="setSlotPeriod('evening')" id="c-btn-period-e" class="flex-1 py-1 rounded-lg text-[#7A7672]">Evening</button>
+          </div>
+
+          <!-- Available Time Slots Grid (Matches Screenshot) -->
+          <div class="grid grid-cols-3 gap-1.5 text-[9px] mb-2" id="c-slots-grid">
+            <button onclick="selectBookingSlot('09:00 AM')" id="slot-0900" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">09:00 AM</button>
+            <button onclick="selectBookingSlot('09:30 AM')" id="slot-0930" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">09:30 AM</button>
+            <button onclick="selectBookingSlot('10:00 AM')" id="slot-1000" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">10:00 AM</button>
+            <button onclick="selectBookingSlot('10:30 AM')" id="slot-1030" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">10:30 AM</button>
+            <button onclick="selectBookingSlot('11:00 AM')" id="slot-1100" class="py-2 rounded-xl bg-[#F7EFE8] border-2 border-[#C59265] text-[#C59265] text-center font-bold">11:00 AM</button>
+            <button onclick="selectBookingSlot('11:30 AM')" id="slot-1130" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">11:30 AM</button>
+            <button onclick="selectBookingSlot('12:00 PM')" id="slot-1200" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">12:00 PM</button>
+            <button onclick="selectBookingSlot('12:30 PM')" id="slot-1230" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">12:30 PM</button>
+            <button onclick="selectBookingSlot('01:00 PM')" id="slot-0100" class="py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold">01:00 PM</button>
+          </div>
+
+          <!-- Summary Mini-Card -->
+          <div class="mt-2.5 p-2 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+            <div class="flex items-center space-x-2">
+              <img id="c-dt-stylist-thumb" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80" class="w-7 h-7 rounded-full object-cover" />
+              <div>
+                <div class="font-bold" id="c-dt-service-label">Gel Polish</div>
+                <div class="text-[7.5px] text-[#7A7672]">with <span id="c-dt-stylist-label">Jessica Alba</span></div>
+              </div>
+            </div>
+            <span class="font-bold text-[#C59265] text-xs" id="c-dt-price-label">₹1,200</span>
+          </div>
+
+          <button onclick="confirmAppointmentBooking()" class="w-full mt-3 py-3 rounded-full bg-[#C59265] text-white font-bold text-[10px] uppercase tracking-wider shadow-md active:scale-98">
+            CONFIRM TIME &amp; BOOK
+          </button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 9: BOOKING CONFIRMATION (Person 1 Step 7)-->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-confirmation" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-6 text-center hidden">
+          <div class="w-14 h-14 rounded-full bg-[#F7EFE8] text-[#C59265] text-2xl flex items-center justify-center mx-auto mb-2 shadow-inner border border-[#C59265]/30">
+            ✓
+          </div>
+          <h2 class="font-serif-luxury text-2xl font-bold">Appointment Confirmed!</h2>
+          <p class="text-[9px] text-[#7A7672] mt-0.5">Your booking details have been sent to your email.</p>
+
+          <div class="mt-4 p-3.5 bg-white rounded-2xl border border-[#EDE8E1] text-left text-[9px] space-y-2.5 shadow-2xs">
+            <div>
+              <span class="text-[#C59265] font-bold text-[7.5px] uppercase tracking-wider">SALON BRANCH</span>
+              <div class="font-serif-luxury text-sm font-bold" id="c-conf-branch">Model Town</div>
+            </div>
+            <div class="border-t border-[#F0EAE1] pt-2 flex items-center space-x-2.5">
+              <img id="c-conf-thumb" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80" class="w-8 h-8 rounded-full object-cover" />
+              <div>
+                <div class="font-bold text-[10px]" id="c-conf-service">Gel Polish</div>
+                <div class="text-[8px] text-[#7A7672]">with <span id="c-conf-stylist">Jessica Alba</span></div>
+              </div>
+            </div>
+            <div class="border-t border-[#F0EAE1] pt-2 flex justify-between font-bold">
+              <span class="text-[#1F1E1C]" id="c-conf-datetime">📅 Tue, 12 Aug 2026 • 11:00 AM</span>
+              <span class="text-[#C59265]" id="c-conf-price">₹1,200</span>
+            </div>
+          </div>
+
+          <button onclick="showCalendarAlert()" class="w-full py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider mt-4 shadow-sm">
+            ADD TO CALENDAR
+          </button>
+          <button onclick="setCustomerScreen('appointments')" class="w-full py-2.5 rounded-full bg-white border border-[#EDE8E1] text-[#1F1E1C] font-bold text-[9px] uppercase tracking-wider mt-2 hover:bg-stone-50">
+            VIEW MY APPOINTMENTS
+          </button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 10: MY APPOINTMENTS (Person 1 Step 8)    -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-appointments" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('home')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">My Appointments</span>
+            <div class="w-7"></div>
+          </div>
+
+          <!-- Upcoming / Past Tabs (Matches Screenshot) -->
+          <div class="flex bg-[#F5ECE8]/60 p-1 rounded-xl my-2.5 text-[9px] font-bold text-center">
+            <button onclick="setApptFilter('upcoming')" id="c-tab-appt-upcoming" class="flex-1 py-1 rounded-lg bg-white shadow-2xs text-[#C59265]">Upcoming</button>
+            <button onclick="setApptFilter('past')" id="c-tab-appt-past" class="flex-1 py-1 rounded-lg text-[#7A7672]">Past</button>
+          </div>
+
+          <div id="c-appointments-list" class="space-y-2.5 pb-3">
+            <!-- Dynamically populated from active appointment store -->
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 11: HAIR CUT DETAIL & 360 PREVIEW        -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-layer-cut-detail" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('categories')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Layer Cut 360°</span>
+            <div class="w-7"></div>
+          </div>
+
+          <!-- 360 Carousel -->
+          <div class="mt-2 relative w-full h-44 rounded-2xl overflow-hidden shadow-xs border border-[#EDE8E1] bg-stone-100">
+            <img id="c-layer-hero-img" src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&auto=format&fit=crop&q=80" onerror="this.src='./layer_cut_front.jpg'" class="w-full h-full object-cover transition-opacity duration-200" />
+            <div id="c-layer-angle-badge" class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-black/60 text-[8px] text-white font-medium">Front View (1/3)</div>
+            <button onclick="cycleLayerAngle(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/40 text-white flex items-center justify-center text-xs">‹</button>
+            <button onclick="cycleLayerAngle(1)" class="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/40 text-white flex items-center justify-center text-xs">›</button>
+          </div>
+
+          <div class="mt-2.5 flex justify-between items-start">
+            <div>
+              <div class="font-serif-luxury text-base font-bold">Layer Cut &amp; Silhouette</div>
+              <div class="text-[8px] text-[#7A7672]">★ 4.9 (580 Reviews) • 60-75 min</div>
+            </div>
+            <div class="font-bold text-sm text-[#C59265]" id="c-layer-price-display">₹2,400</div>
+          </div>
+
+          <!-- Texture Selector -->
+          <div class="mt-2">
+            <span class="text-[7.5px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">HAIR TEXTURE</span>
+            <div class="flex space-x-1">
+              <button onclick="pickTexture('Straight')" id="c-tex-Straight" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white">Straight</button>
+              <button onclick="pickTexture('Wavy')" id="c-tex-Wavy" class="px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]">Wavy</button>
+              <button onclick="pickTexture('Curly')" id="c-tex-Curly" class="px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]">Curly</button>
+            </div>
+          </div>
+
+          <!-- Length Selector -->
+          <div class="mt-2">
+            <span class="text-[7.5px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">HAIR LENGTH</span>
+            <div class="flex space-x-1">
+              <button onclick="pickLength('Long')" id="c-len-Long" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white">Long</button>
+              <button onclick="pickLength('Medium')" id="c-len-Medium" class="px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]">Medium</button>
+              <button onclick="pickLength('Short')" id="c-len-Short" class="px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]">Short</button>
+            </div>
+          </div>
+
+          <button onclick="openServiceDetail('Layer Cut', 2400, 'Hair')" class="w-full mt-3 py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider shadow-sm">
+            PROCEED WITH THIS LOOK
+          </button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- CUSTOMER SCREEN 12: NAIL ART CUSTOMIZER FLOW             -->
+        <!-- -------------------------------------------------------- -->
+        <div id="c-screen-nail-art-flow" class="customer-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setCustomerScreen('nails-menu')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Nail Art Gallery</span>
+            <div class="w-7"></div>
+          </div>
+
+          <div class="my-2">
+            <span class="text-[8px] font-bold text-[#C59265] uppercase tracking-wider">REFINE BY COLOUR</span>
+            <div class="flex space-x-1.5 overflow-x-auto no-scrollbar py-1">
+              <button onclick="filterNailColor('Amber')" id="pill-c-Amber" class="px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]">Amber</button>
+              <button onclick="filterNailColor('Brown')" id="pill-c-Brown" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white">Brown</button>
+              <button onclick="filterNailColor('Gold')" id="pill-c-Gold" class="px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]">Gold</button>
+              <button onclick="filterNailColor('Beige')" id="pill-c-Beige" class="px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]">Beige</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 mt-2">
+            <div onclick="openServiceDetail('Brown Ombre Cat Eye', 1800, 'Nails')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=200&auto=format&fit=crop&q=80" class="h-20 w-full object-cover rounded-lg" />
+              <div class="text-[9px] font-bold mt-1.5 truncate">Brown Ombre Cat Eye</div>
+              <div class="text-[7.5px] text-[#7A7672]">Jessica Alba • ★ 4.0</div>
+              <div class="flex justify-between items-center mt-1 text-[9px] font-bold">
+                <span>₹1,800</span>
+                <span class="text-[7.5px] text-[#7A7672]">60 min</span>
+              </div>
+            </div>
+            <div onclick="openServiceDetail('Classic Matte Mocha', 2000, 'Nails')" class="bg-white rounded-xl border border-[#EDE8E1] p-2 shadow-2xs cursor-pointer hover:border-[#C59265]">
+              <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=200&auto=format&fit=crop&q=80" class="h-20 w-full object-cover rounded-lg" />
+              <div class="text-[9px] font-bold mt-1.5 truncate">Classic Matte Mocha</div>
+              <div class="text-[7.5px] text-[#7A7672]">Jessica Alba • ★ 4.9</div>
+              <div class="flex justify-between items-center mt-1 text-[9px] font-bold">
+                <span>₹2,000</span>
+                <span class="text-[7.5px] text-[#7A7672]">60 min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Tab Navigation (Always visible in Customer Flow) -->
+        <div class="absolute bottom-0 left-0 right-0 h-14 bg-white/95 backdrop-blur-md border-t border-[#EDE8E1] flex items-center justify-around text-center z-20 px-2">
+          <button onclick="setCustomerScreen('home')" id="c-nav-home" class="flex flex-col items-center text-[#C59265]">
+            <span class="text-sm">🏠</span>
+            <span class="text-[8px] font-bold mt-0.5">Home</span>
+          </button>
+          <button onclick="setCustomerScreen('categories')" id="c-nav-services" class="flex flex-col items-center text-[#7A7672]">
+            <span class="text-sm">📋</span>
+            <span class="text-[8px] font-bold mt-0.5">Services</span>
+          </button>
+          <button onclick="setCustomerScreen('nails-menu')" id="c-nav-nails" class="flex flex-col items-center text-[#7A7672]">
+            <span class="text-sm">💅</span>
+            <span class="text-[8px] font-bold mt-0.5">Nails</span>
+          </button>
+          <button onclick="setCustomerScreen('appointments')" id="c-nav-appts" class="flex flex-col items-center text-[#7A7672]">
+            <span class="text-sm">📅</span>
+            <span class="text-[8px] font-bold mt-0.5">Bookings</span>
+          </button>
+        </div>
+
+        <!-- Phone Bottom Bar Home Indicator -->
+        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 bg-black/60 rounded-full z-30"></div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- 2. STYLIST MOBILE APP VIEWPORT (Phone Simulation)              -->
+    <!-- ============================================================== -->
+    <div id="wrapper-stylist-app" class="flex justify-center hidden transition-all">
+      <div class="w-[360px] h-[740px] rounded-[42px] bg-[#FAF8F5] border-[10px] border-[#222] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] overflow-hidden relative flex flex-col select-none text-[#1F1E1C]">
+        
+        <!-- Status Bar -->
+        <div class="h-7 px-5 flex items-center justify-between text-[10px] font-semibold bg-[#FAF8F5]/90 shrink-0 z-30">
+          <span>9:41</span>
+          <div class="w-20 h-4 bg-black rounded-full mx-auto -mt-1 flex items-center justify-end px-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#C59265]"></span>
+          </div>
+          <div class="flex items-center space-x-1.5 text-[9px]">
+            <span>5G</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="s-toast" class="hidden absolute top-9 left-4 right-4 bg-[#1F1E1C] text-white p-2.5 rounded-xl shadow-xl z-50 text-[10px] flex items-center justify-between">
+          <span id="s-toast-msg">Status Updated!</span>
+          <button onclick="document.getElementById('s-toast').classList.add('hidden')" class="text-white/60 text-xs">✕</button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- STYLIST SCREEN 1: LOGIN                                  -->
+        <!-- -------------------------------------------------------- -->
+        <div id="s-screen-login" class="stylist-screen flex-1 flex flex-col justify-between p-6 bg-[#FAF8F5] hidden">
+          <div class="text-center pt-4">
+            <div class="font-serif-luxury text-3xl font-semibold tracking-wider">MAISON</div>
+            <div class="text-[9px] tracking-[0.25em] text-[#C59265] uppercase font-bold mt-1">STYLIST CONCIERGE LOGIN</div>
+          </div>
+
+          <div class="space-y-3.5 my-auto">
+            <div>
+              <label class="text-[8px] font-bold text-[#5A5652] uppercase tracking-wider block mb-1">EMAIL</label>
+              <input type="email" id="s-login-email" value="jessica@maison.com" class="w-full bg-white rounded-xl border border-[#EDE8E1] px-3.5 py-2.5 text-[11px] focus:outline-none focus:border-[#C59265]" />
+            </div>
+            <div>
+              <label class="text-[8px] font-bold text-[#5A5652] uppercase tracking-wider block mb-1">PASSWORD</label>
+              <input type="password" value="stylist123" class="w-full bg-white rounded-xl border border-[#EDE8E1] px-3.5 py-2.5 text-[11px] focus:outline-none focus:border-[#C59265]" />
+            </div>
+            <div class="flex justify-between items-center text-[9px]">
+              <a href="javascript:void(0)" class="text-[#7A7672]">Forgot password?</a>
+            </div>
+            <button onclick="setStylistScreen('home')" class="w-full py-3 rounded-full bg-[#C59265] text-white font-bold text-[10px] uppercase tracking-wider shadow-md">
+              LOGIN AS STYLIST
+            </button>
+            <button onclick="setScopeMode('customer')" class="w-full py-2.5 rounded-full bg-white border border-[#EDE8E1] text-[#7A7672] font-semibold text-[9.5px]">
+              Switch to Customer App
+            </button>
+          </div>
+
+          <div class="text-center pb-2 text-[8.5px] text-[#7A7672]">
+            VIORA Multi-Branch Stylist Portal • Model Town
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- STYLIST SCREEN 2: TODAY'S HOME (Dashboard)               -->
+        <!-- -------------------------------------------------------- -->
+        <div id="s-screen-home" class="stylist-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2">
+          <!-- Stylist Header -->
+          <div class="flex items-center justify-between py-2 border-b border-[#EDE8E1]">
+            <div class="flex items-center space-x-2.5">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80" class="w-10 h-10 rounded-full object-cover border-2 border-[#C59265]" />
+              <div>
+                <h3 class="font-serif-luxury text-base font-bold">Good Morning Jessica</h3>
+                <div class="text-[8.5px] text-[#7A7672]">Tue, 12 Aug 2026 • Model Town</div>
+              </div>
+            </div>
+            <button onclick="setStylistScreen('profile')" class="text-xs">⚙️</button>
+          </div>
+
+          <!-- Stylist Quick Metrics (Matches Screenshot) -->
+          <div class="grid grid-cols-3 gap-2 my-3">
+            <div class="bg-white rounded-2xl border border-[#EDE8E1] p-2.5 text-center shadow-2xs">
+              <div class="text-lg font-bold text-[#1F1E1C]" id="s-stat-appts">5</div>
+              <div class="text-[7.5px] text-[#7A7672] uppercase font-bold">Appointments</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-[#EDE8E1] p-2.5 text-center shadow-2xs">
+              <div class="text-lg font-bold text-[#C59265]">2</div>
+              <div class="text-[7.5px] text-[#7A7672] uppercase font-bold">New Requests</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-[#EDE8E1] p-2.5 text-center shadow-2xs">
+              <div class="text-lg font-bold text-[#1F1E1C]">4.8</div>
+              <div class="text-[7.5px] text-[#7A7672] uppercase font-bold">★ Rating</div>
+            </div>
+          </div>
+
+          <!-- Today's Appointments List -->
+          <div>
+            <div class="flex items-center justify-between text-[8px] font-bold mb-2">
+              <span class="tracking-wider text-[#7A7672] uppercase">TODAY'S APPOINTMENTS</span>
+              <span class="text-[#C59265] cursor-pointer" onclick="setStylistScreen('schedule')">Full Schedule →</span>
+            </div>
+
+            <div id="s-today-appointments-list" class="space-y-2">
+              <!-- Dynamically populated from active store -->
+            </div>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- STYLIST SCREEN 3: APPOINTMENT DETAILS                    -->
+        <!-- -------------------------------------------------------- -->
+        <div id="s-screen-detail" class="stylist-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setStylistScreen('home')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Appointment Details</span>
+            <div class="w-7"></div>
+          </div>
+
+          <!-- Service & Time Card -->
+          <div class="mt-2.5 p-3.5 bg-white rounded-2xl border border-[#EDE8E1] shadow-2xs">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[7.5px] font-bold text-[#C59265] uppercase tracking-wider block">BOOKED TREATMENT</span>
+                <h3 class="font-serif-luxury text-lg font-bold" id="s-det-service">Gel Polish</h3>
+                <div class="text-[8.5px] text-[#7A7672]" id="s-det-datetime">Tue, 12 Aug 2026 • 11:00 AM</div>
+                <div class="text-[8.5px] text-[#7A7672]">Model Town Branch</div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[8px] font-bold" id="s-det-status">CONFIRMED</span>
+            </div>
+          </div>
+
+          <!-- Customer Info Card with Call & Chat -->
+          <div class="mt-2.5 p-3.5 bg-white rounded-2xl border border-[#EDE8E1] shadow-2xs">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-10 h-10 rounded-full bg-[#FAF5F0] border border-[#C59265]/40 flex items-center justify-center font-serif-luxury text-sm font-bold text-[#C59265]">
+                  ST
+                </div>
+                <div>
+                  <h4 class="font-serif-luxury text-sm font-bold" id="s-det-customer-name">Sarah Thomas</h4>
+                  <div class="text-[8.5px] text-[#7A7672]" id="s-det-customer-phone">+91 98765 43210</div>
+                </div>
+              </div>
+              <div class="flex space-x-1.5">
+                <button onclick="alert('Calling Sarah Thomas (+91 98765 43210)...')" class="px-2.5 py-1 rounded-xl bg-[#FAF8F5] border border-[#EDE8E1] text-[9px] font-bold flex items-center space-x-1">
+                  <span>📞</span><span>Call</span>
+                </button>
+                <button onclick="alert('Opening Concierge Chat with Sarah Thomas...')" class="px-2.5 py-1 rounded-xl bg-[#FAF8F5] border border-[#EDE8E1] text-[9px] font-bold flex items-center space-x-1">
+                  <span>💬</span><span>Chat</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Customer Notes -->
+            <div class="mt-3 pt-2.5 border-t border-[#F0EAE1]">
+              <span class="text-[7.5px] font-bold text-[#5A5652] uppercase tracking-wider block mb-1">CUSTOMER NOTES</span>
+              <p class="text-[9px] text-[#7A7672] bg-[#FAF8F5] p-2 rounded-xl" id="s-det-notes">
+                Short nails, nude shade, prefers minimal designs.
+              </p>
+            </div>
+
+            <!-- Previous Services -->
+            <div class="mt-2.5">
+              <span class="text-[7.5px] font-bold text-[#5A5652] uppercase tracking-wider block mb-1">PREVIOUS SERVICES</span>
+              <div class="text-[8.5px] text-[#7A7672] space-y-0.5">
+                <div>• Gel Polish — 3 months ago</div>
+                <div>• Manicure — 6 months ago</div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="markStylistAppointmentComplete()" class="w-full mt-4 py-3 rounded-full bg-[#C59265] text-white font-bold text-[10px] uppercase tracking-wider shadow-md active:scale-98">
+            MARK AS COMPLETED
+          </button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- STYLIST SCREEN 4: MY SCHEDULE (Timeline View)            -->
+        <!-- -------------------------------------------------------- -->
+        <div id="s-screen-schedule" class="stylist-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setStylistScreen('home')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">My Schedule</span>
+            <div class="w-7"></div>
+          </div>
+
+          <!-- Date Selector -->
+          <div class="flex space-x-1.5 overflow-x-auto no-scrollbar py-2 text-center text-[9px]">
+            <div class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl"><div class="text-[#7A7672]">Mon</div><div class="font-bold text-[11px]">11</div></div>
+            <div class="w-11 py-2 bg-[#C59265] text-white rounded-xl font-bold shadow-xs"><div>Tue</div><div class="font-bold text-[11px]">12</div></div>
+            <div class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl"><div class="text-[#7A7672]">Wed</div><div class="font-bold text-[11px]">13</div></div>
+            <div class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl"><div class="text-[#7A7672]">Thu</div><div class="font-bold text-[11px]">14</div></div>
+            <div class="w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl"><div class="text-[#7A7672]">Fri</div><div class="font-bold text-[11px]">15</div></div>
+          </div>
+
+          <!-- Hourly Schedule Timeline (Matches Screenshot) -->
+          <div class="space-y-2 mt-1 pb-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-[9px] font-bold text-[#7A7672] w-12">9:00 AM</span>
+              <div class="flex-1 bg-white p-2.5 rounded-xl border border-[#EDE8E1] flex justify-between items-center">
+                <div>
+                  <div class="text-[9px] font-bold">Hair Cut</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Priya Sharma</div>
+                </div>
+                <span class="text-[8px] text-[#C59265] font-bold">Confirmed</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <span class="text-[9px] font-bold text-[#7A7672] w-12">10:00 AM</span>
+              <div class="flex-1 bg-white p-2.5 rounded-xl border-2 border-[#C59265] flex justify-between items-center">
+                <div>
+                  <div class="text-[9px] font-bold text-[#C59265]">Gel Polish</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Sarah Thomas</div>
+                </div>
+                <button onclick="openStylistApptDetail('APT-1001')" class="px-2 py-0.5 rounded bg-[#C59265] text-white text-[7.5px] font-bold">View</button>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <span class="text-[9px] font-bold text-[#7A7672] w-12">11:00 AM</span>
+              <div class="flex-1 bg-white p-2.5 rounded-xl border border-[#EDE8E1] flex justify-between items-center">
+                <div>
+                  <div class="text-[9px] font-bold">Facial Consult</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Nisha Patel</div>
+                </div>
+                <span class="text-[8px] text-[#7A7672]">Confirmed</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <span class="text-[9px] font-bold text-[#7A7672] w-12">01:00 PM</span>
+              <div class="flex-1 bg-[#FAF5F0] p-2.5 rounded-xl border border-dashed border-[#C59265] flex justify-between items-center">
+                <span class="text-[8.5px] text-[#C59265] font-bold">Available Slot</span>
+                <button onclick="alert('Added walk-in slot for 1:00 PM')" class="text-[8px] text-[#C59265] font-bold">+ Add Slot</button>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <span class="text-[9px] font-bold text-[#7A7672] w-12">02:00 PM</span>
+              <div class="flex-1 bg-white p-2.5 rounded-xl border border-[#EDE8E1] flex justify-between items-center">
+                <div>
+                  <div class="text-[9px] font-bold">Nail Art</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Aisha Khan</div>
+                </div>
+                <span class="text-[8px] text-[#7A7672]">Confirmed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- STYLIST SCREEN 5: MANAGE AVAILABILITY                    -->
+        <!-- -------------------------------------------------------- -->
+        <div id="s-screen-availability" class="stylist-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setStylistScreen('profile')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">My Availability</span>
+            <div class="w-7"></div>
+          </div>
+
+          <div class="my-2">
+            <span class="text-[8px] font-bold text-[#C59265] uppercase tracking-wider">WORKING HOURS</span>
+            <div class="text-[9px] text-[#7A7672]">Set your working hours and breaks across the week.</div>
+          </div>
+
+          <div class="space-y-2 mt-2">
+            <!-- Monday to Saturday list with toggles -->
+            <div class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+              <div>
+                <div class="font-bold">Monday</div>
+                <div class="text-[8px] text-[#7A7672]">9:00 AM - 7:00 PM</div>
+              </div>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            </div>
+            <div class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+              <div>
+                <div class="font-bold">Tuesday</div>
+                <div class="text-[8px] text-[#7A7672]">9:00 AM - 7:00 PM</div>
+              </div>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            </div>
+            <div class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+              <div>
+                <div class="font-bold">Wednesday</div>
+                <div class="text-[8px] text-[#7A7672]">9:00 AM - 7:00 PM</div>
+              </div>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            </div>
+            <div class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+              <div>
+                <div class="font-bold">Thursday</div>
+                <div class="text-[8px] text-[#7A7672]">9:00 AM - 7:00 PM</div>
+              </div>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            </div>
+            <div class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+              <div>
+                <div class="font-bold">Friday</div>
+                <div class="text-[8px] text-[#7A7672]">9:00 AM - 7:00 PM</div>
+              </div>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            </div>
+            <div class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+              <div>
+                <div class="font-bold">Saturday</div>
+                <div class="text-[8px] text-[#7A7672]">9:00 AM - 7:00 PM</div>
+              </div>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            </div>
+            <div class="p-2.5 bg-stone-50 rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px]">
+              <div>
+                <div class="font-bold text-[#7A7672]">Sunday</div>
+                <div class="text-[8px] text-[#7A7672]">Closed (Weekly Off)</div>
+              </div>
+              <input type="checkbox" class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            </div>
+          </div>
+
+          <button onclick="saveStylistAvailability()" class="w-full mt-3 py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider shadow-sm">
+            SAVE CHANGES
+          </button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- STYLIST SCREEN 6: MY SERVICES (Checklist)                -->
+        <!-- -------------------------------------------------------- -->
+        <div id="s-screen-services" class="stylist-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setStylistScreen('profile')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">My Services</span>
+            <div class="w-7"></div>
+          </div>
+
+          <div class="my-2">
+            <span class="text-[8px] font-bold text-[#C59265] uppercase tracking-wider">CAPABILITIES</span>
+            <div class="text-[9px] text-[#7A7672]">Select the services you provide at Model Town.</div>
+          </div>
+
+          <div class="space-y-2 mt-2">
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold">Gel Polish</span>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4" />
+            </label>
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold">Nail Art</span>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4" />
+            </label>
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold">French Tip</span>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4" />
+            </label>
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold">Basic Manicure</span>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4" />
+            </label>
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold">Spa Pedicure</span>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4" />
+            </label>
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold">Nail Extension</span>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4" />
+            </label>
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold">Nail Removal</span>
+              <input type="checkbox" checked class="accent-[#C59265] w-4 h-4" />
+            </label>
+            <label class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span class="font-bold text-[#7A7672]">Other Specialized Treatments</span>
+              <input type="checkbox" class="accent-[#C59265] w-4 h-4" />
+            </label>
+          </div>
+
+          <button onclick="saveStylistServices()" class="w-full mt-3 py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider shadow-sm">
+            SAVE
+          </button>
+        </div>
+
+        <!-- -------------------------------------------------------- -->
+        <!-- STYLIST SCREEN 7: MY PROFILE                             -->
+        <!-- -------------------------------------------------------- -->
+        <div id="s-screen-profile" class="stylist-screen flex-1 overflow-y-auto no-scrollbar px-4 pb-16 pt-2 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setStylistScreen('home')" class="w-7 h-7 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-xs">←</button>
+            <span class="font-serif-luxury text-base font-semibold">My Profile</span>
+            <div class="w-7"></div>
+          </div>
+
+          <!-- Profile Card matching Screenshot -->
+          <div class="mt-3 text-center">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-[#C59265] shadow-sm" />
+            <h3 class="font-serif-luxury text-lg font-bold mt-2">Jessica Alba</h3>
+            <div class="text-[9px] text-[#7A7672]">Senior Nail Artist • Model Town</div>
+            <div class="text-[9px] text-[#C59265] font-bold mt-0.5">★ 4.8 (128 reviews)</div>
+          </div>
+
+          <div class="mt-3 p-3 bg-white rounded-2xl border border-[#EDE8E1] text-[9px] space-y-2">
+            <div>
+              <span class="text-[7.5px] font-bold text-[#5A5652] uppercase block">ABOUT ME</span>
+              <p class="text-[#7A7672] mt-0.5 leading-relaxed">
+                Specialized in nail art, gel extensions, and minimal designs. Trained in luxury salons with 6+ years experience.
+              </p>
+            </div>
+            <div class="border-t border-[#F0EAE1] pt-2">
+              <span class="text-[7.5px] font-bold text-[#5A5652] uppercase block mb-1">SPECIALIZATIONS</span>
+              <div class="flex flex-wrap gap-1">
+                <span class="px-2 py-0.5 rounded-full bg-[#FAF5F0] text-[#C59265] font-bold text-[8px]">Gel Polish</span>
+                <span class="px-2 py-0.5 rounded-full bg-[#FAF5F0] text-[#C59265] font-bold text-[8px]">Nail Art</span>
+                <span class="px-2 py-0.5 rounded-full bg-[#FAF5F0] text-[#C59265] font-bold text-[8px]">French Tip</span>
+              </div>
+            </div>
+            <div class="border-t border-[#F0EAE1] pt-2 flex justify-between items-center">
+              <div>
+                <span class="text-[7.5px] font-bold text-[#5A5652] uppercase block">BRANCH</span>
+                <div class="font-bold">Model Town, Jalandhar</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation tiles -->
+          <div class="mt-3 space-y-1.5">
+            <div onclick="setStylistScreen('availability')" class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span>Manage Availability</span>
+              <span>→</span>
+            </div>
+            <div onclick="setStylistScreen('services')" class="p-2.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[9px] cursor-pointer">
+              <span>My Services</span>
+              <span>→</span>
+            </div>
+          </div>
+
+          <button onclick="alert('Profile details updated successfully!')" class="w-full mt-3 py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider">
+            EDIT PROFILE
+          </button>
+        </div>
+
+        <!-- Stylist Bottom Nav -->
+        <div class="absolute bottom-0 left-0 right-0 h-14 bg-white/95 backdrop-blur-md border-t border-[#EDE8E1] flex items-center justify-around text-center z-20 px-2">
+          <button onclick="setStylistScreen('home')" id="s-nav-home" class="flex flex-col items-center text-[#C59265]">
+            <span class="text-sm">🏠</span>
+            <span class="text-[8px] font-bold mt-0.5">Home</span>
+          </button>
+          <button onclick="setStylistScreen('schedule')" id="s-nav-sched" class="flex flex-col items-center text-[#7A7672]">
+            <span class="text-sm">📅</span>
+            <span class="text-[8px] font-bold mt-0.5">Schedule</span>
+          </button>
+          <button onclick="setStylistScreen('availability')" id="s-nav-avail" class="flex flex-col items-center text-[#7A7672]">
+            <span class="text-sm">⏰</span>
+            <span class="text-[8px] font-bold mt-0.5">Hours</span>
+          </button>
+          <button onclick="setStylistScreen('profile')" id="s-nav-prof" class="flex flex-col items-center text-[#7A7672]">
+            <span class="text-sm">👤</span>
+            <span class="text-[8px] font-bold mt-0.5">Profile</span>
+          </button>
+        </div>
+
+        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 bg-black/60 rounded-full z-30"></div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- 3. ADMIN (Operational) WEB DASHBOARD                           -->
+    <!-- Matches Bottom Row of "PERSON 1 - FULL VISUAL SCOPE" Image    -->
+    <!-- ============================================================== -->
+    <div id="wrapper-admin-portal" class="w-full hidden transition-all">
+      <div class="bg-[#1C1A18] text-[#F5F1EB] border border-[#2E2A27] rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[640px]">
+        
+        <!-- Admin Sidebar -->
+        <div class="w-full md:w-64 bg-[#141312] p-4 border-r border-[#2E2A27] flex flex-col justify-between shrink-0">
+          <div>
+            <div class="flex items-center space-x-2.5 pb-4 border-b border-[#2E2A27]">
+              <div class="w-8 h-8 rounded-lg bg-[#C59265] text-white flex items-center justify-center font-serif-luxury font-bold text-base">
+                M
+              </div>
+              <div>
+                <h3 class="font-serif-luxury text-lg font-bold tracking-wider text-white">MAISON VIORA</h3>
+                <span class="text-[9px] text-[#A69F97] uppercase tracking-widest block">ADMIN OPERATIONAL</span>
+              </div>
+            </div>
+
+            <!-- Operational Menu Tabs -->
+            <div class="mt-4 space-y-1 text-xs">
+              <button onclick="setAdminSubTab('branches')" id="adm-tab-branches" class="w-full text-left px-3 py-2 rounded-xl bg-[#C59265] text-white font-semibold flex items-center space-x-2.5">
+                <span>🏢</span>
+                <span>Branch Management</span>
+              </button>
+              <button onclick="setAdminSubTab('services')" id="adm-tab-services" class="w-full text-left px-3 py-2 rounded-xl text-[#A69F97] hover:text-white font-semibold flex items-center space-x-2.5">
+                <span>📋</span>
+                <span>Service Management</span>
+              </button>
+              <button onclick="setAdminSubTab('categories')" id="adm-tab-categories" class="w-full text-left px-3 py-2 rounded-xl text-[#A69F97] hover:text-white font-semibold flex items-center space-x-2.5">
+                <span>🗂</span>
+                <span>Service Categories</span>
+              </button>
+              <button onclick="setAdminSubTab('availability')" id="adm-tab-availability" class="w-full text-left px-3 py-2 rounded-xl text-[#A69F97] hover:text-white font-semibold flex items-center space-x-2.5">
+                <span>📅</span>
+                <span>Branch Availability</span>
+              </button>
+              <button onclick="setAdminSubTab('assignment')" id="adm-tab-assignment" class="w-full text-left px-3 py-2 rounded-xl text-[#A69F97] hover:text-white font-semibold flex items-center space-x-2.5">
+                <span>👥</span>
+                <span>Stylist Assignment</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-[#2E2A27] text-[10px] text-[#A69F97]">
+            <div class="flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>Operational Mode: Active</span>
+            </div>
+            <div class="mt-1">Branch System v1.0.0</div>
+          </div>
+        </div>
+
+        <!-- Admin Content Area -->
+        <div class="flex-1 p-6 overflow-y-auto max-h-[680px]">
+
+          <!-- 1. BRANCH MANAGEMENT -->
+          <div id="adm-view-branches" class="admin-view">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h2 class="font-serif-luxury text-2xl font-bold text-white">Branches</h2>
+                <p class="text-xs text-[#A69F97]">Manage active salon locations, operating hours and status.</p>
+              </div>
+              <button onclick="promptAddBranch()" class="px-4 py-2 rounded-xl bg-[#C59265] text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-[#B37F52]">
+                + Add Branch
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="adm-branches-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- 2. SERVICE MANAGEMENT -->
+          <div id="adm-view-services" class="admin-view hidden">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h2 class="font-serif-luxury text-2xl font-bold text-white">Services</h2>
+                <p class="text-xs text-[#A69F97]">Configure master service menu, durations and baseline pricing.</p>
+              </div>
+              <button onclick="promptAddService()" class="px-4 py-2 rounded-xl bg-[#C59265] text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-[#B37F52]">
+                + Add Service
+              </button>
+            </div>
+
+            <div class="space-y-2.5" id="adm-services-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- 3. SERVICE CATEGORIES -->
+          <div id="adm-view-categories" class="admin-view hidden">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h2 class="font-serif-luxury text-2xl font-bold text-white">Service Categories</h2>
+                <p class="text-xs text-[#A69F97]">Enable or disable high-level categories across the customer app.</p>
+              </div>
+              <button onclick="alert('Category created!')" class="px-4 py-2 rounded-xl bg-[#C59265] text-white font-bold text-xs uppercase tracking-wider shadow-md">
+                + Add Category
+              </button>
+            </div>
+
+            <div class="space-y-2.5" id="adm-categories-list">
+              <!-- Categories with toggles -->
+            </div>
+          </div>
+
+          <!-- 4. BRANCH-WISE AVAILABILITY -->
+          <div id="adm-view-availability" class="admin-view hidden">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h2 class="font-serif-luxury text-2xl font-bold text-white">Branch-wise Availability</h2>
+                <p class="text-xs text-[#A69F97]">Toggle which stylist is available for specific services at a selected branch.</p>
+              </div>
+              <button onclick="alert('Availability settings saved!')" class="px-4 py-2 rounded-xl bg-[#C59265] text-white font-bold text-xs uppercase tracking-wider shadow-md">
+                Save Changes
+              </button>
+            </div>
+
+            <!-- Branch & Service Selectors -->
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <label class="text-[10px] font-bold text-[#A69F97] uppercase tracking-wider block mb-1">SELECT BRANCH</label>
+                <select class="w-full bg-[#141312] border border-[#2E2A27] rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
+                  <option>Model Town — Jalandhar</option>
+                  <option>Phagwara</option>
+                  <option>Jalandhar — Civil Lines</option>
+                  <option>Ludhiana</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-[10px] font-bold text-[#A69F97] uppercase tracking-wider block mb-1">SELECT SERVICE</label>
+                <select class="w-full bg-[#141312] border border-[#2E2A27] rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
+                  <option>Gel Polish (Nails)</option>
+                  <option>Hair Cut (Hair)</option>
+                  <option>Layer Cut (Hair)</option>
+                  <option>Facial (Skin)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="space-y-2" id="adm-branch-stylist-toggles">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- 5. STYLIST ASSIGNMENT -->
+          <div id="adm-view-assignment" class="admin-view hidden">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h2 class="font-serif-luxury text-2xl font-bold text-white">Assign Stylists to Branch</h2>
+                <p class="text-xs text-[#A69F97]">Assign stylists to operational salon branches.</p>
+              </div>
+              <button onclick="alert('Stylist branch assignments updated!')" class="px-4 py-2 rounded-xl bg-[#C59265] text-white font-bold text-xs uppercase tracking-wider shadow-md">
+                Save Assignments
+              </button>
+            </div>
+
+            <div class="mb-4">
+              <label class="text-[10px] font-bold text-[#A69F97] uppercase tracking-wider block mb-1">ASSIGN TO BRANCH</label>
+              <select class="w-full md:w-64 bg-[#141312] border border-[#2E2A27] rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
+                <option>Model Town — Jalandhar</option>
+                <option>Phagwara</option>
+                <option>Jalandhar — Civil Lines</option>
+                <option>Ludhiana</option>
+              </select>
+            </div>
+
+            <div class="space-y-2" id="adm-stylist-assignment-list">
+              <!-- Checkboxes list -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main JavaScript App Logic -->
+  <script>
+    // Global State for Person 1
+    const appState = {
+      scope: 'customer',
+      customerScreen: 'home',
+      stylistScreen: 'home',
+      adminTab: 'branches',
+      activeBranch: 'Model Town',
+      activeService: {
+        name: 'Gel Polish',
+        price: 1200,
+        category: 'Nails',
+        duration: 60,
+        description: 'A long-lasting, high-gloss finish with wide range of couture colours.'
+      },
+      activeStylist: {
+        name: 'Jessica Alba',
+        role: 'Senior Nail Artist',
+        rating: 4.8,
+        priceDelta: 0
+      },
+      selectedBooking: {
+        date: 'Tue, 12 Aug 2026',
+        time: '11:00 AM'
+      },
+      appointments: [
+        {
+          id: 'APT-1001',
+          customerName: 'Sarah Thomas',
+          phone: '+91 98765 43210',
+          serviceName: 'Gel Polish',
+          price: 1200,
+          stylistName: 'Jessica Alba',
+          branchName: 'Model Town',
+          date: 'Tue, 12 Aug 2026',
+          time: '11:00 AM',
+          notes: 'Short nails, nude shade, prefers minimal designs.',
+          status: 'Confirmed'
+        },
+        {
+          id: 'APT-1005',
+          customerName: 'Sarah Thomas',
+          phone: '+91 98765 43210',
+          serviceName: 'Layer Cut',
+          price: 2400,
+          stylistName: 'Maya',
+          branchName: 'Jalandhar',
+          date: 'Thu, 20 Aug 2026',
+          time: '02:00 PM',
+          notes: 'Cascading curtain layers.',
+          status: 'Confirmed'
+        }
+      ],
+      branches: [
+        { id: 'BR-1', name: 'Model Town', city: 'Jalandhar', status: 'Open', dist: '2.5 km', phone: '+91 98140 11223' },
+        { id: 'BR-2', name: 'Phagwara', city: 'Phagwara', status: 'Open', dist: '12 km', phone: '+91 98140 33445' },
+        { id: 'BR-3', name: 'Jalandhar', city: 'Civil Lines', status: 'Open', dist: '4 km', phone: '+91 98140 55667' },
+        { id: 'BR-4', name: 'Ludhiana', city: 'Ferozepur Rd', status: 'Open', dist: '32 km', phone: '+91 98140 77889' }
+      ],
+      services: [
+        { id: 'SRV-1', name: 'Hair Cut', category: 'Hair', price: 800, duration: 45 },
+        { id: 'SRV-2', name: 'Gel Polish', category: 'Nails', price: 1200, duration: 60 },
+        { id: 'SRV-3', name: 'Facial', category: 'Skin', price: 2000, duration: 60 },
+        { id: 'SRV-4', name: 'Threading', category: 'Eyes & Brows', price: 300, duration: 20 },
+        { id: 'SRV-5', name: 'Layer Cut', category: 'Hair', price: 2400, duration: 60 },
+        { id: 'SRV-6', name: 'Nail Art', category: 'Nails', price: 1800, duration: 60 }
+      ],
+      categories: [
+        { name: 'Hair', enabled: true },
+        { name: 'Skin', enabled: true },
+        { name: 'Nails', enabled: true },
+        { name: 'Threading', enabled: true },
+        { name: 'Waxing', enabled: true }
+      ],
+      stylists: [
+        { name: 'Jessica Alba', role: 'Senior Nail Artist', tier: 'Premium', rating: 4.8, branch: 'Model Town', assigned: true, available: true },
+        { name: 'Maya', role: 'Hair Specialist', tier: 'Top Rated', rating: 4.6, branch: 'Model Town', assigned: true, available: true },
+        { name: 'Ananya', role: 'Skin Specialist', tier: 'Specialist', rating: 4.7, branch: 'Model Town', assigned: true, available: false },
+        { name: 'Christian Dior', role: 'Art Director', tier: 'Art Director', rating: 4.9, branch: 'Model Town', assigned: true, available: true },
+        { name: 'Riya', role: 'Nail Artist', tier: 'Nail Artist', rating: 4.5, branch: 'Model Town', assigned: false, available: true }
+      ]
+    };
+
+    // -------------------------------------------------------------
+    // SCOPE SWITCHER (Customer / Stylist / Admin)
+    // -------------------------------------------------------------
+    function setScopeMode(mode) {
+      appState.scope = mode;
+      
+      const cApp = document.getElementById('wrapper-customer-app');
+      const sApp = document.getElementById('wrapper-stylist-app');
+      const aPortal = document.getElementById('wrapper-admin-portal');
+
+      cApp.classList.add('hidden');
+      sApp.classList.add('hidden');
+      aPortal.classList.add('hidden');
+
+      ['customer', 'stylist', 'admin'].forEach(m => {
+        const btn = document.getElementById('btn-scope-' + m);
+        if (btn) {
+          if (m === mode) {
+            btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#C59265] text-white transition-all flex items-center space-x-1.5 shadow-sm';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A69F97] hover:text-white transition-all flex items-center space-x-1.5';
+          }
+        }
+      });
+
+      if (mode === 'customer') {
+        cApp.classList.remove('hidden');
+        renderCustomerNavPills();
+      } else if (mode === 'stylist') {
+        sApp.classList.remove('hidden');
+        renderStylistNavPills();
+      } else {
+        aPortal.classList.remove('hidden');
+        renderAdminNavPills();
+      }
+    }
+
+    function renderCustomerNavPills() {
+      const container = document.getElementById('sub-nav-container');
+      const screens = [
+        { id: 'onboarding', label: '1. Get Started' },
+        { id: 'login', label: '2. Login' },
+        { id: 'location', label: '3. Location' },
+        { id: 'home', label: '4. Home' },
+        { id: 'categories', label: '5. Categories' },
+        { id: 'nails-menu', label: '6. Subcategories' },
+        { id: 'service-details', label: '7. Details' },
+        { id: 'branch', label: '8. Branch' },
+        { id: 'datetime', label: '9. Date & Time' },
+        { id: 'confirmation', label: '10. Confirmed' },
+        { id: 'appointments', label: '11. Bookings' },
+        { id: 'layer-cut-detail', label: '360° Layer Cut' },
+        { id: 'nail-art-flow', label: 'Nail Customizer' }
+      ];
+      container.innerHTML = screens.map(s => `
+        <button onclick="setCustomerScreen('${s.id}')" class="px-2.5 py-1 rounded-lg text-[10px] font-medium shrink-0 transition-all ${appState.customerScreen === s.id ? 'bg-[#C59265] text-white font-bold' : 'bg-[#262320] text-[#A69F97] hover:text-white'}">
+          ${s.label}
+        </button>
+      `).join('');
+    }
+
+    function renderStylistNavPills() {
+      const container = document.getElementById('sub-nav-container');
+      const screens = [
+        { id: 'login', label: '1. Stylist Login' },
+        { id: 'home', label: '2. Stylist Home (Today)' },
+        { id: 'detail', label: '3. Appointment Details' },
+        { id: 'schedule', label: '4. My Schedule' },
+        { id: 'availability', label: '5. Availability' },
+        { id: 'services', label: '6. My Services' },
+        { id: 'profile', label: '7. Stylist Profile' }
+      ];
+      container.innerHTML = screens.map(s => `
+        <button onclick="setStylistScreen('${s.id}')" class="px-2.5 py-1 rounded-lg text-[10px] font-medium shrink-0 transition-all ${appState.stylistScreen === s.id ? 'bg-[#C59265] text-white font-bold' : 'bg-[#262320] text-[#A69F97] hover:text-white'}">
+          ${s.label}
+        </button>
+      `).join('');
+    }
+
+    function renderAdminNavPills() {
+      const container = document.getElementById('sub-nav-container');
+      const tabs = [
+        { id: 'branches', label: '1. Branches' },
+        { id: 'services', label: '2. Services' },
+        { id: 'categories', label: '3. Categories' },
+        { id: 'availability', label: '4. Branch Availability' },
+        { id: 'assignment', label: '5. Stylist Assignment' }
+      ];
+      container.innerHTML = tabs.map(t => `
+        <button onclick="setAdminSubTab('${t.id}')" class="px-2.5 py-1 rounded-lg text-[10px] font-medium shrink-0 transition-all ${appState.adminTab === t.id ? 'bg-[#C59265] text-white font-bold' : 'bg-[#262320] text-[#A69F97] hover:text-white'}">
+          ${t.label}
+        </button>
+      `).join('');
+    }
+
+    // -------------------------------------------------------------
+    // CUSTOMER FLOW CONTROLLERS
+    // -------------------------------------------------------------
+    function setCustomerScreen(screenId) {
+      appState.customerScreen = screenId;
+      document.querySelectorAll('.customer-screen').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById('c-screen-' + screenId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.scrollTop = 0;
+      }
+      renderCustomerNavPills();
+      updateCustomerBottomNav(screenId);
+
+      if (screenId === 'appointments') {
+        renderCustomerAppointments();
+      }
+    }
+
+    function updateCustomerBottomNav(screenId) {
+      const navMap = {
+        home: 'c-nav-home',
+        categories: 'c-nav-services',
+        'nails-menu': 'c-nav-nails',
+        appointments: 'c-nav-appts'
+      };
+      ['c-nav-home', 'c-nav-services', 'c-nav-nails', 'c-nav-appts'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove('text-[#C59265]');
+          btn.classList.add('text-[#7A7672]');
+        }
+      });
+      const activeId = navMap[screenId];
+      if (activeId) {
+        const activeBtn = document.getElementById(activeId);
+        if (activeBtn) {
+          activeBtn.classList.add('text-[#C59265]');
+          activeBtn.classList.remove('text-[#7A7672]');
+        }
+      }
+    }
+
+    function openServiceDetail(name, price, category) {
+      appState.activeService = {
+        name,
+        price,
+        category,
+        duration: 60,
+        description: 'Luxury salon treatment with custom consultation and finish.'
+      };
+      
+      document.getElementById('c-det-title-nav').innerText = name;
+      document.getElementById('c-det-name').innerText = name;
+      document.getElementById('c-det-price').innerText = '₹' + price.toLocaleString('en-IN');
+      document.getElementById('c-det-book-price').innerText = '₹' + price.toLocaleString('en-IN');
+      document.getElementById('c-det-branch-name').innerText = appState.activeBranch;
+      
+      setCustomerScreen('service-details');
+    }
+
+    function selectBranchName(bName) {
+      appState.activeBranch = bName;
+      document.getElementById('c-current-branch-label').innerText = bName + ', Punjab';
+      document.getElementById('c-det-branch-name').innerText = bName;
+      document.getElementById('c-dt-branch-label').innerText = bName;
+      document.getElementById('c-conf-branch').innerText = bName;
+      setCustomerScreen('home');
+      showCustomerToast(`Branch updated to ${bName}`);
+    }
+
+    function confirmBranchSelection(bName) {
+      selectBranchName(bName);
+    }
+
+    function selectDetailStylist(name, role, delta) {
+      appState.activeStylist = { name, role, priceDelta: delta };
+      const jCard = document.getElementById('c-sel-stylist-jessica');
+      const mCard = document.getElementById('c-sel-stylist-maya');
+      
+      if (name.includes('Jessica')) {
+        jCard.className = 'p-2.5 bg-[#FFFDF9] rounded-2xl border-2 border-[#C59265] flex items-center justify-between cursor-pointer';
+        mCard.className = 'p-2.5 bg-white rounded-2xl border border-[#EDE8E1] flex items-center justify-between cursor-pointer';
+      } else {
+        mCard.className = 'p-2.5 bg-[#FFFDF9] rounded-2xl border-2 border-[#C59265] flex items-center justify-between cursor-pointer';
+        jCard.className = 'p-2.5 bg-white rounded-2xl border border-[#EDE8E1] flex items-center justify-between cursor-pointer';
+      }
+      
+      document.getElementById('c-dt-stylist-label').innerText = name;
+      document.getElementById('c-conf-stylist').innerText = name;
+    }
+
+    function selectBookingDate(day, dNum) {
+      [11, 12, 13, 14, 15].forEach(num => {
+        const el = document.getElementById('c-date-' + num);
+        if (el) {
+          if (num === dNum) {
+            el.className = 'w-11 py-2 bg-[#C59265] text-white rounded-xl font-bold shadow-xs cursor-pointer';
+          } else {
+            el.className = 'w-11 py-2 bg-white border border-[#EDE8E1] rounded-xl cursor-pointer';
+          }
+        }
+      });
+      appState.selectedBooking.date = `${day}, ${dNum} Aug 2026`;
+    }
+
+    function selectBookingSlot(timeSlot) {
+      ['0900', '0930', '1000', '1030', '1100', '1130', '1200', '1230', '0100'].forEach(s => {
+        const el = document.getElementById('slot-' + s);
+        if (el) {
+          el.className = 'py-2 rounded-xl bg-white border border-[#EDE8E1] text-center font-bold text-[9px]';
+        }
+      });
+      event.currentTarget.className = 'py-2 rounded-xl bg-[#F7EFE8] border-2 border-[#C59265] text-[#C59265] text-center font-bold text-[9px]';
+      appState.selectedBooking.time = timeSlot;
+    }
+
+    function setSlotPeriod(p) {
+      ['m', 'a', 'e'].forEach(v => {
+        const btn = document.getElementById('c-btn-period-' + v);
+        if (btn) {
+          if (v === p[0]) {
+            btn.className = 'flex-1 py-1 rounded-lg bg-white shadow-2xs text-[#C59265] font-bold';
+          } else {
+            btn.className = 'flex-1 py-1 rounded-lg text-[#7A7672] font-semibold';
+          }
+        }
+      });
+    }
+
+    function confirmAppointmentBooking() {
+      const newApt = {
+        id: 'APT-' + Math.floor(1000 + Math.random() * 9000),
+        customerName: 'Sarah Thomas',
+        phone: '+91 98765 43210',
+        serviceName: appState.activeService.name,
+        price: appState.activeService.price,
+        stylistName: appState.activeStylist.name,
+        branchName: appState.activeBranch,
+        date: appState.selectedBooking.date,
+        time: appState.selectedBooking.time,
+        notes: 'Client confirmed luxury booking via VIORA mobile app.',
+        status: 'Confirmed'
+      };
+
+      appState.appointments.unshift(newApt);
+
+      document.getElementById('c-conf-branch').innerText = newApt.branchName;
+      document.getElementById('c-conf-service').innerText = newApt.serviceName;
+      document.getElementById('c-conf-stylist').innerText = newApt.stylistName;
+      document.getElementById('c-conf-datetime').innerText = `📅 ${newApt.date} • ${newApt.time}`;
+      document.getElementById('c-conf-price').innerText = '₹' + newApt.price.toLocaleString('en-IN');
+
+      // Update home card
+      document.getElementById('c-home-apt-datetime').innerText = `${newApt.date} • ${newApt.time}`;
+      document.getElementById('c-home-apt-service').innerText = `${newApt.serviceName} with ${newApt.stylistName.split(' ')[0]}`;
+      document.getElementById('c-home-apt-branch').innerText = `${newApt.branchName} • 60 mins • ₹${newApt.price.toLocaleString('en-IN')}`;
+
+      setCustomerScreen('confirmation');
+      showCustomerToast('Appointment Booked Successfully!');
+      renderStylistTodayAppointments();
+    }
+
+    function showCustomerToast(msg) {
+      const toast = document.getElementById('c-toast');
+      const msgEl = document.getElementById('c-toast-msg');
+      if (toast && msgEl) {
+        msgEl.innerText = msg;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3500);
+      }
+    }
+
+    function showCalendarAlert() {
+      alert('Event added to your Google/Apple Calendar: ' + appState.activeService.name + ' at VIORA ' + appState.activeBranch);
+    }
+
+    function renderCustomerAppointments() {
+      const container = document.getElementById('c-appointments-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (appState.appointments.length === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-[10px] text-[#7A7672]">No appointments found.</div>';
+        return;
+      }
+
+      appState.appointments.forEach(apt => {
+        const isCancelled = apt.status === 'Cancelled';
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl border border-[#EDE8E1] p-3 shadow-2xs space-y-2';
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-[9px] font-bold">
+            <span class="flex items-center space-x-1.5">
+              <span class="text-[#C59265]">📅</span>
+              <span>${apt.date} • ${apt.time}</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full text-[7.5px] font-bold ${isCancelled ? 'bg-stone-100 text-[#7A7672]' : 'bg-[#F7EFE8] text-[#C59265]'}">${apt.status.toUpperCase()}</span>
+          </div>
+          <div class="border-t border-[#F0EAE1] pt-2 flex items-center justify-between">
+            <div class="flex items-center space-x-2.5">
+              <div class="w-8 h-8 rounded-full bg-[#FAF5F0] border border-[#EDE8E1] flex items-center justify-center text-xs font-serif-luxury font-bold text-[#C59265]">
+                ${apt.serviceName[0]}
+              </div>
+              <div>
+                <div class="text-[10px] font-bold text-[#1F1E1C]">${apt.serviceName}</div>
+                <div class="text-[8px] text-[#7A7672]">with ${apt.stylistName} • ${apt.branchName} • ₹${apt.price.toLocaleString('en-IN')}</div>
+              </div>
+            </div>
+          </div>
+          ${!isCancelled ? `
+            <div class="border-t border-[#F0EAE1] pt-2 flex space-x-2">
+              <button onclick="rescheduleCustomerAppt('${apt.id}')" class="flex-1 py-1 rounded-xl bg-white border border-[#EDE8E1] text-[8.5px] font-bold hover:bg-stone-50">
+                Reschedule
+              </button>
+              <button onclick="cancelCustomerAppt('${apt.id}')" class="flex-1 py-1 rounded-xl bg-stone-50 text-red-600 border border-red-100 text-[8.5px] font-bold hover:bg-red-50">
+                Cancel
+              </button>
+            </div>
+          ` : `
+            <div class="text-[7.5px] text-[#A69F97] italic text-center">This appointment was cancelled.</div>
+          `}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function rescheduleCustomerAppt(id) {
+      const apt = appState.appointments.find(a => a.id === id);
+      if (apt) {
+        setCustomerScreen('datetime');
+        showCustomerToast(`Rescheduling appointment ${id}`);
+      }
+    }
+
+    function cancelCustomerAppt(id) {
+      if (confirm(`Are you sure you want to cancel appointment ${id}?`)) {
+        const apt = appState.appointments.find(a => a.id === id);
+        if (apt) {
+          apt.status = 'Cancelled';
+          renderCustomerAppointments();
+          renderStylistTodayAppointments();
+          showCustomerToast(`Appointment ${id} Cancelled.`);
+        }
+      }
+    }
+
+    function setApptFilter(f) {
+      const uBtn = document.getElementById('c-tab-appt-upcoming');
+      const pBtn = document.getElementById('c-tab-appt-past');
+      if (f === 'upcoming') {
+        uBtn.className = 'flex-1 py-1 rounded-lg bg-white shadow-2xs text-[#C59265] font-bold';
+        pBtn.className = 'flex-1 py-1 rounded-lg text-[#7A7672] font-semibold';
+      } else {
+        pBtn.className = 'flex-1 py-1 rounded-lg bg-white shadow-2xs text-[#C59265] font-bold';
+        uBtn.className = 'flex-1 py-1 rounded-lg text-[#7A7672] font-semibold';
+      }
+      renderCustomerAppointments();
+    }
+
+    // 360 Cut Carousel Helper
+    let layerAngleIdx = 0;
+    const layerAngles = [
+      { text: 'Front View (1/3)', src: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&auto=format&fit=crop&q=80' },
+      { text: 'Side Profile (2/3)', src: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop&q=80' },
+      { text: 'Back Cascading (3/3)', src: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&auto=format&fit=crop&q=80' }
+    ];
+
+    function cycleLayerAngle(delta) {
+      layerAngleIdx = (layerAngleIdx + delta + layerAngles.length) % layerAngles.length;
+      document.getElementById('c-layer-hero-img').src = layerAngles[layerAngleIdx].src;
+      document.getElementById('c-layer-angle-badge').innerText = layerAngles[layerAngleIdx].text;
+    }
+
+    function pickTexture(t) {
+      ['Straight', 'Wavy', 'Curly'].forEach(v => {
+        const btn = document.getElementById('c-tex-' + v);
+        if (btn) btn.className = v === t ? 'px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white' : 'px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]';
+      });
+    }
+
+    function pickLength(l) {
+      ['Long', 'Medium', 'Short'].forEach(v => {
+        const btn = document.getElementById('c-len-' + v);
+        if (btn) btn.className = v === l ? 'px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white' : 'px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]';
+      });
+    }
+
+    function filterNailColor(c) {
+      ['Amber', 'Brown', 'Gold', 'Beige'].forEach(val => {
+        const el = document.getElementById('pill-c-' + val);
+        if (el) {
+          el.className = val === c ? 'px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white' : 'px-2.5 py-0.5 rounded-full text-[8.5px] bg-white border border-[#EDE8E1]';
+        }
+      });
+    }
+
+    // -------------------------------------------------------------
+    // STYLIST APP CONTROLLERS
+    // -------------------------------------------------------------
+    function setStylistScreen(screenId) {
+      appState.stylistScreen = screenId;
+      document.querySelectorAll('.stylist-screen').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById('s-screen-' + screenId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.scrollTop = 0;
+      }
+      renderStylistNavPills();
+      updateStylistBottomNav(screenId);
+
+      if (screenId === 'home') {
+        renderStylistTodayAppointments();
+      }
+    }
+
+    function updateStylistBottomNav(screenId) {
+      const map = {
+        home: 's-nav-home',
+        schedule: 's-nav-sched',
+        availability: 's-nav-avail',
+        profile: 's-nav-prof'
+      };
+      ['s-nav-home', 's-nav-sched', 's-nav-avail', 's-nav-prof'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove('text-[#C59265]');
+          btn.classList.add('text-[#7A7672]');
+        }
+      });
+      const activeId = map[screenId];
+      if (activeId) {
+        const activeBtn = document.getElementById(activeId);
+        if (activeBtn) {
+          activeBtn.classList.add('text-[#C59265]');
+          activeBtn.classList.remove('text-[#7A7672]');
+        }
+      }
+    }
+
+    function renderStylistTodayAppointments() {
+      const container = document.getElementById('s-today-appointments-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const jessicaAppts = appState.appointments.filter(a => a.stylistName.includes('Jessica'));
+      document.getElementById('s-stat-appts').innerText = jessicaAppts.length;
+
+      jessicaAppts.forEach(apt => {
+        const isDone = apt.status === 'Completed';
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl border border-[#EDE8E1] p-3 shadow-2xs flex justify-between items-center cursor-pointer hover:border-[#C59265]';
+        card.onclick = () => openStylistApptDetail(apt.id);
+        card.innerHTML = `
+          <div class="flex items-center space-x-2.5">
+            <span class="text-[10px] font-bold text-[#C59265] w-14 shrink-0">${apt.time}</span>
+            <div>
+              <div class="text-[9.5px] font-bold text-[#1F1E1C]">${apt.serviceName}</div>
+              <div class="text-[8px] text-[#7A7672]">${apt.customerName} • ${apt.branchName}</div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <span class="px-2 py-0.5 rounded-full text-[7.5px] font-bold ${isDone ? 'bg-emerald-50 text-emerald-600' : 'bg-[#F7EFE8] text-[#C59265]'}">${apt.status.toUpperCase()}</span>
+            <span class="text-xs text-[#7A7672]">›</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    let activeStylistApptId = 'APT-1001';
+
+    function openStylistApptDetail(aptId) {
+      activeStylistApptId = aptId;
+      const apt = appState.appointments.find(a => a.id === aptId) || appState.appointments[0];
+      if (apt) {
+        document.getElementById('s-det-service').innerText = apt.serviceName;
+        document.getElementById('s-det-datetime').innerText = `${apt.date} • ${apt.time}`;
+        document.getElementById('s-det-customer-name').innerText = apt.customerName;
+        document.getElementById('s-det-customer-phone').innerText = apt.phone;
+        document.getElementById('s-det-notes').innerText = apt.notes;
+        document.getElementById('s-det-status').innerText = apt.status.toUpperCase();
+        setStylistScreen('detail');
+      }
+    }
+
+    function markStylistAppointmentComplete() {
+      const apt = appState.appointments.find(a => a.id === activeStylistApptId);
+      if (apt) {
+        apt.status = 'Completed';
+        document.getElementById('s-det-status').innerText = 'COMPLETED';
+        const toast = document.getElementById('s-toast');
+        const msg = document.getElementById('s-toast-msg');
+        msg.innerText = `Appointment ${apt.id} marked Completed!`;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+      }
+    }
+
+    function saveStylistAvailability() {
+      alert('Working hours saved successfully! Your calendar has been synchronized.');
+      setStylistScreen('home');
+    }
+
+    function saveStylistServices() {
+      alert('Services updated! Customers at Model Town can now book these treatments.');
+      setStylistScreen('home');
+    }
+
+    // -------------------------------------------------------------
+    // ADMIN WEB DASHBOARD CONTROLLERS
+    // -------------------------------------------------------------
+    function setAdminSubTab(tabId) {
+      appState.adminTab = tabId;
+      document.querySelectorAll('.admin-view').forEach(el => el.classList.add('hidden'));
+      const view = document.getElementById('adm-view-' + tabId);
+      if (view) view.classList.remove('hidden');
+
+      ['branches', 'services', 'categories', 'availability', 'assignment'].forEach(t => {
+        const btn = document.getElementById('adm-tab-' + t);
+        if (btn) {
+          if (t === tabId) {
+            btn.className = 'w-full text-left px-3 py-2 rounded-xl bg-[#C59265] text-white font-semibold flex items-center space-x-2.5';
+          } else {
+            btn.className = 'w-full text-left px-3 py-2 rounded-xl text-[#A69F97] hover:text-white font-semibold flex items-center space-x-2.5';
+          }
+        }
+      });
+
+      renderAdminNavPills();
+
+      if (tabId === 'branches') renderAdminBranches();
+      if (tabId === 'services') renderAdminServices();
+      if (tabId === 'categories') renderAdminCategories();
+      if (tabId === 'availability') renderAdminBranchStylistToggles();
+      if (tabId === 'assignment') renderAdminStylistAssignment();
+    }
+
+    function renderAdminBranches() {
+      const container = document.getElementById('adm-branches-list');
+      if (!container) return;
+      container.innerHTML = appState.branches.map(b => `
+        <div class="bg-[#24211E] rounded-2xl border border-[#3A3530] p-4 flex justify-between items-center">
+          <div>
+            <div class="font-serif-luxury text-base font-bold text-white">${b.name}</div>
+            <div class="text-[11px] text-[#A69F97]">${b.city} • ${b.dist} • ${b.phone}</div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold">${b.status}</span>
+            <button onclick="editBranchPrompt('${b.name}')" class="text-xs text-[#A69F97] hover:text-white">✏️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminServices() {
+      const container = document.getElementById('adm-services-list');
+      if (!container) return;
+      container.innerHTML = appState.services.map(s => `
+        <div class="bg-[#24211E] rounded-2xl border border-[#3A3530] p-3.5 flex justify-between items-center text-xs">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-[#C59265]/20 text-[#D4A373] flex items-center justify-center font-bold text-sm">
+              ${s.name[0]}
+            </div>
+            <div>
+              <div class="font-bold text-white">${s.name}</div>
+              <div class="text-[10px] text-[#A69F97]">${s.category} • ${s.duration} mins</div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="font-bold text-[#D4A373] text-sm">₹${s.price.toLocaleString('en-IN')}</span>
+            <button onclick="editServicePrice('${s.id}')" class="px-2.5 py-1 rounded-lg bg-[#141312] border border-[#3A3530] text-[#A69F97] hover:text-white text-[10px]">Edit Price</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminCategories() {
+      const container = document.getElementById('adm-categories-list');
+      if (!container) return;
+      container.innerHTML = appState.categories.map(c => `
+        <div class="bg-[#24211E] rounded-2xl border border-[#3A3530] p-3.5 flex justify-between items-center text-xs">
+          <span class="font-bold text-white text-sm">${c.name}</span>
+          <label class="flex items-center cursor-pointer">
+            <input type="checkbox" ${c.enabled ? 'checked' : ''} class="accent-[#C59265] w-4 h-4" />
+          </label>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminBranchStylistToggles() {
+      const container = document.getElementById('adm-branch-stylist-toggles');
+      if (!container) return;
+      container.innerHTML = appState.stylists.map(s => `
+        <div class="bg-[#24211E] rounded-2xl border border-[#3A3530] p-3.5 flex justify-between items-center text-xs">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-full bg-[#141312] border border-[#3A3530] flex items-center justify-center font-serif-luxury font-bold text-[#D4A373]">
+              ${s.name[0]}
+            </div>
+            <div>
+              <div class="font-bold text-white flex items-center space-x-2">
+                <span>${s.name}</span>
+                <span class="px-1.5 py-0.2 rounded-full bg-[#C59265]/20 text-[#D4A373] text-[9px] font-bold">${s.tier}</span>
+              </div>
+              <div class="text-[10px] text-[#A69F97]">${s.role} • ★ ${s.rating}</div>
+            </div>
+          </div>
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <span class="text-[10px] text-[#A69F97]">${s.available ? 'Available' : 'Unavailable'}</span>
+            <input type="checkbox" ${s.available ? 'checked' : ''} onchange="toggleStylistAvailability('${s.name}')" class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+          </label>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminStylistAssignment() {
+      const container = document.getElementById('adm-stylist-assignment-list');
+      if (!container) return;
+      container.innerHTML = appState.stylists.map(s => `
+        <label class="bg-[#24211E] rounded-2xl border border-[#3A3530] p-3.5 flex justify-between items-center text-xs cursor-pointer hover:border-[#C59265]">
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" ${s.assigned ? 'checked' : ''} class="accent-[#C59265] w-4 h-4 cursor-pointer" />
+            <div>
+              <div class="font-bold text-white">${s.name}</div>
+              <div class="text-[10px] text-[#A69F97]">${s.role} • Current: ${s.branch}</div>
+            </div>
+          </div>
+          <span class="text-[10px] text-[#D4A373] font-semibold">${s.tier}</span>
+        </label>
+      `).join('');
+    }
+
+    function promptAddBranch() {
+      const name = prompt('Enter new branch name (e.g., Amritsar Heritage):');
+      if (name) {
+        appState.branches.push({
+          id: 'BR-' + (appState.branches.length + 1),
+          name: name,
+          city: 'Punjab',
+          status: 'Open',
+          dist: '18 km',
+          phone: '+91 98140 99887'
+        });
+        renderAdminBranches();
+        alert(`Branch "${name}" created successfully!`);
+      }
+    }
+
+    function promptAddService() {
+      const name = prompt('Enter Service Name:');
+      const price = prompt('Enter Price (₹):', '1500');
+      if (name && price) {
+        appState.services.push({
+          id: 'SRV-' + (appState.services.length + 1),
+          name: name,
+          category: 'Custom',
+          price: Number(price),
+          duration: 60
+        });
+        renderAdminServices();
+        alert(`Service "${name}" added at ₹${price}!`);
+      }
+    }
+
+    function editServicePrice(id) {
+      const s = appState.services.find(item => item.id === id);
+      if (s) {
+        const p = prompt(`Enter new price for ${s.name}:`, s.price);
+        if (p && !isNaN(p)) {
+          s.price = Number(p);
+          renderAdminServices();
+        }
+      }
+    }
+
+    function toggleStylistAvailability(name) {
+      const s = appState.stylists.find(item => item.name === name);
+      if (s) {
+        s.available = !s.available;
+        renderAdminBranchStylistToggles();
+      }
+    }
+
+    // Initialize default view
+    setScopeMode('customer');
+    setCustomerScreen('home');
+    renderStylistTodayAppointments();
+  </script>
+</body>
+</html>
