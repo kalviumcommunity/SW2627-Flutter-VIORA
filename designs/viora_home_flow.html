@@ -1,0 +1,2980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VIORA Luxury Salon — Full Mobile Experience</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .font-serif-luxury { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .font-sans-clean { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .bg-viora-canvas { background-color: #FAF8F5; }
+    .bg-viora-accent { background-color: #C59265; }
+    .text-viora-dark { color: #1F1E1C; }
+    .text-viora-taupe { color: #7A7672; }
+    .text-viora-accent { color: #C59265; }
+    .border-viora { border-color: #EDE8E1; }
+    .phone-mockup {
+      width: 380px;
+      height: 820px;
+      border-radius: 46px;
+      box-shadow: 0 25px 60px -15px rgba(31, 30, 28, 0.25), 0 0 0 10px #1E1D1B, 0 0 0 12px #353330;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-stone-900 text-stone-100 min-h-screen p-6 font-sans-clean">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Bar -->
+    <div class="flex flex-col md:flex-row items-center justify-between pb-6 border-b border-stone-800 mb-6">
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#C59265]"></span>
+          <span class="text-xs tracking-widest uppercase text-[#C59265] font-semibold">Flutter Mobile Flow</span>
+        </div>
+        <h1 class="text-3xl font-serif-luxury tracking-wider text-stone-100 mt-1">VIORA — Complete Mobile Flow</h1>
+        <p class="text-xs text-stone-400 mt-1">
+          Full interactive app matching your exact designs: Home, Services, Nails, Customizer with Dynamic Pricing, Stylists, Date &amp; Time, Confirmed.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 mt-4 md:mt-0">
+        <button onclick="goToScreen('onboarding')" id="tab-onboarding" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Get Started
+        </button>
+        <button onclick="goToScreen('login')" id="tab-login" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Login
+        </button>
+        <button onclick="goToScreen('location')" id="tab-location" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Location
+        </button>
+        <button onclick="goToScreen('home')" id="tab-home" class="nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#C59265] text-white transition-all shadow">
+          Home
+        </button>
+        <button onclick="goToScreen('services')" id="tab-services" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Services
+        </button>
+        <button onclick="goToScreen('hair')" id="tab-hair" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Hair Services
+        </button>
+        <button onclick="goToScreen('hair-cuts')" id="tab-hair-cuts" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Hair Cut &amp; Styling
+        </button>
+        <button onclick="goToScreen('layer-cut-detail')" id="tab-layer-cut-detail" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Layer Cut Detail
+        </button>
+        <button onclick="goToScreen('nails')" id="tab-nails" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Nails Services
+        </button>
+        <button onclick="goToScreen('nail-art')" id="tab-nail-art" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Nail Art Services
+        </button>
+        <button onclick="goToScreen('detail')" id="tab-detail" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Customize
+        </button>
+        <button onclick="goToScreen('stylists')" id="tab-stylists" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Stylists
+        </button>
+        <button onclick="goToScreen('datetime')" id="tab-datetime" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Date &amp; Time
+        </button>
+        <button onclick="goToScreen('confirmed')" id="tab-confirmed" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Confirmed
+        </button>
+        <button onclick="goToScreen('salons')" id="tab-salons" class="nav-tab px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-stone-800 text-stone-300 hover:text-white transition-all border border-stone-700">
+          Salons
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN PHONE CONTAINER -->
+    <div class="flex justify-center items-center py-2">
+      <div class="phone-mockup bg-viora-canvas relative overflow-hidden flex flex-col select-none text-viora-dark">
+        
+        <!-- iOS Status Bar -->
+        <div class="h-10 px-7 flex items-center justify-between text-[11px] font-semibold text-viora-dark z-30 shrink-0 bg-[#FAF8F5]/90 backdrop-blur-xs">
+          <span>9:41</span>
+          <div class="flex items-center space-x-1.5">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"/></svg>
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98A16.88 16.88 0 0012 4z"/></svg>
+            <div class="w-5 h-2.5 border border-current rounded-sm p-0.5 flex items-center">
+              <div class="w-full h-full bg-current rounded-xs"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 0A. ONBOARDING / GET STARTED SCREEN -->
+        <div id="screen-onboarding" class="screen-content flex-1 flex flex-col justify-between overflow-hidden hidden bg-viora-canvas">
+          <div class="h-[56%] w-full relative overflow-hidden shrink-0">
+            <img src="./salon_hero.png" alt="Viora luxury salon" class="w-full h-full object-cover object-center" />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/20"></div>
+          </div>
+          <div class="h-[44%] flex flex-col justify-between px-7 pb-8 pt-4 bg-viora-canvas text-center">
+            <div class="mt-2">
+              <h2 class="font-serif-luxury text-4xl tracking-widest text-viora-dark uppercase font-light">VIORA</h2>
+              <p class="font-sans-clean text-[11px] tracking-[0.24em] font-medium text-viora-taupe mt-2 uppercase">YOUR BEAUTY, PERFECTED</p>
+            </div>
+            <div class="flex justify-center items-center space-x-2 my-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#C59265]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#E8E2D9]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#E8E2D9]"></span>
+            </div>
+            <button onclick="goToScreen('login')" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs tracking-wider uppercase shadow-md active:scale-[0.98] hover:bg-[#b58357] transition-all">
+              GET STARTED
+            </button>
+          </div>
+        </div>
+
+        <!-- 0B. SIGN IN / LOGIN SCREEN (OPENS IMMEDIATELY AFTER GET STARTED) -->
+        <div id="screen-login" class="screen-content flex-1 flex flex-col justify-between px-7 pt-3 pb-8 bg-viora-canvas hidden overflow-y-auto no-scrollbar">
+          <div class="flex items-center justify-between pt-1">
+            <button onclick="goToScreen('onboarding')" class="w-8 h-8 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 transition-all text-xs">
+              ‹
+            </button>
+            <div class="text-center">
+              <h2 class="font-serif-luxury text-3xl text-viora-dark uppercase font-light tracking-wider">VIORA</h2>
+              <p class="font-sans-clean text-[9px] tracking-[0.22em] font-medium text-viora-taupe mt-0.5 uppercase">EXCLUSIVE SALON MEMBER ACCESS</p>
+            </div>
+            <div class="w-8"></div>
+          </div>
+
+          <div class="flex flex-col space-y-3.5 my-auto pt-2">
+            <div>
+              <label class="block text-[10px] font-bold text-[#5A5652] tracking-wider mb-1 uppercase">EMAIL ADDRESS</label>
+              <div class="w-full bg-white rounded-xl border border-viora px-3.5 py-2.5 text-xs text-viora-dark font-medium shadow-xs">
+                sarah.kothari@gmail.com
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold text-[#5A5652] tracking-wider mb-1 uppercase">PASSWORD</label>
+              <div class="w-full bg-white rounded-xl border border-viora px-3.5 py-2.5 text-xs text-viora-dark font-medium flex justify-between items-center shadow-xs">
+                <span class="tracking-widest text-stone-600">•••••••••••••</span>
+                <svg class="w-4 h-4 text-stone-400 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>
+              </div>
+              <div class="text-right mt-1">
+                <a href="#" class="text-[10.5px] text-[#C59265] font-medium hover:underline">Forgot Password?</a>
+              </div>
+            </div>
+
+            <div class="pt-1 flex flex-col space-y-2">
+              <button onclick="goToScreen('location')" class="w-full py-3.5 rounded-full bg-[#C59265] text-white font-bold text-xs tracking-wider uppercase shadow-md active:scale-[0.98] hover:bg-[#b58357] transition-all">
+                SIGN IN
+              </button>
+              <button onclick="goToScreen('location')" class="w-full py-3.5 rounded-full bg-white border border-viora text-viora-dark font-bold text-xs tracking-wider uppercase hover:bg-stone-50 active:scale-[0.98] transition-all">
+                CREATE ACCOUNT
+              </button>
+            </div>
+
+            <div class="text-center pt-1">
+              <span class="text-[10px] text-[#9E9891]">Or continue with</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 pb-1">
+              <button onclick="goToScreen('location')" class="flex items-center justify-center space-x-2 py-2.5 bg-white border border-viora rounded-full text-xs font-medium text-viora-dark hover:bg-stone-50 transition-all">
+                <svg class="w-3.5 h-3.5 text-viora-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+                <span>Google</span>
+              </button>
+              <button onclick="goToScreen('location')" class="flex items-center justify-center space-x-2 py-2.5 bg-white border border-viora rounded-full text-xs font-medium text-viora-dark hover:bg-stone-50 transition-all">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.74 1.04-1.77.92-2.81-.9.04-2 .61-2.65 1.36-.57.65-1.07 1.7-1 2.73 1.01.08 2.05-.53 2.73-1.28z"/></svg>
+                <span>Apple</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 0C. LOCATION PERMISSION SCREEN (OPENS AFTER SIGN IN) -->
+        <div id="screen-location" class="screen-content flex-1 flex flex-col justify-between px-7 pt-4 pb-8 bg-viora-canvas hidden">
+          <div class="text-center pt-2 flex items-center justify-between">
+            <button onclick="goToScreen('login')" class="w-8 h-8 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 transition-all text-xs">
+              ‹
+            </button>
+            <h3 class="font-serif-luxury text-2xl text-viora-dark font-normal">Welcome</h3>
+            <div class="w-8"></div>
+          </div>
+          
+          <div class="flex justify-center items-center my-auto py-6">
+            <div class="w-40 h-40 rounded-full bg-[#F5ECE8] flex items-center justify-center shadow-inner">
+              <div class="w-24 h-24 rounded-full bg-white shadow-sm flex items-center justify-center border border-[#EDE8E1]">
+                <svg class="w-8 h-10 text-[#C59265]" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12c0 7 10 16 10 16s10-9 10-16c0-5.52-4.48-10-10-10z"/>
+                  <circle cx="12" cy="11.5" r="3.5" stroke-width="1.6"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mb-6">
+            <h2 class="font-serif-luxury text-3xl text-viora-dark font-normal leading-tight">Find Your Nearest Salon</h2>
+            <p class="font-sans-clean text-xs leading-relaxed text-viora-taupe mt-3 px-2">
+              To provide you with seamless booking, accurate branch distances, and stylist availability, please allow access to your device location.
+            </p>
+          </div>
+
+          <div class="flex flex-col space-y-3.5 mb-2">
+            <button onclick="goToScreen('home')" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs tracking-wider uppercase shadow-md active:scale-[0.98] hover:bg-[#b58357] transition-all">
+              ALLOW LOCATION ACCESS
+            </button>
+            <button onclick="goToScreen('home')" class="text-xs font-medium text-[#C59265] underline underline-offset-4 hover:opacity-80 py-1 transition-opacity text-center">
+              Enter Location Manually
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. HOME SCREEN (FULLY RESTORED WITH EVERY SECTION FROM ORIGINAL DESIGN) -->
+        <div id="screen-home" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-8 pt-1">
+          
+          <!-- 1. Greeting & User Profile Header -->
+          <div class="flex items-center justify-between py-1">
+            <div>
+              <h2 class="font-serif-luxury text-2xl text-viora-dark font-normal">Good Morning, Sarah</h2>
+              <div class="flex items-center space-x-1 mt-0.5 text-xs text-[#7A7672]">
+                <svg class="w-3.5 h-3.5 text-[#C59265] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span class="font-medium text-xs">Khar West, Mumbai</span>
+              </div>
+            </div>
+            <div class="w-11 h-11 rounded-full border border-viora overflow-hidden p-0.5 shadow-2xs">
+              <img src="./avatar_sarah.png" class="w-full h-full rounded-full object-cover" alt="Sarah" />
+            </div>
+          </div>
+
+          <!-- 2. Luxury CTA Hero Banner -->
+          <div class="mt-3.5 bg-[#C59265] rounded-2xl p-4 text-white flex items-center justify-between shadow-md">
+            <div class="pr-2">
+              <div class="font-serif-luxury text-lg italic leading-tight">Ready for absolute luxury?</div>
+              <div class="text-[11px] text-white/90 mt-1 leading-snug">Book premier hair and spa experiences instantly.</div>
+            </div>
+            <button onclick="goToScreen('services')" class="shrink-0 px-3.5 py-2 rounded-full bg-white text-[#C59265] font-bold text-[10px] tracking-wider uppercase shadow-xs hover:bg-stone-50 transition-all">
+              BOOK NOW
+            </button>
+          </div>
+
+          <!-- 3. Search Bar -->
+          <div class="mt-3.5 flex items-center bg-white rounded-xl border border-viora px-3.5 py-2.5 shadow-2xs">
+            <svg class="w-4 h-4 text-[#7A7672] shrink-0 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" placeholder="Search services, stylists, or branches" class="w-full bg-transparent text-xs text-viora-dark placeholder-[#7A7672] focus:outline-none" />
+          </div>
+
+          <!-- 4. Upcoming Appointment Section -->
+          <div class="mt-5">
+            <div class="text-[10px] font-bold tracking-[0.2em] text-[#7A7672] uppercase mb-2">UPCOMING APPOINTMENT</div>
+            <div class="bg-white rounded-2xl border border-viora p-3.5 shadow-xs">
+              <!-- Top Row: Date & Status Badge -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2 text-xs font-bold text-viora-dark">
+                  <svg class="w-4 h-4 text-[#C59265]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span>Sat, 14 Oct • 11:30 AM</span>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-[#F7EFE8] text-[#C59265] text-[9.5px] font-bold tracking-wider uppercase">
+                  CONFIRMED
+                </span>
+              </div>
+              <div class="my-2.5 border-b border-[#F0EAE1]"></div>
+              <!-- Bottom Row: Stylist & Service -->
+              <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-full border border-viora overflow-hidden shrink-0">
+                  <img src="./avatar_christian.png" class="w-full h-full object-cover" alt="Christian" />
+                </div>
+                <div>
+                  <div class="text-[13px] font-bold text-viora-dark leading-tight">Signature Balayage &amp; Blow Dry</div>
+                  <div class="text-[11px] text-[#7A7672] mt-0.5">with Christian (Art Director)</div>
+                  <div class="text-[10.5px] text-[#A09C96]">VIORA — Khar West</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Your Nearest Salons Section -->
+          <div class="mt-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold tracking-[0.2em] text-[#7A7672] uppercase">YOUR NEAREST SALONS</span>
+              <span onclick="goToScreen('salons')" class="text-xs font-semibold text-[#C59265] cursor-pointer hover:underline">View All</span>
+            </div>
+            <div class="flex space-x-3 overflow-x-auto no-scrollbar pb-1">
+              <!-- Salon 1 -->
+              <div onclick="goToScreen('salons')" class="w-52 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all">
+                <div class="h-28 w-full overflow-hidden">
+                  <img src="./salon_khar.png" class="w-full h-full object-cover" alt="VIORA Khar West" />
+                </div>
+                <div class="p-2.5">
+                  <div class="flex justify-between items-center">
+                    <span class="font-serif-luxury text-base font-normal leading-tight">VIORA — Khar West</span>
+                    <span class="text-[11px] font-bold text-viora-dark flex items-center space-x-0.5">
+                      <span class="text-[#C59265]">★</span>
+                      <span>4.9</span>
+                    </span>
+                  </div>
+                  <div class="text-[11px] text-[#7A7672] mt-0.5">0.8 km • Khar, Mumbai</div>
+                </div>
+              </div>
+              <!-- Salon 2 -->
+              <div onclick="goToScreen('salons')" class="w-52 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all">
+                <div class="h-28 w-full overflow-hidden">
+                  <img src="./salon_juhu.png" class="w-full h-full object-cover" alt="VIORA Juhu" />
+                </div>
+                <div class="p-2.5">
+                  <div class="flex justify-between items-center">
+                    <span class="font-serif-luxury text-base font-normal leading-tight">VIORA — Juhu</span>
+                    <span class="text-[11px] font-bold text-viora-dark flex items-center space-x-0.5">
+                      <span class="text-[#C59265]">★</span>
+                      <span>4.8</span>
+                    </span>
+                  </div>
+                  <div class="text-[11px] text-[#7A7672] mt-0.5">3.2 km • Juhu Tara Rd, Mumbai</div>
+                </div>
+              </div>
+              <!-- Salon 3 -->
+              <div onclick="goToScreen('salons')" class="w-52 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all">
+                <div class="h-28 w-full overflow-hidden">
+                  <img src="./salon_colaba.png" class="w-full h-full object-cover" alt="VIORA Colaba" />
+                </div>
+                <div class="p-2.5">
+                  <div class="flex justify-between items-center">
+                    <span class="font-serif-luxury text-base font-normal leading-tight">VIORA — Colaba</span>
+                    <span class="text-[11px] font-bold text-viora-dark flex items-center space-x-0.5">
+                      <span class="text-[#C59265]">★</span>
+                      <span>4.9</span>
+                    </span>
+                  </div>
+                  <div class="text-[11px] text-[#7A7672] mt-0.5">5.1 km • Colaba, Mumbai</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Explore Services Section -->
+          <div class="mt-5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold tracking-[0.2em] text-[#7A7672] uppercase">EXPLORE SERVICES</span>
+              <span onclick="goToScreen('services')" class="text-xs font-semibold text-[#C59265] cursor-pointer hover:underline">View All</span>
+            </div>
+            <div class="flex space-x-2.5 overflow-x-auto no-scrollbar pb-1">
+              <!-- Hair -->
+              <div onclick="goToScreen('hair')" class="w-24 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <img src="./service_hair.png" class="h-16 w-full object-cover" alt="Hair" />
+                <div class="py-1.5 text-[11px] font-bold text-viora-dark">Hair</div>
+              </div>
+              <!-- Skin -->
+              <div onclick="goToScreen('services')" class="w-24 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <img src="./service_skin.png" class="h-16 w-full object-cover" alt="Skin" />
+                <div class="py-1.5 text-[11px] font-bold text-viora-dark">Skin</div>
+              </div>
+              <!-- Nails (Highlighted with Gold border & badge) -->
+              <div onclick="goToScreen('nails')" class="w-24 shrink-0 bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden text-center cursor-pointer shadow-xs transition-all relative">
+                <span class="absolute top-1 right-1 bg-[#C59265] text-white text-[8px] font-bold px-1 rounded-sm">HOT</span>
+                <img src="./service_nails.png" class="h-16 w-full object-cover" alt="Nails" />
+                <div class="py-1.5 text-[11px] font-bold text-[#C59265]">Nails →</div>
+              </div>
+              <!-- Brows & Lashes -->
+              <div onclick="goToScreen('services')" class="w-24 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <img src="./service_brows.png" class="h-16 w-full object-cover" alt="Eyes & Brows" />
+                <div class="py-1.5 text-[11px] font-bold text-viora-dark">Eyes &amp; Brows</div>
+              </div>
+              <!-- Massage -->
+              <div onclick="goToScreen('services')" class="w-24 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <img src="./service_massage.png" class="h-16 w-full object-cover" alt="Massage" />
+                <div class="py-1.5 text-[11px] font-bold text-viora-dark">Massage</div>
+              </div>
+              <!-- Makeup -->
+              <div onclick="goToScreen('services')" class="w-24 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <img src="./service_makeup.png" class="h-16 w-full object-cover" alt="Makeup" />
+                <div class="py-1.5 text-[11px] font-bold text-viora-dark">Makeup</div>
+              </div>
+              <!-- Grooming -->
+              <div onclick="goToScreen('services')" class="w-24 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <img src="./service_grooming.png" class="h-16 w-full object-cover" alt="Grooming" />
+                <div class="py-1.5 text-[11px] font-bold text-viora-dark">Grooming</div>
+              </div>
+              <!-- Removal -->
+              <div onclick="goToScreen('services')" class="w-24 shrink-0 bg-white rounded-2xl border border-viora overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265] transition-all">
+                <img src="./service_removal.png" class="h-16 w-full object-cover" alt="Hair Removal" />
+                <div class="py-1.5 text-[11px] font-bold text-viora-dark">Hair Removal</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Feature Cards: Beauty Quiz & Inspiration (From original design) -->
+          <div class="grid grid-cols-2 gap-3 mt-5">
+            <!-- Beauty Quiz -->
+            <div class="bg-white rounded-2xl border border-viora p-3.5 shadow-2xs">
+              <div class="text-[#C59265] mb-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+              </div>
+              <div class="font-serif-luxury text-lg font-normal leading-tight">Beauty Quiz</div>
+              <div class="text-[11px] text-[#7A7672] mt-1 leading-snug">Uncover your signature hair and skin profile.</div>
+            </div>
+            <!-- Inspiration -->
+            <div class="bg-white rounded-2xl border border-viora p-3.5 shadow-2xs">
+              <div class="text-[#C59265] mb-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </div>
+              <div class="font-serif-luxury text-lg font-normal leading-tight">Inspiration</div>
+              <div class="text-[11px] text-[#7A7672] mt-1 leading-snug">Browse and request curated visual styles.</div>
+            </div>
+          </div>
+
+          <!-- 8. Recommended For You Section -->
+          <div class="mt-5 mb-4">
+            <div class="text-[10px] font-bold tracking-[0.2em] text-[#7A7672] uppercase mb-2">RECOMMENDED FOR YOU</div>
+            <div class="grid grid-cols-2 gap-2.5">
+              <!-- Card 1 -->
+              <div class="bg-white rounded-xl border border-viora p-2 flex items-center space-x-2.5 shadow-2xs">
+                <img src="./service_hair.png" class="w-11 h-11 rounded-lg object-cover shrink-0" alt="Hair Spa" />
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-viora-dark truncate">Premium Hair Spa</div>
+                  <div class="text-[11px] font-semibold text-[#C59265] mt-0.5">From ₹1,500</div>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div class="bg-white rounded-xl border border-viora p-2 flex items-center space-x-2.5 shadow-2xs">
+                <img src="./service_skin.png" class="w-11 h-11 rounded-lg object-cover shrink-0" alt="Hydrafacial" />
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-viora-dark truncate">Glow Hydrafacial</div>
+                  <div class="text-[11px] font-semibold text-[#C59265] mt-0.5">From ₹1,500</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Navigation Bar inside Phone -->
+          <div class="mt-4 pt-2.5 border-t border-viora flex items-center justify-around text-center py-2 bg-[#FAF8F5]">
+            <div onclick="goToScreen('home')" class="cursor-pointer text-[#C59265] flex flex-col items-center">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+              <span class="text-[9px] font-bold mt-0.5">Home</span>
+            </div>
+            <div onclick="goToScreen('services')" class="cursor-pointer text-[#7A7672] hover:text-[#C59265] flex flex-col items-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              <span class="text-[9px] font-medium mt-0.5">Services</span>
+            </div>
+            <div onclick="goToScreen('salons')" class="cursor-pointer text-[#7A7672] hover:text-[#C59265] flex flex-col items-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              <span class="text-[9px] font-medium mt-0.5">Salons</span>
+            </div>
+            <div onclick="goToScreen('confirmed')" class="cursor-pointer text-[#7A7672] hover:text-[#C59265] flex flex-col items-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <span class="text-[9px] font-medium mt-0.5">Bookings</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. SERVICES CATEGORIES SCREEN -->
+        <div id="screen-services" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-10 pt-2 hidden">
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('home')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center">←</button>
+            <h2 class="font-serif-luxury text-2xl">Services</h2>
+            <div class="w-9"></div>
+          </div>
+          <div class="mt-3 mb-2">
+            <span class="text-[10px] uppercase font-bold text-[#C59265] tracking-wider">CURATED BEAUTY MENU</span>
+            <h3 class="font-serif-luxury text-3xl mt-0.5">Select Category</h3>
+          </div>
+          <div class="grid grid-cols-3 gap-2.5">
+            <div onclick="goToScreen('hair')" class="bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden text-center cursor-pointer hover:shadow-xs transition-all">
+              <img src="./service_hair.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[11px] font-bold text-[#C59265]">Hair →</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-viora overflow-hidden text-center">
+              <img src="./service_skin.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[11px] font-bold">Skin</div>
+            </div>
+            <div onclick="goToScreen('nails')" class="bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden text-center cursor-pointer">
+              <img src="./service_nails.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[11px] font-bold text-[#C59265]">Nails →</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-viora overflow-hidden text-center">
+              <img src="./service_removal.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[10px] font-bold">Hair Removal</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-viora overflow-hidden text-center">
+              <img src="./service_brows.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[10px] font-bold">Eyes &amp; Brows</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-viora overflow-hidden text-center">
+              <img src="./service_massage.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[11px] font-bold">Massage</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-viora overflow-hidden text-center">
+              <img src="./service_makeup.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[11px] font-bold">Makeup</div>
+            </div>
+            <div class="bg-white rounded-2xl border border-viora overflow-hidden text-center">
+              <img src="./service_grooming.png" class="h-16 w-full object-cover" />
+              <div class="py-2 text-[11px] font-bold">Men's Grooming</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HAIR SERVICES MENU SCREEN (media_1790310783899.png) -->
+        <div id="screen-hair" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-12 pt-2 hidden">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('services')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 shadow-2xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            </button>
+            <h2 class="font-serif-luxury text-2xl text-viora-dark font-normal">Hair Services</h2>
+            <div class="w-9"></div>
+          </div>
+
+          <!-- Section Heading -->
+          <div class="mt-3 mb-4">
+            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C59265] block">CURATED BEAUTY MENU</span>
+            <h3 class="font-serif-luxury text-3xl text-viora-dark font-normal mt-0.5">Select a service</h3>
+          </div>
+
+          <!-- 5 Service Cards Grid matching media_1790310783899.png -->
+          <div class="grid grid-cols-2 gap-3.5 pb-6">
+            <!-- 1. Haircut & Styling -->
+            <div onclick="goToScreen('hair-cuts')" class="bg-white rounded-2xl border-2 border-[#C59265] overflow-hidden shadow-xs cursor-pointer hover:border-[#b58357] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./hair_cut_styling.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Haircut & Styling" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Haircut &amp; Styling</div>
+              </div>
+            </div>
+
+            <!-- 2. Hair Colour -->
+            <div onclick="showHairNotice('Hair Colour')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./hair_colour.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Hair Colour" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Hair Colour</div>
+              </div>
+            </div>
+
+            <!-- 3. Hair Spa & Care -->
+            <div onclick="showHairNotice('Hair Spa & Care')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./hair_spa_care.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Hair Spa & Care" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Hair Spa &amp; Care</div>
+              </div>
+            </div>
+
+            <!-- 4. Smoothening & Texture -->
+            <div onclick="showHairNotice('Smoothening & Texture')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./hair_smoothening.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Smoothening & Texture" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Smoothening &amp; Texture</div>
+              </div>
+            </div>
+
+            <!-- 5. Hair Extensions -->
+            <div onclick="showHairNotice('Hair Extensions')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./hair_extensions.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Hair Extensions" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Hair Extensions</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HAIR CUT & STYLING SCREEN (media_1790310828580.png) -->
+        <div id="screen-hair-cuts" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-12 pt-2 hidden">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('hair')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 shadow-2xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            </button>
+            <h2 class="font-serif-luxury text-2xl text-viora-dark font-normal">Hair Cut &amp; Styling</h2>
+            <div class="w-9"></div>
+          </div>
+
+          <!-- Section Heading -->
+          <div class="mt-3 mb-3">
+            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C59265] block">CURATED BEAUTY MENU</span>
+            <h3 class="font-serif-luxury text-3xl text-viora-dark font-normal mt-0.5">Select a service</h3>
+          </div>
+
+          <!-- DOUBLE FILTER -->
+          <!-- Filter 1: Gender -->
+          <div class="mb-3">
+            <div class="text-[10px] uppercase font-bold tracking-[0.18em] text-[#7A7672] mb-2">FILTER BY GENDER</div>
+            <div class="flex items-center space-x-2">
+              <button id="gender-pill-woman" onclick="setHairGender('woman')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white border border-[#C59265] shadow-xs transition-all">
+                Woman's
+              </button>
+              <button id="gender-pill-man" onclick="setHairGender('man')" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs hover:border-stone-400 transition-all">
+                Men's
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter 2: Cut Types (Horizontal scroll) -->
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-[10px] uppercase font-bold tracking-[0.18em] text-[#7A7672]">FILTER BY CUT TYPES</div>
+              <div id="hairCutCountBadge" class="text-[10px] text-[#C59265] font-semibold">Layered &amp; Textured Cut's</div>
+            </div>
+            <div id="hairCutPillsContainer" class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
+              <!-- Dynamically populated cut pills for Woman / Men -->
+            </div>
+          </div>
+
+          <!-- CUTS CATALOG GRID (Same pattern as Nail tiles) -->
+          <div id="hairCutCardsGrid" class="grid grid-cols-2 gap-3 pb-8">
+            <!-- Cut cards populated by JS -->
+          </div>
+        </div>
+
+        <!-- LAYER CUT DETAIL SCREEN (WITH 3-IMAGE SWIPE CAROUSEL & REFINE THE LOOK) -->
+        <div id="screen-layer-cut-detail" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-20 pt-2 hidden">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('hair-cuts')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 shadow-2xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            </button>
+            <h2 class="font-serif-luxury text-xl font-normal text-viora-dark">Layer Cut</h2>
+            <button class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center shadow-2xs">
+              <svg class="w-4 h-4 text-[#1F1E1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+            </button>
+          </div>
+
+          <!-- Hero Image Carousel Container with Swipe & Indicators -->
+          <div id="layerCutCarouselContainer" class="mt-2 relative w-full h-[440px] rounded-2xl overflow-hidden shadow-sm border border-viora bg-stone-100 select-none">
+            <img id="layerCutHeroImg" src="./layer_cut_front.jpg" alt="Layer Cut" class="w-full h-full object-cover transition-opacity duration-300" />
+            
+            <!-- Angle Tag Overlay -->
+            <div id="layerCutAngleBadge" class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] text-white font-semibold tracking-wide">
+              Front View (1/3)
+            </div>
+
+            <!-- Navigation Chevron Arrows -->
+            <button onclick="cycleLayerCutImg(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/45 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-xs transition-all text-sm font-bold shadow-md">
+              ‹
+            </button>
+            <button onclick="cycleLayerCutImg(1)" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/45 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-xs transition-all text-sm font-bold shadow-md">
+              ›
+            </button>
+
+            <!-- Bottom Carousel Dots -->
+            <div id="layerCutDots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full">
+              <span onclick="setLayerCutImg(0)" class="w-2.5 h-2.5 rounded-full bg-[#C59265] cursor-pointer transition-all"></span>
+              <span onclick="setLayerCutImg(1)" class="w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer transition-all"></span>
+              <span onclick="setLayerCutImg(2)" class="w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer transition-all"></span>
+            </div>
+          </div>
+
+          <!-- Title & Rating -->
+          <div class="flex justify-between items-start mt-4">
+            <div>
+              <h1 class="font-serif-luxury text-2xl text-viora-dark font-normal">Layer Cut</h1>
+              <div class="flex items-center space-x-1.5 mt-1 text-xs">
+                <span class="text-[#C59265]">★</span>
+                <span class="font-bold">4.9</span>
+                <span class="text-stone-400">(580 Reviews)</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[#C59265] font-semibold">Master Stylist</span>
+              </div>
+            </div>
+            <button onclick="toggleHeart()" class="p-1 text-stone-400 hover:text-red-500 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+
+          <!-- Description -->
+          <p class="text-xs text-viora-taupe leading-relaxed mt-2.5">
+            A signature multidimensional cut with feather-soft cascading layers that frame the face and create natural bounce, movement, and effortless volume.
+          </p>
+
+          <!-- Duration & Dynamic Price Badge -->
+          <div class="flex items-center justify-between mt-3 text-xs text-viora-taupe pb-3 border-b border-viora">
+            <span>⏱ Approx. 60-75 min</span>
+            <span class="font-bold text-viora-dark text-sm" id="layerCutPriceBadge">From ₹2,400</span>
+          </div>
+
+          <!-- REFINE THE LOOK (EVEN SPACING, CLEAN PILLS WITHOUT +₹ VISIBLE) -->
+          <div class="mt-4">
+            <span class="text-[10.5px] uppercase font-bold text-[#C59265] tracking-[0.2em] block mb-3.5">REFINE THE LOOK</span>
+
+            <!-- 1. HAIR TEXTURE -->
+            <div style="margin-bottom: 18px;">
+              <div class="flex justify-between items-center mb-1.5">
+                <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase">HAIR TEXTURE</span>
+                <span class="text-[10px] text-[#7A7672]">Select your texture</span>
+              </div>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <button onclick="pickHairOption('texture', 'Straight')" id="opt-texture-Straight" class="px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs">Straight</button>
+                <button onclick="pickHairOption('texture', 'Wavy')" id="opt-texture-Wavy" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Wavy</button>
+                <button onclick="pickHairOption('texture', 'Curly')" id="opt-texture-Curly" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Curly</button>
+                <button onclick="pickHairOption('texture', 'Coily')" id="opt-texture-Coily" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Coily</button>
+              </div>
+            </div>
+
+            <!-- 2. HAIR LENGTH -->
+            <div style="margin-bottom: 18px;">
+              <div class="flex justify-between items-center mb-1.5">
+                <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase">HAIR LENGTH</span>
+                <span class="text-[10px] text-[#7A7672]">Target finished length</span>
+              </div>
+              <div class="flex space-x-2">
+                <button onclick="pickHairOption('length', 'Long')" id="opt-hlength-Long" class="px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shadow-xs">Long</button>
+                <button onclick="pickHairOption('length', 'Medium')" id="opt-hlength-Medium" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora">Medium</button>
+                <button onclick="pickHairOption('length', 'Short')" id="opt-hlength-Short" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora">Short</button>
+              </div>
+            </div>
+
+            <!-- 3. FRINGE & BANGS -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase block mb-1.5">FRINGE &amp; BANGS</span>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <button onclick="pickHairOption('bangs', 'Curtain Bangs')" id="opt-bangs-Curtain" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs">Curtain Bangs</button>
+                <button onclick="pickHairOption('bangs', 'Wispy Fringe')" id="opt-bangs-Wispy" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Wispy Fringe</button>
+                <button onclick="pickHairOption('bangs', 'Face-Framing')" id="opt-bangs-Face" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Face-Framing</button>
+                <button onclick="pickHairOption('bangs', 'No Bangs')" id="opt-bangs-None" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">No Bangs</button>
+              </div>
+            </div>
+
+            <!-- 4. STYLING & FINISH -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase block mb-1.5">STYLING &amp; FINISH</span>
+              <div id="layerCutStylingContainer" class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <!-- Dynamically rendered according to selected hair texture -->
+              </div>
+            </div>
+
+            <!-- 5. ADD-ON CARE -->
+            <div style="margin-bottom: 22px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase block mb-1.5">ADD-ON CARE TREATMENT</span>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <button onclick="pickHairOption('care', 'None')" id="opt-care-None" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs">None</button>
+                <button onclick="pickHairOption('care', 'Olaplex')" id="opt-care-Olaplex" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Olaplex Bond Repair</button>
+                <button onclick="pickHairOption('care', 'Kerastase')" id="opt-care-Kerastase" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Kérastase Scalp Care</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Button Container -->
+          <div class="mt-4 pt-2">
+            <button onclick="bookLayerCutAppointment()" id="layerCutBookBtn" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs uppercase tracking-widest shadow-md hover:bg-[#b58357] transition-all">
+              BOOK THIS LOOK • ₹2,400
+            </button>
+          </div>
+        </div>
+
+        <!-- LONG LAYERED CUT DETAIL SCREEN (WITH 3-IMAGE SWIPE CAROUSEL & REFINE THE LOOK) -->
+        <div id="screen-long-layered-cut-detail" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-20 pt-2 hidden">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('hair-cuts')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 shadow-2xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            </button>
+            <h2 class="font-serif-luxury text-xl font-normal text-viora-dark">Long Layered Cut</h2>
+            <button class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center shadow-2xs">
+              <svg class="w-4 h-4 text-[#1F1E1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+            </button>
+          </div>
+
+          <!-- Hero Image Carousel Container with Swipe & Indicators -->
+          <div id="longLayerCutCarouselContainer" class="mt-2 relative w-full h-[440px] rounded-2xl overflow-hidden shadow-sm border border-viora bg-stone-100 select-none">
+            <img id="longLayerCutHeroImg" src="./long_layered_cut_front.jpg" alt="Long Layered Cut" class="w-full h-full object-cover transition-opacity duration-300" />
+            
+            <!-- Angle Tag Overlay -->
+            <div id="longLayerCutAngleBadge" class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] text-white font-semibold tracking-wide">
+              Front View (1/3)
+            </div>
+
+            <!-- Navigation Chevron Arrows -->
+            <button onclick="cycleLongLayerCutImg(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/45 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-xs transition-all text-sm font-bold shadow-md">
+              ‹
+            </button>
+            <button onclick="cycleLongLayerCutImg(1)" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/45 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-xs transition-all text-sm font-bold shadow-md">
+              ›
+            </button>
+
+            <!-- Bottom Carousel Dots -->
+            <div id="longLayerCutDots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full">
+              <span onclick="setLongLayerCutImg(0)" class="w-2.5 h-2.5 rounded-full bg-[#C59265] cursor-pointer transition-all"></span>
+              <span onclick="setLongLayerCutImg(1)" class="w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer transition-all"></span>
+              <span onclick="setLongLayerCutImg(2)" class="w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer transition-all"></span>
+            </div>
+          </div>
+
+          <!-- Title & Rating -->
+          <div class="flex justify-between items-start mt-4">
+            <div>
+              <h1 class="font-serif-luxury text-2xl text-viora-dark font-normal">Long Layered Cut</h1>
+              <div class="flex items-center space-x-1.5 mt-1 text-xs">
+                <span class="text-[#C59265]">★</span>
+                <span class="font-bold">4.9</span>
+                <span class="text-stone-400">(620 Reviews)</span>
+                <span class="text-stone-300">•</span>
+                <span class="text-[#C59265] font-semibold">Master Stylist</span>
+              </div>
+            </div>
+            <button onclick="toggleHeart()" class="p-1 text-stone-400 hover:text-red-500 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+
+          <!-- Description -->
+          <p class="text-xs text-viora-taupe leading-relaxed mt-2.5">
+            An elongated luxury layered silhouette featuring flowing cascading tiers down the back and soft face-framing layers tailored for longer lengths to maximize natural flow and volume.
+          </p>
+
+          <!-- Duration & Dynamic Price Badge -->
+          <div class="flex items-center justify-between mt-3 text-xs text-viora-taupe pb-3 border-b border-viora">
+            <span>⏱ Approx. 65-75 min</span>
+            <span class="font-bold text-viora-dark text-sm" id="longLayerCutPriceBadge">From ₹2,600</span>
+          </div>
+
+          <!-- REFINE THE LOOK -->
+          <div class="mt-4">
+            <span class="text-[10.5px] uppercase font-bold text-[#C59265] tracking-[0.2em] block mb-3.5">REFINE THE LOOK</span>
+
+            <!-- 1. HAIR TEXTURE -->
+            <div style="margin-bottom: 18px;">
+              <div class="flex justify-between items-center mb-1.5">
+                <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase">HAIR TEXTURE</span>
+                <span class="text-[10px] text-[#7A7672]">Select your texture</span>
+              </div>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <button onclick="pickLongLayerHairOption('texture', 'Straight')" id="opt-ll-texture-Straight" class="px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs">Straight</button>
+                <button onclick="pickLongLayerHairOption('texture', 'Wavy')" id="opt-ll-texture-Wavy" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Wavy</button>
+                <button onclick="pickLongLayerHairOption('texture', 'Curly')" id="opt-ll-texture-Curly" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Curly</button>
+                <button onclick="pickLongLayerHairOption('texture', 'Coily')" id="opt-ll-texture-Coily" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Coily</button>
+              </div>
+            </div>
+
+            <!-- 2. HAIR LENGTH -->
+            <div style="margin-bottom: 18px;">
+              <div class="flex justify-between items-center mb-1.5">
+                <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase">HAIR LENGTH</span>
+                <span class="text-[10px] text-[#7A7672]">Target finished length</span>
+              </div>
+              <div class="flex space-x-2">
+                <button onclick="pickLongLayerHairOption('length', 'Long')" id="opt-ll-hlength-Long" class="px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shadow-xs">Long</button>
+                <button onclick="pickLongLayerHairOption('length', 'Medium')" id="opt-ll-hlength-Medium" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora">Medium</button>
+                <button onclick="pickLongLayerHairOption('length', 'Short')" id="opt-ll-hlength-Short" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora">Short</button>
+              </div>
+            </div>
+
+            <!-- 3. FRINGE & BANGS -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase block mb-1.5">FRINGE &amp; BANGS</span>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <button onclick="pickLongLayerHairOption('bangs', 'Curtain')" id="opt-ll-bangs-Curtain" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs">Curtain Bangs</button>
+                <button onclick="pickLongLayerHairOption('bangs', 'Wispy')" id="opt-ll-bangs-Wispy" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Wispy Fringe</button>
+                <button onclick="pickLongLayerHairOption('bangs', 'Face')" id="opt-ll-bangs-Face" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Face-Framing</button>
+                <button onclick="pickLongLayerHairOption('bangs', 'None')" id="opt-ll-bangs-None" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">No Bangs</button>
+              </div>
+            </div>
+
+            <!-- 4. STYLING & FINISH -->
+            <div style="margin-bottom: 18px;">
+              <div class="flex justify-between items-center mb-1.5">
+                <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase">STYLING &amp; FINISH</span>
+                <span class="text-[10px] text-[#7A7672]">Select finish technique</span>
+              </div>
+              <div id="longLayerCutStylingContainer" class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <!-- 5. ADD-ON CARE -->
+            <div style="margin-bottom: 22px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider uppercase block mb-1.5">ADD-ON CARE</span>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+                <button onclick="pickLongLayerHairOption('care', 'None')" id="opt-ll-care-None" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs">None</button>
+                <button onclick="pickLongLayerHairOption('care', 'Olaplex')" id="opt-ll-care-Olaplex" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Olaplex No. 2 Bond</button>
+                <button onclick="pickLongLayerHairOption('care', 'Kerastase')" id="opt-ll-care-Kerastase" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0">Kérastase Fusio-Dose</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Button Container -->
+          <div class="mt-4 pt-2">
+            <button onclick="bookLongLayerCutLook()" id="longLayerCutBookBtn" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs uppercase tracking-widest shadow-md hover:bg-[#b58357] transition-all">
+              BOOK THIS LOOK • ₹2,600
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. NAILS SERVICES MENU SCREEN (media_1790308649915.png) -->
+        <div id="screen-nails" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-12 pt-2 hidden">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('services')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 shadow-2xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            </button>
+            <h2 class="font-serif-luxury text-2xl text-viora-dark font-normal">Nails Services</h2>
+            <div class="w-9"></div>
+          </div>
+
+          <!-- Section Heading -->
+          <div class="mt-3 mb-4">
+            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C59265] block">CURATED BEAUTY MENU</span>
+            <h3 class="font-serif-luxury text-3xl text-viora-dark font-normal mt-0.5">Select a service</h3>
+          </div>
+
+          <!-- 2x2 Services Grid (Exact from media_1790308649915.png) -->
+          <div class="grid grid-cols-2 gap-3.5">
+            <!-- 1. Nail Art (Navigates to Nail Art Services) -->
+            <div onclick="goToScreen('nail-art')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./service_nail_art.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Nail Art" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Nail Art</div>
+              </div>
+            </div>
+
+            <!-- 2. Manicure -->
+            <div onclick="showServiceNotice('Manicure')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./service_manicure.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Manicure" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Manicure</div>
+              </div>
+            </div>
+
+            <!-- 3. Pedicure -->
+            <div onclick="showServiceNotice('Pedicure')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./service_pedicure.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Pedicure" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Pedicure</div>
+              </div>
+            </div>
+
+            <!-- 4. Nail Care & Maintenance -->
+            <div onclick="showServiceNotice('Nail Care & Maintenance')" class="bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all group">
+              <div class="h-32 w-full overflow-hidden bg-stone-100">
+                <img src="./service_nail_care.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Nail Care & Maintenance" />
+              </div>
+              <div class="py-3 px-2 text-center bg-white">
+                <div class="font-bold text-xs text-viora-dark">Nail Care &amp; Maintenance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. NAIL ART SERVICES SCREEN (RENAMED FROM NAILS SERVICES) -->
+        <div id="screen-nail-art" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-12 pt-2 hidden">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('nails')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-viora-dark hover:bg-stone-50 shadow-2xs transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            </button>
+            <h2 class="font-serif-luxury text-2xl text-viora-dark font-normal">Nail Art Services</h2>
+            <div class="w-9"></div>
+          </div>
+
+          <!-- Section Heading -->
+          <div class="mt-3 mb-2">
+            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C59265] block">CURATED BEAUTY MENU</span>
+            <h3 class="font-serif-luxury text-3xl text-viora-dark font-normal mt-0.5">Select a service</h3>
+          </div>
+
+          <!-- Filter Subheading & Badge -->
+          <div class="flex justify-between items-center mt-3 mb-2">
+            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#7A7672]">FILTER BY COLOUR</span>
+            <span id="selectedCountBadge" class="text-[10.5px] font-bold text-[#C59265]">1/2 selected</span>
+          </div>
+
+          <!-- Color Filter Pills (Multi-select up to 2) -->
+          <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
+            <button onclick="toggleFilterColor('Amber')" id="pill-Amber" class="color-pill px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs transition-all shrink-0">
+              Amber
+            </button>
+            <button onclick="toggleFilterColor('Brown')" id="pill-Brown" class="color-pill px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white border border-[#C59265] shadow-xs transition-all shrink-0">
+              Brown
+            </button>
+            <button onclick="toggleFilterColor('Beige')" id="pill-Beige" class="color-pill px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs transition-all shrink-0">
+              Beige
+            </button>
+            <button onclick="toggleFilterColor('Crimson')" id="pill-Crimson" class="color-pill px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs transition-all shrink-0">
+              Crimson
+            </button>
+            <button onclick="toggleFilterColor('Gold')" id="pill-Gold" class="color-pill px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs transition-all shrink-0">
+              Gold
+            </button>
+            <button onclick="toggleFilterColor('Green')" id="pill-Green" class="color-pill px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs transition-all shrink-0">
+              Green
+            </button>
+          </div>
+
+          <!-- Dynamic Nails Content (All 3 Sections Exactly Like Your Screenshot!) -->
+          <div id="nailsContainer" class="mt-4 space-y-5">
+            
+            <!-- 1. TRENDING -->
+            <div id="sec-trending">
+              <div class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#7A7672] mb-2">TRENDING</div>
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Card 1: Brown Ombre Cat Eye -->
+                <div onclick="goToScreen('detail')" class="nail-card bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs transition-all" data-colors="Brown,Amber">
+                  <div class="h-28 w-full bg-stone-100 overflow-hidden">
+                    <img src="./nail_brown_cat_eye.png" alt="Brown Ombre Cat Eye" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="p-2.5 flex flex-col justify-between h-28">
+                    <div>
+                      <div class="text-xs font-bold text-viora-dark truncate">Brown Ombre Cat Eye</div>
+                      <div class="text-[9px] text-stone-400 mt-0.5">Service By</div>
+                      <div class="text-[10px] text-viora-taupe truncate">Jessica Alba • Senior Stylist</div>
+                    </div>
+                    <div>
+                      <div class="flex items-center space-x-1 text-[10px] font-bold text-viora-dark">
+                        <span class="text-[#C59265]">★</span>
+                        <span>4.0</span>
+                        <span class="text-stone-300">•</span>
+                        <span class="text-stone-400 font-normal">888 Reviews</span>
+                      </div>
+                      <div class="flex justify-between items-center mt-1">
+                        <span class="text-xs font-extrabold text-viora-dark">₹1,800</span>
+                        <span class="text-[10px] text-viora-taupe">⏱ 60 min</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 2: Mocha Latte Flower -->
+                <div onclick="goToScreen('detail')" class="nail-card bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs transition-all" data-colors="Brown,Beige">
+                  <div class="h-28 w-full bg-stone-100 overflow-hidden">
+                    <img src="./nail_mocha_flower.png" alt="Mocha Latte Flower" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="p-2.5 flex flex-col justify-between h-28">
+                    <div>
+                      <div class="text-xs font-bold text-viora-dark truncate">Mocha Latte Flower</div>
+                      <div class="text-[9px] text-stone-400 mt-0.5">Service By</div>
+                      <div class="text-[10px] text-viora-taupe truncate">Jenny Bui • Creative Director</div>
+                    </div>
+                    <div>
+                      <div class="flex items-center space-x-1 text-[10px] font-bold text-viora-dark">
+                        <span class="text-[#C59265]">★</span>
+                        <span>3.9</span>
+                        <span class="text-stone-300">•</span>
+                        <span class="text-stone-400 font-normal">400 Reviews</span>
+                      </div>
+                      <div class="flex justify-between items-center mt-1">
+                        <span class="text-xs font-extrabold text-viora-dark">₹2,980</span>
+                        <span class="text-[10px] text-viora-taupe">⏱ 90 min</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. TOP RATED -->
+            <div id="sec-top-rated">
+              <div class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#7A7672] mb-2">TOP RATED</div>
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Card 3: Classic Matte Mocha -->
+                <div onclick="goToScreen('detail')" class="nail-card bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs transition-all" data-colors="Brown">
+                  <div class="h-28 w-full bg-stone-100 overflow-hidden">
+                    <img src="./nail_matte_mocha.png" alt="Classic Matte Mocha" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="p-2.5 flex flex-col justify-between h-28">
+                    <div>
+                      <div class="text-xs font-bold text-viora-dark truncate">Classic Matte Mocha</div>
+                      <div class="text-[9px] text-stone-400 mt-0.5">Service By</div>
+                      <div class="text-[10px] text-viora-taupe truncate">Coca Michelle • Style Director</div>
+                    </div>
+                    <div>
+                      <div class="flex items-center space-x-1 text-[10px] font-bold text-viora-dark">
+                        <span class="text-[#C59265]">★</span>
+                        <span>4.9</span>
+                        <span class="text-stone-300">•</span>
+                        <span class="text-stone-400 font-normal">136 Reviews</span>
+                      </div>
+                      <div class="flex justify-between items-center mt-1">
+                        <span class="text-xs font-extrabold text-viora-dark">₹4,000</span>
+                        <span class="text-[10px] text-viora-taupe">⏱ 60 min</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 4: Leopard Tortie Gold Tips -->
+                <div onclick="goToScreen('detail')" class="nail-card bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs transition-all" data-colors="Brown,Gold,Amber">
+                  <div class="h-28 w-full bg-stone-100 overflow-hidden">
+                    <img src="./nail_leopard_tortie.png" alt="Leopard Tortie Gold Tips" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="p-2.5 flex flex-col justify-between h-28">
+                    <div>
+                      <div class="text-xs font-bold text-viora-dark truncate">Leopard Tortie Gold Tips</div>
+                      <div class="text-[9px] text-stone-400 mt-0.5">Service By</div>
+                      <div class="text-[10px] text-viora-taupe truncate">Jenny Bui • Style Director</div>
+                    </div>
+                    <div>
+                      <div class="flex items-center space-x-1 text-[10px] font-bold text-viora-dark">
+                        <span class="text-[#C59265]">★</span>
+                        <span>4.8</span>
+                        <span class="text-stone-300">•</span>
+                        <span class="text-stone-400 font-normal">183 Reviews</span>
+                      </div>
+                      <div class="flex justify-between items-center mt-1">
+                        <span class="text-xs font-extrabold text-viora-dark">₹4,800</span>
+                        <span class="text-[10px] text-viora-taupe">⏱ 180 min</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. EXPLORE THE COLLECTION -->
+            <div id="sec-explore">
+              <div class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#7A7672] mb-2">EXPLORE THE COLLECTION</div>
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Card 5: Brown Metallic Skittle -->
+                <div onclick="goToScreen('detail')" class="nail-card bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs transition-all" data-colors="Brown,Gold">
+                  <div class="h-28 w-full bg-stone-100 overflow-hidden">
+                    <img src="./nail_metallic_skittle.png" alt="Brown Metallic Skittle" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="p-2.5 flex flex-col justify-between h-28">
+                    <div>
+                      <div class="text-xs font-bold text-viora-dark truncate">Brown Metallic Skittle</div>
+                      <div class="text-[9px] text-stone-400 mt-0.5">Service By</div>
+                      <div class="text-[10px] text-viora-taupe truncate">Betina R. • Top Stylist</div>
+                    </div>
+                    <div>
+                      <div class="flex items-center space-x-1 text-[10px] font-bold text-viora-dark">
+                        <span class="text-[#C59265]">★</span>
+                        <span>4.1</span>
+                        <span class="text-stone-300">•</span>
+                        <span class="text-stone-400 font-normal">127 Reviews</span>
+                      </div>
+                      <div class="flex justify-between items-center mt-1">
+                        <span class="text-xs font-extrabold text-viora-dark">₹2,300</span>
+                        <span class="text-[10px] text-viora-taupe">⏱ 90 min</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 6: Brown Polka Cat Eye -->
+                <div onclick="goToScreen('detail')" class="nail-card bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs transition-all" data-colors="Brown,Beige">
+                  <div class="h-28 w-full bg-stone-100 overflow-hidden">
+                    <img src="./nail_polka_cat_eye.png" alt="Brown Polka Cat Eye" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="p-2.5 flex flex-col justify-between h-28">
+                    <div>
+                      <div class="text-xs font-bold text-viora-dark truncate">Brown Polka Cat Eye</div>
+                      <div class="text-[9px] text-stone-400 mt-0.5">Service By</div>
+                      <div class="text-[10px] text-viora-taupe truncate">Cam Tran • Stylist</div>
+                    </div>
+                    <div>
+                      <div class="flex items-center space-x-1 text-[10px] font-bold text-viora-dark">
+                        <span class="text-[#C59265]">★</span>
+                        <span>3.9</span>
+                        <span class="text-stone-300">•</span>
+                        <span class="text-stone-400 font-normal">78 Reviews</span>
+                      </div>
+                      <div class="flex justify-between items-center mt-1">
+                        <span class="text-xs font-extrabold text-viora-dark">₹2,000</span>
+                        <span class="text-[10px] text-viora-taupe">⏱ 90 min</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 5. NAIL DETAIL & CUSTOMIZATION SCREEN -->
+        <div id="screen-detail" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-12 pt-2 hidden">
+          <!-- Top Bar -->
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('nail-art')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center shadow-2xs">
+              ←
+            </button>
+            <h2 class="font-serif-luxury text-xl font-normal">Brown Ombre Cat Eye</h2>
+            <button class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center shadow-2xs">
+              <svg class="w-4 h-4 text-[#1F1E1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+            </button>
+          </div>
+
+          <!-- Hero Image -->
+          <div class="mt-2 w-full h-56 rounded-2xl overflow-hidden shadow-sm border border-viora">
+            <img src="./nail_hero_large.png" alt="Brown Ombre Cat Eye" class="w-full h-full object-cover" />
+          </div>
+
+          <!-- Title & Rating -->
+          <div class="flex justify-between items-start mt-4">
+            <div>
+              <h1 class="font-serif-luxury text-2xl text-viora-dark font-normal">Brown Ombre Cat Eye</h1>
+              <div class="flex items-center space-x-1.5 mt-1 text-xs">
+                <span class="text-[#C59265]">★</span>
+                <span class="font-bold">4.0</span>
+                <span class="text-stone-400">(888 Reviews)</span>
+              </div>
+            </div>
+            <button id="heartBtn" onclick="toggleHeart()" class="p-1 text-stone-400 hover:text-red-500 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+
+          <p class="text-xs text-viora-taupe leading-relaxed mt-2.5">
+            A rich brown inverted ombré with a soft velvet finish, creating a luminous shimmer that catches the light from every angle.
+          </p>
+
+          <div class="flex items-center space-x-4 mt-3 text-xs text-viora-taupe pb-3 border-b border-viora">
+            <span>⏱ Approx. 60-80 min</span>
+            <span class="font-bold text-viora-dark" id="detailPriceBadge">From ₹1,800</span>
+          </div>
+
+          <!-- REFINE YOUR LOOK WITH STRICT EVEN SPACING -->
+          <div class="mt-4">
+            <span class="text-[10.5px] uppercase font-bold text-[#C59265] tracking-[0.2em] block mb-4">REFINE YOUR LOOK</span>
+
+            <!-- 1. TOP COAT -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider block mb-2">TOP COAT</span>
+              <div class="flex space-x-2">
+                <button onclick="pickOption('topcoat', 'Glossy')" id="opt-topcoat-Glossy" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white">Glossy</button>
+                <button onclick="pickOption('topcoat', 'Satin')" id="opt-topcoat-Satin" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora">Satin</button>
+                <button onclick="pickOption('topcoat', 'Matte')" id="opt-topcoat-Matte" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora">Matte</button>
+              </div>
+            </div>
+
+            <!-- 2. PIGMENT -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider block mb-2">PIGMENT</span>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
+                <button onclick="pickOption('pigment', 'Velvet')" id="opt-pigment-Velvet" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0">Velvet</button>
+                <button onclick="pickOption('pigment', 'Chrome')" id="opt-pigment-Chrome" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Chrome</button>
+                <button onclick="pickOption('pigment', 'Holographic')" id="opt-pigment-Holographic" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Holographic</button>
+                <button onclick="pickOption('pigment', 'Pearlescent')" id="opt-pigment-Pearlescent" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Pearlescent</button>
+                <button onclick="pickOption('pigment', 'None')" id="opt-pigment-None" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">None</button>
+              </div>
+            </div>
+
+            <!-- 3. OPACITY -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider block mb-2">OPACITY</span>
+              <div class="flex space-x-2">
+                <button onclick="pickOption('opacity', 'Jelly')" id="opt-opacity-Jelly" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white">Jelly</button>
+                <button onclick="pickOption('opacity', 'Milky')" id="opt-opacity-Milky" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora">Milky</button>
+                <button onclick="pickOption('opacity', 'Cream')" id="opt-opacity-Cream" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora">Cream</button>
+              </div>
+            </div>
+
+            <!-- 4. EXTENSIONS -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider block mb-2">EXTENSIONS</span>
+              <div class="flex space-x-2">
+                <button onclick="pickOption('ext', 'Extensions')" id="opt-ext-Extensions" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white">Extensions</button>
+                <button onclick="pickOption('ext', 'None')" id="opt-ext-None" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora">None</button>
+              </div>
+            </div>
+
+            <!-- 5. NAIL LENGTH (Does NOT change price) -->
+            <div style="margin-bottom: 18px;">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider">NAIL LENGTH</span>
+                <span class="text-[10px] text-[#7A7672]">Length included</span>
+              </div>
+              <div class="flex space-x-2">
+                <button onclick="pickOption('length', 'Medium')" id="opt-length-Medium" class="px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white">Medium</button>
+                <button onclick="pickOption('length', 'Long')" id="opt-length-Long" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white border border-viora">Long</button>
+                <button onclick="pickOption('length', 'Short')" id="opt-length-Short" class="px-4 py-1.5 rounded-full text-xs font-medium bg-white border border-viora">Short</button>
+              </div>
+            </div>
+
+            <!-- 6. NAIL SHAPE -->
+            <div style="margin-bottom: 18px;">
+              <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider block mb-2">NAIL SHAPE</span>
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
+                <button onclick="pickOption('shape', 'Almond')" id="opt-shape-Almond" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0">Almond</button>
+                <button onclick="pickOption('shape', 'Oval')" id="opt-shape-Oval" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Oval</button>
+                <button onclick="pickOption('shape', 'Square')" id="opt-shape-Square" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Square</button>
+                <button onclick="pickOption('shape', 'Squoval')" id="opt-shape-Squoval" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Squoval</button>
+                <button onclick="pickOption('shape', 'Coffin')" id="opt-shape-Coffin" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Coffin</button>
+                <button onclick="pickOption('shape', 'Stiletto')" id="opt-shape-Stiletto" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">Stiletto</button>
+              </div>
+            </div>
+
+            <!-- 7. DESIGNS SECTION (Max 2 Options - No Overflow!) -->
+            <div style="margin-bottom: 22px;">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-[10px] font-bold text-[#6E6A66] tracking-wider">DESIGNS</span>
+                <span id="designLimitNotice" class="text-[10.5px] font-bold text-[#C59265]">Max 2 options can be chosen (1/2)</span>
+              </div>
+
+              <!-- Selected Tags -->
+              <div id="selectedDesignsPills" class="flex flex-wrap gap-1.5 mb-2"></div>
+
+              <!-- Design Category Triggers -->
+              <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
+                <button onclick="openCategorySheet('Ombre & Gradients')" class="px-3 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white flex items-center space-x-1 shrink-0">
+                  <span>Ombre &amp; Gradients</span>
+                  <span>▾</span>
+                </button>
+                <button onclick="openCategorySheet('French Tips & Fades')" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-viora flex items-center space-x-1 shrink-0">
+                  <span>French Tips &amp; Fades</span>
+                  <span>▾</span>
+                </button>
+                <button onclick="openCategorySheet('Texture & Illusion Art')" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-viora flex items-center space-x-1 shrink-0">
+                  <span>Texture &amp; Illusion Art</span>
+                  <span>▾</span>
+                </button>
+                <button onclick="openCategorySheet('Flat Paint & Line Art')" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-viora flex items-center space-x-1 shrink-0">
+                  <span>Flat Paint &amp; Line Art</span>
+                  <span>▾</span>
+                </button>
+                <button onclick="clearAllDesigns()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-viora shrink-0">
+                  None
+                </button>
+              </div>
+            </div>
+
+            <!-- BOOK THIS LOOK Button -->
+            <button onclick="goToScreen('stylists')" id="bookLookBtn" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs uppercase tracking-widest shadow-md hover:bg-[#b58357] transition-all">
+              BOOK THIS LOOK • ₹1,800
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. SALONS SCREEN -->
+        <div id="screen-salons" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-10 pt-2 hidden">
+          <div class="flex items-center justify-between py-2">
+            <button onclick="goToScreen('home')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center">←</button>
+            <h2 class="font-serif-luxury text-2xl">Salons</h2>
+            <div class="w-9"></div>
+          </div>
+          <div class="space-y-3.5 mt-3">
+            <div class="bg-white rounded-2xl border border-viora overflow-hidden">
+              <img src="./salon_khar.png" class="h-32 w-full object-cover" />
+              <div class="p-3">
+                <div class="flex justify-between items-center font-serif-luxury text-lg">
+                  <span>VIORA — Khar West</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#F5ECE8] text-[#C59265] text-[10px] font-bold">0.8 km</span>
+                </div>
+                <div class="text-xs text-[#7A7672] mt-1">★ 4.9 • 48 Services</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. CHOOSE YOUR STYLIST SCREEN (media_1790274075053.png) -->
+        <div id="screen-stylists" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-12 pt-2 hidden">
+          <div class="flex items-center justify-between py-2 border-b border-viora">
+            <button onclick="goToScreen('detail')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-sm">←</button>
+            <h2 class="font-serif-luxury text-2xl">Choose Your Stylist</h2>
+            <div class="w-9"></div>
+          </div>
+
+          <!-- Filters -->
+          <div class="flex space-x-2 mt-3 mb-4">
+            <div class="px-4 py-1.5 rounded-full bg-[#C59265] text-white text-xs font-semibold flex items-center space-x-1 cursor-pointer">
+              <span>All Salons</span>
+              <span class="text-[10px]">▾</span>
+            </div>
+            <div class="px-4 py-1.5 rounded-full bg-[#C59265] text-white text-xs font-semibold flex items-center space-x-1 cursor-pointer">
+              <span>Sort</span>
+              <span class="text-[10px]">▾</span>
+            </div>
+          </div>
+
+          <!-- Stylist 1: Any Available -->
+          <div onclick="selectStylist('any')" id="card-stylist-any" class="stylist-card mb-3.5 p-3.5 bg-white rounded-2xl border border-viora flex items-center justify-between cursor-pointer transition-all">
+            <div class="flex items-center space-x-3">
+              <div class="w-12 h-12 rounded-full bg-[#F7EFE8] flex items-center justify-center text-[#C59265] text-xl font-bold">
+                ✨
+              </div>
+              <div>
+                <div class="font-serif-luxury text-lg leading-tight">Any Available Stylist</div>
+                <div class="text-[11px] text-[#7A7672] mt-0.5">We'll assign the premier stylist available at your time.</div>
+              </div>
+            </div>
+            <div class="radio-circle w-5 h-5 rounded-full border border-viora shrink-0 flex items-center justify-center p-0.5" id="radio-any"></div>
+          </div>
+
+          <!-- Stylist 2: Jessica Alba -->
+          <div onclick="selectStylist('jessica')" id="card-stylist-jessica" class="stylist-card mb-3.5 p-3.5 bg-white rounded-2xl border border-viora flex items-start justify-between cursor-pointer transition-all">
+            <div class="flex space-x-3">
+              <div class="w-13 h-13 rounded-full border border-[#C59265]/40 p-0.5 overflow-hidden shrink-0">
+                <img src="./avatar_jessica.png" class="w-full h-full rounded-full object-cover" />
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="font-serif-luxury text-lg leading-none">Jessica Alba</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[9px] font-bold tracking-wider">SENIOR STYLIST</span>
+                </div>
+                <div class="text-[11px] text-[#7A7672] mt-0.5">Viora • Model Town</div>
+                <div class="flex items-center space-x-1 mt-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 4.8</span>
+                  <span class="text-[#7A7672]">(1471) • 5 Years Exp</span>
+                </div>
+                <div class="flex items-center space-x-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 4.5</span>
+                  <span class="text-[#7A7672]">(363) For This Look</span>
+                </div>
+                <div class="flex items-center space-x-2 mt-1.5 text-xs">
+                  <span class="text-viora-dark font-medium">🕒 60 min</span>
+                  <span class="text-[#7A7672]">•</span>
+                  <span class="font-bold text-[#C59265]" id="price-stylist-jessica">₹1,800</span>
+                </div>
+              </div>
+            </div>
+            <div class="radio-circle w-5 h-5 rounded-full border border-viora shrink-0 flex items-center justify-center p-0.5" id="radio-jessica"></div>
+          </div>
+
+          <!-- Stylist 3: Christian Dior (Active pre-selected) -->
+          <div onclick="selectStylist('christian')" id="card-stylist-christian" class="stylist-card mb-3.5 p-3.5 bg-[#FFFDF9] rounded-2xl border-2 border-[#C59265] shadow-xs flex items-start justify-between cursor-pointer transition-all">
+            <div class="flex space-x-3">
+              <div class="w-13 h-13 rounded-full border border-[#C59265] p-0.5 overflow-hidden shrink-0">
+                <img src="./avatar_christian_dior.png" class="w-full h-full rounded-full object-cover" />
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="font-serif-luxury text-lg leading-none">Christian Dior</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[9px] font-bold tracking-wider">ART DIRECTOR</span>
+                </div>
+                <div class="text-[11px] text-[#7A7672] mt-0.5">Viora • Khar West</div>
+                <div class="flex items-center space-x-1 mt-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 4.9</span>
+                  <span class="text-[#7A7672]">(5826) • 8 Years Exp</span>
+                </div>
+                <div class="flex items-center space-x-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 4.4</span>
+                  <span class="text-[#7A7672]">(204) For This Look</span>
+                </div>
+                <div class="flex items-center space-x-2 mt-1.5 text-xs">
+                  <span class="text-viora-dark font-medium">🕒 75 min</span>
+                  <span class="text-[#7A7672]">•</span>
+                  <span class="font-bold text-[#C59265]" id="price-stylist-christian">₹2,600</span>
+                </div>
+              </div>
+            </div>
+            <div class="radio-circle w-5 h-5 rounded-full border-2 border-[#C59265] shrink-0 flex items-center justify-center p-0.5" id="radio-christian">
+              <div class="w-full h-full bg-[#C59265] rounded-full"></div>
+            </div>
+          </div>
+
+          <!-- Stylist 4: Marcus Aurelius -->
+          <div onclick="selectStylist('marcus')" id="card-stylist-marcus" class="stylist-card mb-3.5 p-3.5 bg-white rounded-2xl border border-viora flex items-start justify-between cursor-pointer transition-all">
+            <div class="flex space-x-3">
+              <div class="w-13 h-13 rounded-full border border-[#C59265]/40 p-0.5 overflow-hidden shrink-0">
+                <img src="./avatar_marcus.png" class="w-full h-full rounded-full object-cover" />
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="font-serif-luxury text-lg leading-none">Marcus Aurelius</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[9px] font-bold tracking-wider">SENIOR STYLIST</span>
+                </div>
+                <div class="text-[11px] text-[#7A7672] mt-0.5">Viora • Delhi</div>
+                <div class="flex items-center space-x-1 mt-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 4.5</span>
+                  <span class="text-[#7A7672]">(1095) • 6 Years Exp</span>
+                </div>
+                <div class="flex items-center space-x-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 3.8</span>
+                  <span class="text-[#7A7672]">(56) For This Look</span>
+                </div>
+                <div class="flex items-center space-x-2 mt-1.5 text-xs">
+                  <span class="text-viora-dark font-medium">🕒 80 min</span>
+                  <span class="text-[#7A7672]">•</span>
+                  <span class="font-bold text-[#C59265]" id="price-stylist-marcus">₹2,250</span>
+                </div>
+              </div>
+            </div>
+            <div class="radio-circle w-5 h-5 rounded-full border border-viora shrink-0 flex items-center justify-center p-0.5" id="radio-marcus"></div>
+          </div>
+
+          <!-- Stylist 5: Sophia Loren -->
+          <div onclick="selectStylist('sophia')" id="card-stylist-sophia" class="stylist-card mb-3.5 p-3.5 bg-white rounded-2xl border border-viora flex items-start justify-between cursor-pointer transition-all">
+            <div class="flex space-x-3">
+              <div class="w-13 h-13 rounded-full border border-[#C59265]/40 p-0.5 overflow-hidden shrink-0">
+                <img src="./avatar_sophia.png" class="w-full h-full rounded-full object-cover" />
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="font-serif-luxury text-lg leading-none">Sophia Loren</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[9px] font-bold tracking-wider">JUNIOR STYLIST</span>
+                </div>
+                <div class="text-[11px] text-[#7A7672] mt-0.5">Viora • Bangalore</div>
+                <div class="flex items-center space-x-1 mt-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 4.3</span>
+                  <span class="text-[#7A7672]">(428) • 3 Years Exp</span>
+                </div>
+                <div class="flex items-center space-x-1 text-[11px]">
+                  <span class="text-[#C59265]">★ 3.7</span>
+                  <span class="text-[#7A7672]">(34) For This Look</span>
+                </div>
+                <div class="flex items-center space-x-2 mt-1.5 text-xs">
+                  <span class="text-viora-dark font-medium">🕒 70 min</span>
+                  <span class="text-[#7A7672]">•</span>
+                  <span class="font-bold text-[#C59265]" id="price-stylist-sophia">₹1,700</span>
+                </div>
+              </div>
+            </div>
+            <div class="radio-circle w-5 h-5 rounded-full border border-viora shrink-0 flex items-center justify-center p-0.5" id="radio-sophia"></div>
+          </div>
+
+          <!-- Sticky Bottom CONTINUE -->
+          <div class="mt-4">
+            <button onclick="goToScreen('datetime')" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs uppercase tracking-widest shadow-md hover:bg-[#b58357] transition-all">
+              CONTINUE
+            </button>
+          </div>
+        </div>
+
+        <!-- 7. SELECT DATE & TIME SCREEN (media_1790274094135.png) -->
+        <div id="screen-datetime" class="screen-content flex-1 overflow-y-auto no-scrollbar px-5 pb-12 pt-2 hidden">
+          <div class="flex items-center justify-between py-2 border-b border-viora">
+            <button onclick="goToScreen('stylists')" class="w-9 h-9 rounded-full bg-white border border-viora flex items-center justify-center text-sm">←</button>
+            <h2 class="font-serif-luxury text-2xl">Select Date &amp; Time</h2>
+            <div class="w-9"></div>
+          </div>
+
+          <!-- Month Selector -->
+          <div class="flex justify-between items-center mt-3 mb-3">
+            <h3 class="font-serif-luxury text-xl">October 2023</h3>
+            <div class="flex space-x-2">
+              <button class="w-7 h-7 rounded-full bg-white border border-viora flex items-center justify-center text-xs text-viora-dark">‹</button>
+              <button class="w-7 h-7 rounded-full bg-white border border-viora flex items-center justify-center text-xs text-viora-dark">›</button>
+            </div>
+          </div>
+
+          <!-- Horizontal Date Picker -->
+          <div class="flex space-x-2.5 overflow-x-auto no-scrollbar pb-1">
+            <div onclick="pickDate('Mon', '15')" id="dt-Mon15" class="dt-card w-12 py-3 bg-white rounded-2xl border border-viora text-center cursor-pointer shrink-0">
+              <div class="text-[11px] text-[#7A7672]">Mon</div>
+              <div class="text-base font-bold mt-1 text-viora-dark">15</div>
+            </div>
+            <div onclick="pickDate('Tue', '16')" id="dt-Tue16" class="dt-card w-12 py-3 bg-white rounded-2xl border border-viora text-center cursor-pointer shrink-0">
+              <div class="text-[11px] text-[#7A7672]">Tue</div>
+              <div class="text-base font-bold mt-1 text-viora-dark">16</div>
+            </div>
+            <div onclick="pickDate('Wed', '17')" id="dt-Wed17" class="dt-card w-12 py-3 bg-[#C59265] text-white rounded-2xl border border-[#C59265] text-center cursor-pointer shrink-0 shadow-xs">
+              <div class="text-[11px] text-white/90">Wed</div>
+              <div class="text-base font-bold mt-1 text-white">17</div>
+            </div>
+            <div onclick="pickDate('Thu', '18')" id="dt-Thu18" class="dt-card w-12 py-3 bg-white rounded-2xl border border-viora text-center cursor-pointer shrink-0">
+              <div class="text-[11px] text-[#7A7672]">Thu</div>
+              <div class="text-base font-bold mt-1 text-viora-dark">18</div>
+            </div>
+            <div onclick="pickDate('Fri', '19')" id="dt-Fri19" class="dt-card w-12 py-3 bg-white rounded-2xl border border-viora text-center cursor-pointer shrink-0">
+              <div class="text-[11px] text-[#7A7672]">Fri</div>
+              <div class="text-base font-bold mt-1 text-viora-dark">19</div>
+            </div>
+            <div onclick="pickDate('Sat', '20')" id="dt-Sat20" class="dt-card w-12 py-3 bg-white rounded-2xl border border-viora text-center cursor-pointer shrink-0">
+              <div class="text-[11px] text-[#7A7672]">Sat</div>
+              <div class="text-base font-bold mt-1 text-viora-dark">20</div>
+            </div>
+          </div>
+
+          <!-- Available Slots Grid -->
+          <div class="mt-6">
+            <div class="text-[11px] font-bold tracking-wider text-[#6E6A66] uppercase mb-3">AVAILABLE SLOTS</div>
+            <div class="grid grid-cols-3 gap-2.5">
+              <button onclick="pickSlot('10:00 AM')" class="slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark">10:00 AM</button>
+              <button onclick="pickSlot('10:30 AM')" class="slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark">10:30 AM</button>
+              <button onclick="pickSlot('11:00 AM')" class="slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark">11:00 AM</button>
+              <button onclick="pickSlot('11:30 AM')" class="slot-btn py-2.5 rounded-xl bg-[#F7EFE8] border-2 border-[#C59265] font-bold text-xs text-[#C59265]">11:30 AM</button>
+              <button onclick="pickSlot('12:00 PM')" class="slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark">12:00 PM</button>
+              <button onclick="pickSlot('01:30 PM')" class="slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark">01:30 PM</button>
+              <button onclick="pickSlot('02:00 PM')" class="slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark">02:00 PM</button>
+              <button onclick="pickSlot('03:00 PM')" class="slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark">03:00 PM</button>
+            </div>
+          </div>
+
+          <!-- Bottom Summary & Action -->
+          <div class="mt-8 pt-3 border-t border-viora">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-full border border-[#C59265] p-0.5 overflow-hidden">
+                  <img src="./avatar_christian_dior.png" id="dtStylistAvatar" class="w-full h-full rounded-full object-cover" />
+                </div>
+                <div>
+                  <div class="font-serif-luxury text-base leading-tight">Brown Ombre Cat Eye Nails</div>
+                  <div class="text-[11px] text-[#7A7672]" id="dtStylistName">with Christian Dior</div>
+                </div>
+              </div>
+              <div class="font-serif-luxury text-lg font-bold text-[#C59265]" id="dtFinalPrice">₹2,600</div>
+            </div>
+
+            <button onclick="goToScreen('confirmed')" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs uppercase tracking-widest shadow-md hover:bg-[#b58357] transition-all">
+              BOOK APPOINTMENT
+            </button>
+          </div>
+        </div>
+
+        <!-- 8. BOOKING CONFIRMED! SCREEN (media_1790274108354.png) -->
+        <div id="screen-confirmed" class="screen-content flex-1 overflow-y-auto no-scrollbar px-6 py-6 flex flex-col justify-between hidden">
+          <div class="flex flex-col items-center pt-3">
+            <!-- Success Check Badge -->
+            <div class="w-20 h-20 rounded-full bg-[#F7EFE8] flex items-center justify-center text-3xl text-[#C59265] shadow-xs mb-4">
+              ✓
+            </div>
+            <h2 class="font-serif-luxury text-3xl text-center">Booking Confirmed!</h2>
+            <p class="text-xs text-[#7A7672] text-center mt-1">Your luxury beauty experience is scheduled.</p>
+
+            <!-- Luxury Confirmation Card -->
+            <div class="w-full mt-6 p-5 bg-white rounded-3xl border border-viora shadow-xs text-left">
+              <div>
+                <span class="text-[10px] font-bold text-[#C59265] tracking-widest uppercase">SALON BRANCH</span>
+                <div class="font-serif-luxury text-xl mt-0.5">Viora — Khar West</div>
+                <div class="text-xs text-[#7A7672] mt-0.5">Plot 42, Khar Pali Road, Khar West, Mumbai</div>
+              </div>
+
+              <div class="my-4 border-b border-[#F0EAE1]"></div>
+
+              <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-full border border-[#C59265]/40 p-0.5 overflow-hidden">
+                  <img src="./avatar_christian_dior.png" id="confirmStylistAvatar" class="w-full h-full rounded-full object-cover" />
+                </div>
+                <div>
+                  <div class="text-sm font-bold text-viora-dark">Brown Ombre Cat Eye Nails</div>
+                  <div class="text-xs text-[#7A7672]" id="confirmStylistDesc">with Christian (Art Director)</div>
+                </div>
+              </div>
+
+              <div class="my-4 border-b border-[#F0EAE1]"></div>
+
+              <div class="flex justify-between items-center text-xs font-bold">
+                <div class="flex items-center space-x-2 text-viora-dark">
+                  <span class="text-[#C59265]">📅</span>
+                  <span id="confirmDateTime">Wed, 17 Oct • 11:30 AM</span>
+                </div>
+                <div class="text-base font-bold text-viora-dark" id="confirmPrice">₹2,600</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="space-y-3 pb-2 pt-6">
+            <button onclick="alert('Appointment added to your device calendar!')" class="w-full py-4 rounded-full bg-[#C59265] text-white font-bold text-xs uppercase tracking-widest shadow-md hover:bg-[#b58357] transition-all">
+              ADD TO CALENDAR
+            </button>
+            <button onclick="goToScreen('home')" class="w-full py-3.5 rounded-full bg-white border border-viora text-viora-dark font-bold text-xs uppercase tracking-widest hover:bg-stone-50 transition-all">
+              VIEW APPOINTMENTS
+            </button>
+          </div>
+        </div>
+
+        <!-- NATIVE BOTTOM SHEET MODAL (Prevents Overflow!) -->
+        <div id="designModal" class="absolute inset-0 bg-black/50 z-50 flex flex-col justify-end hidden">
+          <div class="bg-[#FAF8F5] rounded-t-3xl p-5 max-h-[65%] flex flex-col border-t border-viora shadow-2xl">
+            <div class="flex justify-between items-center pb-2 border-b border-viora">
+              <div>
+                <h3 id="modalTitle" class="font-serif-luxury text-xl font-normal text-viora-dark">Ombre &amp; Gradients</h3>
+                <span class="text-[10px] font-bold text-[#C59265]">Max 2 options can be chosen</span>
+              </div>
+              <button onclick="closeCategorySheet()" class="w-7 h-7 rounded-full bg-white border border-viora flex items-center justify-center text-xs">✕</button>
+            </div>
+
+            <!-- Modal Options List -->
+            <div id="modalOptionsList" class="flex-1 overflow-y-auto py-2 space-y-1.5 text-xs text-viora-dark"></div>
+
+            <button onclick="closeCategorySheet()" class="mt-3 w-full py-2.5 rounded-full bg-[#C59265] text-white font-bold text-xs uppercase tracking-wider">
+              DONE
+            </button>
+          </div>
+        </div>
+
+        <!-- iOS Home Indicator -->
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-black/80 rounded-full z-40"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Color filters for Nails Services screen (Max 2 simultaneous)
+    let selectedColors = new Set(['Brown']);
+
+    function toggleFilterColor(color) {
+      if (selectedColors.has(color)) {
+        selectedColors.delete(color);
+      } else {
+        if (selectedColors.size >= 2) {
+          const first = selectedColors.values().next().value;
+          selectedColors.delete(first);
+        }
+        selectedColors.add(color);
+      }
+      updateColorPills();
+      filterNailCards();
+    }
+
+    function updateColorPills() {
+      const colors = ['Amber', 'Brown', 'Beige', 'Crimson', 'Gold', 'Green'];
+      colors.forEach(c => {
+        const pill = document.getElementById('pill-' + c);
+        if (!pill) return;
+        if (selectedColors.has(c)) {
+          pill.className = 'color-pill px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white border border-[#C59265] shadow-xs transition-all shrink-0';
+        } else {
+          pill.className = 'color-pill px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs transition-all shrink-0';
+        }
+      });
+
+      const badge = document.getElementById('selectedCountBadge');
+      if (badge) {
+        badge.innerText = `${selectedColors.size}/2 selected`;
+      }
+    }
+
+    function filterNailCards() {
+      const cards = document.querySelectorAll('.nail-card');
+      cards.forEach(card => {
+        const cardColors = card.dataset.colors ? card.dataset.colors.split(',') : [];
+        if (selectedColors.size === 0) {
+          card.classList.remove('hidden');
+        } else {
+          const match = cardColors.some(c => selectedColors.has(c));
+          if (match) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    // Detail customization state
+    const selections = {
+      topcoat: 'Glossy',
+      pigment: 'Velvet',
+      opacity: 'Jelly',
+      ext: 'Extensions',
+      length: 'Medium',
+      shape: 'Almond'
+    };
+
+    const selectedDesigns = new Set(['Inverted Ombre']);
+
+    const designCategoriesData = {
+      'Ombre & Gradients': [
+        'Classic Vertical Ombre',
+        'Inverted Ombre',
+        'Horizontal Ombre',
+        'Aura Ombre',
+        'French Ombre',
+        'Skittle Ombre'
+      ],
+      'French Tips & Fades': [
+        'Classic French Tip',
+        'Micro French Tip',
+        'Double French Tip',
+        'V-Cut French Tip',
+        'Deep French Tip',
+        'Slanted French Tip',
+        'Glitter Fade Tip',
+        'Cat-Eye Fade Tip'
+      ],
+      'Texture & Illusion Art': [
+        'Marble Art',
+        'Tortoiseshell Art',
+        'Classic Croc Print',
+        'Velvet Wave',
+        'Blooming Gel Florals',
+        'Shattered Glass',
+        'Crackle Effect'
+      ],
+      'Flat Paint & Line Art': [
+        'Abstract Swirls',
+        'Geometric & Grid Art',
+        'Minimalist Dots',
+        'Fine-Line Florals',
+        'Celestial Motif Art',
+        'Animal Print',
+        'Pop Art',
+        'Custom Typography',
+        'Portrait Painting'
+      ],
+      '3D & Sculpted Art': [
+        'Liquid Metal',
+        'Sweater Knit Texture',
+        'Dewdrops',
+        'Mermaid Shell Sculpt',
+        'Pillow Quilt',
+        'Molded Charms',
+        'Classic Croc Print 3D'
+      ],
+      'Embellishments & Charms': [
+        'Rhinestone Clusters',
+        'Statement Charms',
+        'Encapsulated Art',
+        'Pixie Dust',
+        'Nail Piercings'
+      ]
+    };
+
+    function pickOption(group, val) {
+      selections[group] = val;
+      const buttons = document.querySelectorAll(`[id^="opt-${group}-"]`);
+      buttons.forEach(b => {
+        b.className = 'px-3.5 py-1 rounded-full text-xs font-medium bg-white border border-viora shrink-0';
+      });
+      const active = document.getElementById(`opt-${group}-${val}`);
+      if (active) {
+        active.className = 'px-3.5 py-1 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0';
+      }
+      updateCustomizerUI();
+    }
+
+    let activeModalCategory = '';
+
+    function openCategorySheet(catName) {
+      activeModalCategory = catName;
+      document.getElementById('modalTitle').innerText = catName;
+      renderModalOptions();
+      document.getElementById('designModal').classList.remove('hidden');
+    }
+
+    function closeCategorySheet() {
+      document.getElementById('designModal').classList.add('hidden');
+      renderSelectedDesignsPills();
+      updateCustomizerUI();
+    }
+
+    function renderModalOptions() {
+      const list = document.getElementById('modalOptionsList');
+      list.innerHTML = '';
+      const opts = designCategoriesData[activeModalCategory] || [];
+
+      opts.forEach(opt => {
+        const isChecked = selectedDesigns.has(opt);
+        const item = document.createElement('div');
+        item.className = `p-2 rounded-xl flex justify-between items-center cursor-pointer transition-all ${isChecked ? 'bg-[#F5ECE8] font-bold text-[#C59265]' : 'bg-white hover:bg-stone-50 border border-viora'}`;
+        item.innerHTML = `
+          <span>${opt}</span>
+          <span class="w-4 h-4 rounded-full border flex items-center justify-center text-[10px] ${isChecked ? 'bg-[#C59265] text-white border-[#C59265]' : 'border-stone-300'}">
+            ${isChecked ? '✓' : ''}
+          </span>
+        `;
+        item.onclick = () => {
+          if (selectedDesigns.has(opt)) {
+            selectedDesigns.delete(opt);
+          } else {
+            if (selectedDesigns.size >= 2) {
+              alert('Max 2 options can be chosen in Design section!');
+              return;
+            }
+            selectedDesigns.add(opt);
+          }
+          renderModalOptions();
+          renderSelectedDesignsPills();
+          updateCustomizerUI();
+        };
+        list.appendChild(item);
+      });
+    }
+
+    function renderSelectedDesignsPills() {
+      const container = document.getElementById('selectedDesignsPills');
+      if (!container) return;
+      container.innerHTML = '';
+      selectedDesigns.forEach(d => {
+        const pill = document.createElement('div');
+        pill.className = 'px-2.5 py-1 rounded-full bg-[#F5ECE8] text-[#C59265] text-[10px] font-bold border border-[#C59265] flex items-center space-x-1';
+        pill.innerHTML = `<span>${d}</span><span class="cursor-pointer ml-1 text-xs" onclick="removeDesign('${d}')">✕</span>`;
+        container.appendChild(pill);
+      });
+
+      const notice = document.getElementById('designLimitNotice');
+      if (notice) notice.innerText = `Max 2 options can be chosen (${selectedDesigns.size}/2)`;
+    }
+
+    function removeDesign(d) {
+      selectedDesigns.delete(d);
+      renderSelectedDesignsPills();
+      updateCustomizerUI();
+    }
+
+    function clearAllDesigns() {
+      selectedDesigns.clear();
+      renderSelectedDesignsPills();
+      updateCustomizerUI();
+    }
+
+    // Dynamic Price Calculation
+    function calculateTotalLookPrice() {
+      let price = 1800; // Base look price
+
+      // Top Coat (affects price)
+      if (selections.topcoat === 'Satin') price += 100;
+      if (selections.topcoat === 'Matte') price += 150;
+
+      // Pigment (affects price)
+      if (selections.pigment === 'Chrome') price += 200;
+      else if (selections.pigment === 'Holographic') price += 300;
+      else if (selections.pigment === 'Pearlescent') price += 150;
+      else if (selections.pigment === 'None') price -= 100;
+
+      // Opacity (affects price)
+      if (selections.opacity === 'Milky') price += 100;
+      else if (selections.opacity === 'Cream') price += 150;
+
+      // Extensions (affects price)
+      if (selections.ext === 'None') price -= 300;
+
+      // Nail Length: Does NOT change price as explicitly instructed!
+
+      // Shape (affects price)
+      if (selections.shape === 'Oval' || selections.shape === 'Square') price += 50;
+      else if (selections.shape === 'Squoval') price += 100;
+      else if (selections.shape === 'Coffin') price += 150;
+      else if (selections.shape === 'Stiletto') price += 200;
+
+      // Designs (affects price)
+      if (selectedDesigns.size === 0) {
+        price -= 200;
+      } else if (selectedDesigns.size === 2) {
+        price += 250;
+      }
+
+      return price;
+    }
+
+    // Stylist & Booking State
+    let activeStylist = 'christian';
+    let activeDate = 'Wed, 17 Oct';
+    let activeTime = '11:30 AM';
+
+    const stylistData = {
+      'any': { name: 'Any Available Stylist', role: '', photo: './avatar_christian_dior.png', priceDelta: 0 },
+      'jessica': { name: 'Jessica Alba', role: 'Senior Stylist', photo: './avatar_jessica.png', priceDelta: 0 },
+      'christian': { name: 'Christian Dior', role: 'Art Director', photo: './avatar_christian_dior.png', priceDelta: 800 },
+      'marcus': { name: 'Marcus Aurelius', role: 'Senior Stylist', photo: './avatar_marcus.png', priceDelta: 450 },
+      'sophia': { name: 'Sophia Loren', role: 'Junior Stylist', photo: './avatar_sophia.png', priceDelta: -100 }
+    };
+
+    function updateCustomizerUI() {
+      const total = calculateTotalLookPrice();
+      const badge = document.getElementById('detailPriceBadge');
+      if (badge) badge.innerText = 'From ₹' + total.toLocaleString('en-IN');
+      const btn = document.getElementById('bookLookBtn');
+      if (btn) btn.innerText = 'BOOK THIS LOOK • ₹' + total.toLocaleString('en-IN');
+
+      // Update stylist cards prices dynamically
+      for (const [id, data] of Object.entries(stylistData)) {
+        const el = document.getElementById('price-stylist-' + id);
+        if (el) {
+          const stylistPrice = total + data.priceDelta;
+          el.innerText = '₹' + stylistPrice.toLocaleString('en-IN');
+        }
+      }
+
+      // Update Date & Time screen summary
+      const chosenStylist = stylistData[activeStylist] || stylistData['christian'];
+      const finalPrice = total + chosenStylist.priceDelta;
+      const dtPrice = document.getElementById('dtFinalPrice');
+      if (dtPrice) dtPrice.innerText = '₹' + finalPrice.toLocaleString('en-IN');
+      const confPrice = document.getElementById('confirmPrice');
+      if (confPrice) confPrice.innerText = '₹' + finalPrice.toLocaleString('en-IN');
+
+      renderSelectedDesignsPills();
+    }
+
+    function selectStylist(id) {
+      activeStylist = id;
+      ['any', 'jessica', 'christian', 'marcus', 'sophia'].forEach(s => {
+        const card = document.getElementById('card-stylist-' + s);
+        const radio = document.getElementById('radio-' + s);
+        if (!card || !radio) return;
+        if (s === id) {
+          card.className = 'stylist-card mb-3.5 p-3.5 bg-[#FFFDF9] rounded-2xl border-2 border-[#C59265] shadow-xs flex items-start justify-between cursor-pointer transition-all';
+          radio.className = 'radio-circle w-5 h-5 rounded-full border-2 border-[#C59265] shrink-0 flex items-center justify-center p-0.5';
+          radio.innerHTML = '<div class="w-full h-full bg-[#C59265] rounded-full"></div>';
+        } else {
+          card.className = 'stylist-card mb-3.5 p-3.5 bg-white rounded-2xl border border-viora flex items-start justify-between cursor-pointer transition-all';
+          radio.className = 'radio-circle w-5 h-5 rounded-full border border-viora shrink-0 flex items-center justify-center p-0.5';
+          radio.innerHTML = '';
+        }
+      });
+
+      const sData = stylistData[id];
+      const dtName = document.getElementById('dtStylistName');
+      if (dtName) dtName.innerText = 'with ' + sData.name;
+      const confDesc = document.getElementById('confirmStylistDesc');
+      if (confDesc) confDesc.innerText = sData.role ? `with ${sData.name.split(' ')[0]} (${sData.role})` : 'with ' + sData.name;
+      const dtAvatar = document.getElementById('dtStylistAvatar');
+      if (dtAvatar && sData.photo) dtAvatar.src = sData.photo;
+      const confAvatar = document.getElementById('confirmStylistAvatar');
+      if (confAvatar && sData.photo) confAvatar.src = sData.photo;
+
+      updateCustomizerUI();
+    }
+
+    function pickDate(day, date) {
+      activeDate = `${day}, ${date} Oct`;
+      document.querySelectorAll('.dt-card').forEach(c => {
+        c.className = 'dt-card w-12 py-3 bg-white rounded-2xl border border-viora text-center cursor-pointer shrink-0';
+        c.children[0].className = 'text-[11px] text-[#7A7672]';
+        c.children[1].className = 'text-base font-bold mt-1 text-viora-dark';
+      });
+      const activeEl = document.getElementById('dt-' + day + date);
+      if (activeEl) {
+        activeEl.className = 'dt-card w-12 py-3 bg-[#C59265] text-white rounded-2xl border border-[#C59265] text-center cursor-pointer shrink-0 shadow-xs';
+        activeEl.children[0].className = 'text-[11px] text-white/90';
+        activeEl.children[1].className = 'text-base font-bold mt-1 text-white';
+      }
+      updateConfirmationDetails();
+    }
+
+    function pickSlot(slot) {
+      activeTime = slot;
+      document.querySelectorAll('.slot-btn').forEach(b => {
+        if (b.innerText === slot) {
+          b.className = 'slot-btn py-2.5 rounded-xl bg-[#F7EFE8] border-2 border-[#C59265] font-bold text-xs text-[#C59265]';
+        } else {
+          b.className = 'slot-btn py-2.5 rounded-xl bg-white border border-viora font-bold text-xs text-viora-dark';
+        }
+      });
+      updateConfirmationDetails();
+    }
+
+    function updateConfirmationDetails() {
+      const dtEl = document.getElementById('confirmDateTime');
+      if (dtEl) dtEl.innerText = `${activeDate} • ${activeTime}`;
+    }
+
+    function toggleHeart() {
+      const btn = document.getElementById('heartBtn');
+      btn.classList.toggle('text-red-500');
+    }
+
+    // Hair Cut double filtering state & data
+    let currentHairGender = 'woman';
+    let currentHairCutType = "Layered & Textured Cut's";
+
+    const hairCutTypesData = {
+      woman: [
+        'All',
+        "Layered & Textured Cut's",
+        "Classic Cut's",
+        "Bob Cut's",
+        "Short Cut's",
+        "Statement Cut's",
+        "Bangs & Fringe",
+        "Trending"
+      ],
+      man: [
+        'All',
+        'Fade & Taper',
+        'Textured Crop',
+        "Classic Cut's",
+        "Short Cut's",
+        'Trending'
+      ]
+    };
+
+    const straightLongImages = [
+      { src: './layer_cut_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_side.jpg', angle: 'Side Angle (2/3)' },
+      { src: './layer_cut_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const straightMediumImages = [
+      { src: './layer_cut_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_med_side.jpg', angle: 'Side Angle (2/3)' },
+      { src: './layer_cut_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const straightShortImages = [
+      { src: './layer_cut_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_short_back.jpg', angle: 'Back View (3/3)' }
+    ];
+
+    const wavyLongImages = [
+      { src: './layer_cut_wavy_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_wavy_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_wavy_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const wavyMediumImages = [
+      { src: './layer_cut_wavy_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_wavy_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_wavy_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const wavyShortImages = [
+      { src: './layer_cut_wavy_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_wavy_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_wavy_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const curlyLongImages = [
+      { src: './layer_cut_curly_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_curly_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_curly_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const curlyMediumImages = [
+      { src: './layer_cut_curly_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_curly_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_curly_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const curlyShortImages = [
+      { src: './layer_cut_curly_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_curly_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_curly_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const coilyLongImages = [
+      { src: './layer_cut_coily_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_coily_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_coily_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const coilyMediumImages = [
+      { src: './layer_cut_coily_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_coily_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_coily_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const coilyShortImages = [
+      { src: './layer_cut_coily_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_coily_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_coily_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    let currentLayerCutImgIndex = 0;
+    let activeLayerCutImages = straightLongImages;
+
+    let layerCutSelections = {
+      texture: 'Straight',
+      length: 'Long',
+      bangs: 'Curtain Bangs',
+      finish: 'Signature Blowout',
+      care: 'None'
+    };
+
+    const stylingOptionsByTexture = {
+      'Straight': [
+        'Signature Blowout',
+        'Sleek Glass Finish',
+        'Soft Waves',
+        'Natural Polish'
+      ],
+      'Wavy': [
+        'Beach Waves',
+        'Bouncy Blowout',
+        'Diffused Waves',
+        'Sleek Smooth Press'
+      ],
+      'Curly': [
+        'Diffused Curls',
+        'Voluminous Sculpt',
+        'Hydration Glaze',
+        'Thermal Silk Press'
+      ],
+      'Coily': [
+        'Twist-Out Definition',
+        'Diffused Coil Set',
+        'Crown Sculpt',
+        'Nourishing Silk Press'
+      ]
+    };
+
+    function renderStylingOptions() {
+      const container = document.getElementById('layerCutStylingContainer');
+      if (!container) return;
+      const opts = stylingOptionsByTexture[layerCutSelections.texture] || stylingOptionsByTexture['Straight'];
+      container.innerHTML = '';
+      opts.forEach(opt => {
+        const btn = document.createElement('button');
+        const isSelected = (layerCutSelections.finish === opt);
+        btn.className = isSelected 
+          ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs transition-all' 
+          : 'px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0 hover:border-[#C59265] transition-all';
+        btn.innerText = opt;
+        btn.onclick = () => pickHairOption('finish', opt);
+        container.appendChild(btn);
+      });
+    }
+
+    function setLayerCutImg(idx) {
+      if (!activeLayerCutImages || activeLayerCutImages.length === 0) return;
+      if (idx < 0) idx = activeLayerCutImages.length - 1;
+      if (idx >= activeLayerCutImages.length) idx = 0;
+      currentLayerCutImgIndex = idx;
+
+      const img = document.getElementById('layerCutHeroImg');
+      const badge = document.getElementById('layerCutAngleBadge');
+      if (img && activeLayerCutImages[idx]) {
+        img.src = activeLayerCutImages[idx].src;
+      }
+      if (badge && activeLayerCutImages[idx]) {
+        badge.innerText = activeLayerCutImages[idx].angle;
+      }
+
+      // Update dots
+      const dotsContainer = document.getElementById('layerCutDots');
+      if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        activeLayerCutImages.forEach((_, i) => {
+          const dot = document.createElement('span');
+          dot.className = i === idx ? 'w-2.5 h-2.5 rounded-full bg-[#C59265] cursor-pointer transition-all' : 'w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer transition-all';
+          dot.onclick = () => setLayerCutImg(i);
+          dotsContainer.appendChild(dot);
+        });
+      }
+    }
+
+    function cycleLayerCutImg(direction) {
+      setLayerCutImg(currentLayerCutImgIndex + direction);
+    }
+
+    // Touch swipe support for layer cut carousel
+    let touchStartX = 0;
+    let touchEndX = 0;
+    function initTouchSwipe() {
+      const container = document.getElementById('layerCutCarouselContainer');
+      if (!container) return;
+      container.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      container.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchEndX < touchStartX - 40) {
+          cycleLayerCutImg(1); // Swipe left -> Next
+        } else if (touchEndX > touchStartX + 40) {
+          cycleLayerCutImg(-1); // Swipe right -> Prev
+        }
+      }, { passive: true });
+    }
+
+    function pickHairOption(group, val) {
+      layerCutSelections[group] = val;
+
+      if (group === 'texture') {
+        ['Straight', 'Wavy', 'Curly', 'Coily'].forEach(v => {
+          const b = document.getElementById('opt-texture-' + v);
+          if (b) b.className = (v === val) ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs' : 'px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0';
+        });
+
+        // Switch styling to suitable options for this texture
+        const currentOpts = stylingOptionsByTexture[val] || stylingOptionsByTexture['Straight'];
+        if (!currentOpts.includes(layerCutSelections.finish)) {
+          layerCutSelections.finish = currentOpts[0];
+        }
+        renderStylingOptions();
+      } else if (group === 'length') {
+        ['Long', 'Medium', 'Short'].forEach(v => {
+          const b = document.getElementById('opt-hlength-' + v);
+          if (b) b.className = (v === val) ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shadow-xs' : 'px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora';
+        });
+      } else if (group === 'bangs') {
+        const bangsMap = { 'Curtain': 'Curtain Bangs', 'Wispy': 'Wispy Fringe', 'Face': 'Face-Framing', 'None': 'No Bangs' };
+        ['Curtain', 'Wispy', 'Face', 'None'].forEach(v => {
+          const b = document.getElementById('opt-bangs-' + v);
+          if (b) b.className = (bangsMap[v] === val) ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs' : 'px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0';
+        });
+      } else if (group === 'finish') {
+        renderStylingOptions();
+      } else if (group === 'care') {
+        ['None', 'Olaplex', 'Kerastase'].forEach(v => {
+          const b = document.getElementById('opt-care-' + v);
+          if (b) b.className = (v === val) ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs' : 'px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0';
+        });
+      }
+
+      // If user selected Straight, Wavy, or Curly with Long, Medium, or Short, load the corresponding swipeable images!
+      if (layerCutSelections.texture === 'Straight' && layerCutSelections.length === 'Long') {
+        activeLayerCutImages = straightLongImages;
+      } else if (layerCutSelections.texture === 'Straight' && layerCutSelections.length === 'Medium') {
+        activeLayerCutImages = straightMediumImages;
+      } else if (layerCutSelections.texture === 'Straight' && layerCutSelections.length === 'Short') {
+        activeLayerCutImages = straightShortImages;
+      } else if (layerCutSelections.texture === 'Wavy' && layerCutSelections.length === 'Long') {
+        activeLayerCutImages = wavyLongImages;
+      } else if (layerCutSelections.texture === 'Wavy' && layerCutSelections.length === 'Medium') {
+        activeLayerCutImages = wavyMediumImages;
+      } else if (layerCutSelections.texture === 'Wavy' && layerCutSelections.length === 'Short') {
+        activeLayerCutImages = wavyShortImages;
+      } else if (layerCutSelections.texture === 'Curly' && layerCutSelections.length === 'Long') {
+        activeLayerCutImages = curlyLongImages;
+      } else if (layerCutSelections.texture === 'Curly' && layerCutSelections.length === 'Medium') {
+        activeLayerCutImages = curlyMediumImages;
+      } else if (layerCutSelections.texture === 'Curly' && layerCutSelections.length === 'Short') {
+        activeLayerCutImages = curlyShortImages;
+      } else if (layerCutSelections.texture === 'Coily' && layerCutSelections.length === 'Long') {
+        activeLayerCutImages = coilyLongImages;
+      } else if (layerCutSelections.texture === 'Coily' && layerCutSelections.length === 'Medium') {
+        activeLayerCutImages = coilyMediumImages;
+      } else if (layerCutSelections.texture === 'Coily' && layerCutSelections.length === 'Short') {
+        activeLayerCutImages = coilyShortImages;
+      } else if (layerCutSelections.texture === 'Coily') {
+        activeLayerCutImages = coilyMediumImages;
+      } else if (layerCutSelections.texture === 'Curly') {
+        activeLayerCutImages = curlyMediumImages;
+      } else if (layerCutSelections.texture === 'Wavy') {
+        activeLayerCutImages = wavyMediumImages;
+      } else {
+        activeLayerCutImages = straightShortImages;
+      }
+
+      setLayerCutImg(0);
+      updateLayerCutPrice();
+    }
+
+    function updateLayerCutPrice() {
+      let price = 2400;
+      const finish = layerCutSelections.finish || '';
+      if (finish.includes('Silk') || finish.includes('Glass') || finish.includes('Press')) {
+        price += 350;
+      } else if (finish.includes('Blowout') && finish !== 'Signature Blowout') {
+        price += 250;
+      } else if (finish === 'Voluminous Sculpt' || finish === 'Crown Sculpt') {
+        price += 250;
+      } else if (finish === 'Soft Waves' || finish === 'Diffused Waves' || finish === 'Diffused Coil Set' || finish === 'Hydration Glaze') {
+        price += 200;
+      }
+
+      if (layerCutSelections.care === 'Olaplex') price += 800;
+      if (layerCutSelections.care === 'Kerastase') price += 1200;
+
+      const badge = document.getElementById('layerCutPriceBadge');
+      if (badge) badge.innerText = 'From ₹' + price.toLocaleString('en-IN');
+      const btn = document.getElementById('layerCutBookBtn');
+      if (btn) btn.innerText = 'BOOK THIS LOOK • ₹' + price.toLocaleString('en-IN');
+    }
+
+    function bookLayerCutAppointment() {
+      let price = 2400;
+      const finish = layerCutSelections.finish || '';
+      if (finish.includes('Silk') || finish.includes('Glass') || finish.includes('Press')) {
+        price += 350;
+      } else if (finish.includes('Blowout') && finish !== 'Signature Blowout') {
+        price += 250;
+      } else if (finish === 'Voluminous Sculpt' || finish === 'Crown Sculpt') {
+        price += 250;
+      } else if (finish === 'Soft Waves' || finish === 'Diffused Waves' || finish === 'Diffused Coil Set' || finish === 'Hydration Glaze') {
+        price += 200;
+      }
+
+      if (layerCutSelections.care === 'Olaplex') price += 800;
+      if (layerCutSelections.care === 'Kerastase') price += 1200;
+
+      const serviceName = `Layer Cut (${layerCutSelections.texture} • ${layerCutSelections.length} • ${layerCutSelections.finish})`;
+      selectAndBookHaircut(serviceName, price, 'Christian Dior', 'Master Stylist', './avatar_christian_dior.png');
+    }
+
+    // ==========================================
+    // LONG LAYERED CUT LOGIC & INTERACTION
+    // ==========================================
+    const longLayerStraightLongImages = [
+      { src: './long_layered_cut_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerStraightLongNoBangsImages = [
+      { src: './long_layered_cut_straight_long_nobangs_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_straight_long_nobangs_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_straight_long_nobangs_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerStraightMediumImages = [
+      { src: './long_layered_cut_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerStraightShortImages = [
+      { src: './long_layered_cut_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerWavyLongImages = [
+      { src: './long_layered_cut_wavy_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_wavy_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_wavy_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerWavyMediumImages = [
+      { src: './long_layered_cut_wavy_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_wavy_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_wavy_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerWavyShortImages = [
+      { src: './long_layered_cut_wavy_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_wavy_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_wavy_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerCurlyLongImages = [
+      { src: './long_layered_cut_curly_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_curly_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_curly_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerCurlyMediumImages = [
+      { src: './long_layered_cut_curly_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_curly_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_curly_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerCurlyShortImages = [
+      { src: './long_layered_cut_curly_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_curly_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_curly_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerCoilyLongImages = [
+      { src: './long_layered_cut_coily_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_coily_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_coily_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerCoilyMediumImages = [
+      { src: './long_layered_cut_coily_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_coily_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_coily_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const longLayerCoilyShortImages = [
+      { src: './long_layered_cut_coily_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_coily_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_coily_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    let currentLongLayerImgIndex = 0;
+    let activeLongLayerImages = longLayerStraightLongImages;
+    let longLayerSelections = {
+      texture: 'Straight',
+      length: 'Long',
+      bangs: 'Curtain Bangs',
+      finish: 'Signature Blowout',
+      care: 'None'
+    };
+
+    function setLongLayerCutImg(idx) {
+      if (!activeLongLayerImages || activeLongLayerImages.length === 0) return;
+      if (idx < 0) idx = activeLongLayerImages.length - 1;
+      if (idx >= activeLongLayerImages.length) idx = 0;
+      currentLongLayerImgIndex = idx;
+
+      const img = document.getElementById('longLayerCutHeroImg');
+      const badge = document.getElementById('longLayerCutAngleBadge');
+      if (img && activeLongLayerImages[idx]) {
+        img.src = activeLongLayerImages[idx].src;
+      }
+      if (badge && activeLongLayerImages[idx]) {
+        badge.innerText = activeLongLayerImages[idx].angle;
+      }
+
+      const dotsContainer = document.getElementById('longLayerCutDots');
+      if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        activeLongLayerImages.forEach((_, i) => {
+          const dot = document.createElement('span');
+          dot.className = i === idx ? 'w-2.5 h-2.5 rounded-full bg-[#C59265] cursor-pointer transition-all' : 'w-2.5 h-2.5 rounded-full bg-white/50 cursor-pointer transition-all';
+          dot.onclick = () => setLongLayerCutImg(i);
+          dotsContainer.appendChild(dot);
+        });
+      }
+    }
+
+    function cycleLongLayerCutImg(direction) {
+      setLongLayerCutImg(currentLongLayerImgIndex + direction);
+    }
+
+    function renderLongLayerStylingOptions() {
+      const container = document.getElementById('longLayerCutStylingContainer');
+      if (!container) return;
+      const opts = stylingOptionsByTexture[longLayerSelections.texture] || stylingOptionsByTexture['Straight'];
+      container.innerHTML = '';
+      opts.forEach(opt => {
+        const btn = document.createElement('button');
+        const isSelected = (longLayerSelections.finish === opt);
+        btn.className = isSelected 
+          ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs' 
+          : 'px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0';
+        btn.innerText = opt;
+        btn.onclick = () => pickLongLayerHairOption('finish', opt);
+        container.appendChild(btn);
+      });
+    }
+
+    function pickLongLayerHairOption(group, val) {
+      longLayerSelections[group] = val;
+
+      if (group === 'texture') {
+        ['Straight', 'Wavy', 'Curly', 'Coily'].forEach(v => {
+          const b = document.getElementById('opt-ll-texture-' + v);
+          if (b) b.className = (v === val) ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs' : 'px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0';
+        });
+        const currentOpts = stylingOptionsByTexture[val] || stylingOptionsByTexture['Straight'];
+        if (!currentOpts.includes(longLayerSelections.finish)) {
+          longLayerSelections.finish = currentOpts[0];
+        }
+        renderLongLayerStylingOptions();
+      } else if (group === 'length') {
+        ['Long', 'Medium', 'Short'].forEach(v => {
+          const b = document.getElementById('opt-ll-hlength-' + v);
+          if (b) b.className = (v === val) ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shadow-xs' : 'px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora';
+        });
+      } else if (group === 'bangs') {
+        const bangsMap = { 'Curtain': 'Curtain Bangs', 'Wispy': 'Wispy Fringe', 'Face': 'Face-Framing', 'None': 'No Bangs' };
+        const fullBangsName = bangsMap[val] || val;
+        longLayerSelections.bangs = fullBangsName;
+        ['Curtain', 'Wispy', 'Face', 'None'].forEach(v => {
+          const b = document.getElementById('opt-ll-bangs-' + v);
+          if (b) b.className = (bangsMap[v] === fullBangsName) ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs' : 'px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0';
+        });
+      } else if (group === 'finish') {
+        renderLongLayerStylingOptions();
+      } else if (group === 'care') {
+        ['None', 'Olaplex', 'Kerastase'].forEach(v => {
+          const b = document.getElementById('opt-ll-care-' + v);
+          if (b) b.className = (v === val) ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white shrink-0 shadow-xs' : 'px-3.5 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shrink-0';
+        });
+      }
+
+      // If user selected Straight or Wavy on Long Layered Cut, show the new photoshoot pictures!
+      if (longLayerSelections.texture === 'Straight' && longLayerSelections.length === 'Long') {
+        if (longLayerSelections.bangs === 'No Bangs') {
+          activeLongLayerImages = longLayerStraightLongNoBangsImages;
+        } else {
+          activeLongLayerImages = longLayerStraightLongImages;
+        }
+      } else if (longLayerSelections.texture === 'Straight' && longLayerSelections.length === 'Medium') {
+        activeLongLayerImages = longLayerStraightMediumImages;
+      } else if (longLayerSelections.texture === 'Straight' && longLayerSelections.length === 'Short') {
+        activeLongLayerImages = longLayerStraightShortImages;
+      } else if (longLayerSelections.texture === 'Wavy' && longLayerSelections.length === 'Long') {
+        activeLongLayerImages = longLayerWavyLongImages;
+      } else if (longLayerSelections.texture === 'Wavy' && longLayerSelections.length === 'Medium') {
+        activeLongLayerImages = longLayerWavyMediumImages;
+      } else if (longLayerSelections.texture === 'Wavy' && longLayerSelections.length === 'Short') {
+        activeLongLayerImages = longLayerWavyShortImages;
+      } else if (longLayerSelections.texture === 'Curly' && longLayerSelections.length === 'Long') {
+        activeLongLayerImages = longLayerCurlyLongImages;
+      } else if (longLayerSelections.texture === 'Curly' && longLayerSelections.length === 'Medium') {
+        activeLongLayerImages = longLayerCurlyMediumImages;
+      } else if (longLayerSelections.texture === 'Curly' && longLayerSelections.length === 'Short') {
+        activeLongLayerImages = longLayerCurlyShortImages;
+      } else if (longLayerSelections.texture === 'Coily' && longLayerSelections.length === 'Long') {
+        activeLongLayerImages = longLayerCoilyLongImages;
+      } else if (longLayerSelections.texture === 'Coily' && longLayerSelections.length === 'Medium') {
+        activeLongLayerImages = longLayerCoilyMediumImages;
+      } else if (longLayerSelections.texture === 'Coily' && longLayerSelections.length === 'Short') {
+        activeLongLayerImages = longLayerCoilyShortImages;
+      } else {
+        activeLongLayerImages = longLayerStraightLongImages;
+      }
+
+      setLongLayerCutImg(0);
+      updateLongLayerCutPrice();
+    }
+
+    function updateLongLayerCutPrice() {
+      let price = 2600;
+      if (longLayerSelections.finish.includes('Silk') || longLayerSelections.finish.includes('Glass') || longLayerSelections.finish.includes('Press')) {
+        price += 350;
+      } else if (longLayerSelections.finish.includes('Blowout') && longLayerSelections.finish !== 'Signature Blowout') {
+        price += 250;
+      } else if (longLayerSelections.finish === 'Voluminous Sculpt' || longLayerSelections.finish === 'Crown Sculpt') {
+        price += 250;
+      } else if (longLayerSelections.finish === 'Soft Waves' || longLayerSelections.finish === 'Diffused Waves' || longLayerSelections.finish === 'Diffused Coil Set' || longLayerSelections.finish === 'Hydration Glaze') {
+        price += 200;
+      }
+
+      if (longLayerSelections.care === 'Olaplex') price += 800;
+      else if (longLayerSelections.care === 'Kerastase') price += 1200;
+
+      const badge = document.getElementById('longLayerCutPriceBadge');
+      if (badge) badge.innerText = 'From ₹' + price.toLocaleString('en-IN');
+      const btn = document.getElementById('longLayerCutBookBtn');
+      if (btn) btn.innerText = 'BOOK THIS LOOK • ₹' + price.toLocaleString('en-IN');
+    }
+
+    function bookLongLayerCutLook() {
+      let price = 2600;
+      if (longLayerSelections.finish.includes('Silk') || longLayerSelections.finish.includes('Glass') || longLayerSelections.finish.includes('Press')) price += 350;
+      else if (longLayerSelections.finish.includes('Blowout') && longLayerSelections.finish !== 'Signature Blowout') price += 250;
+      if (longLayerSelections.care === 'Olaplex') price += 800;
+      else if (longLayerSelections.care === 'Kerastase') price += 1200;
+
+      selectAndBookHaircut(
+        `Long Layered Cut (${longLayerSelections.texture} • ${longLayerSelections.length} • ${longLayerSelections.finish})`,
+        price,
+        'Christian Dior',
+        'Master Stylist',
+        './avatar_christian_dior.png'
+      );
+    }
+
+    const hairCutCardsData = [
+      // WOMAN'S CUTS
+      // 1. LAYER CUT (TOP PREMIER TILE - ACCESSIBLE UNDER ALL AND UNDER LAYERED & TEXTURED CUT'S)
+      {
+        id: 'layer-cut',
+        name: 'Layer Cut',
+        gender: 'woman',
+        categories: ["All", "Layered & Textured Cut's", "Classic Cut's", "Trending"],
+        image: './layer_cut_front.jpg',
+        stylist: 'Christian Dior',
+        role: 'Master Stylist',
+        avatar: './avatar_christian_dior.png',
+        rating: 4.9,
+        reviews: 580,
+        price: 2400,
+        duration: '60 min',
+        isLayerCut: true
+      },
+      // 2. LONG LAYERED CUT (PREMIER HERO TILE - ACCESSIBLE UNDER ALL AND UNDER LAYERED & TEXTURED CUT'S)
+      {
+        id: 'long-layered-cut',
+        name: 'Long Layered Cut',
+        gender: 'woman',
+        categories: ["All", "Layered & Textured Cut's", "Classic Cut's", "Trending"],
+        image: './long_layered_cut_front.jpg',
+        stylist: 'Christian Dior',
+        role: 'Master Stylist',
+        avatar: './avatar_christian_dior.png',
+        rating: 4.9,
+        reviews: 620,
+        price: 2600,
+        duration: '65-75 min',
+        isLongLayeredCut: true
+      },
+      {
+        id: 'butterfly-layer',
+        name: 'Butterfly Layer Cut',
+        gender: 'woman',
+        categories: ["Layered & Textured Cut's", 'Trending'],
+        image: './haircut_butterfly_cut.png',
+        stylist: 'Christian Dior',
+        role: 'Master Stylist',
+        avatar: './avatar_christian_dior.png',
+        rating: 4.9,
+        reviews: 420,
+        price: 2500,
+        duration: '60 min'
+      },
+      {
+        id: 'french-bob',
+        name: 'French Bob Cut',
+        gender: 'woman',
+        categories: ["Bob Cut's", "Classic Cut's"],
+        image: './haircut_french_bob.png',
+        stylist: 'Jessica Alba',
+        role: 'Senior Stylist',
+        avatar: './avatar_jessica.png',
+        rating: 4.8,
+        reviews: 310,
+        price: 2200,
+        duration: '50 min'
+      },
+      {
+        id: 'curtain-bangs',
+        name: 'Curtain Bangs & Waves',
+        gender: 'woman',
+        categories: ["Bangs & Fringe", "Layered & Textured Cut's"],
+        image: './haircut_curtain_bangs.png',
+        stylist: 'Sarah Jenkins',
+        role: 'Senior Stylist',
+        avatar: './avatar_sarah.png',
+        rating: 4.8,
+        reviews: 290,
+        price: 2100,
+        duration: '45 min'
+      },
+      {
+        id: 'classic-feather',
+        name: 'Classic Feather Layer',
+        gender: 'woman',
+        categories: ["Classic Cut's", "Layered & Textured Cut's"],
+        image: './haircut_classic_feather.png',
+        stylist: 'Christian Dior',
+        role: 'Master Stylist',
+        avatar: './avatar_christian_dior.png',
+        rating: 4.9,
+        reviews: 380,
+        price: 2400,
+        duration: '55 min'
+      },
+      {
+        id: 'pixie-textured',
+        name: 'Pixie Textured Cut',
+        gender: 'woman',
+        categories: ["Short Cut's", "Statement Cut's"],
+        image: './haircut_pixie_cut.png',
+        stylist: 'Sophia Loren',
+        role: 'Creative Director',
+        avatar: './avatar_sophia.png',
+        rating: 4.9,
+        reviews: 195,
+        price: 2300,
+        duration: '45 min'
+      },
+      {
+        id: 'wolf-shag',
+        name: '90s Wolf / Shag Cut',
+        gender: 'woman',
+        categories: ["Statement Cut's", "Trending", "Layered & Textured Cut's"],
+        image: './haircut_wolf_cut.png',
+        stylist: 'Sophia Loren',
+        role: 'Creative Director',
+        avatar: './avatar_sophia.png',
+        rating: 4.9,
+        reviews: 240,
+        price: 2600,
+        duration: '60 min'
+      },
+
+      // MEN'S CUTS
+      {
+        id: 'fade-crop',
+        name: 'Low Fade & Crop',
+        gender: 'man',
+        categories: ['Fade & Taper', 'Textured Crop', "Short Cut's", 'Trending', "Classic Cut's"],
+        image: './haircut_men_fade_crop.png',
+        stylist: 'Marcus Vance',
+        role: 'Master Barber',
+        avatar: './avatar_marcus.png',
+        rating: 4.9,
+        reviews: 510,
+        price: 1500,
+        duration: '40 min'
+      },
+      {
+        id: 'classic-pompadour',
+        name: 'Classic Pompadour',
+        gender: 'man',
+        categories: ["Classic Cut's", 'Fade & Taper', 'Trending'],
+        image: './haircut_men_pompadour.png',
+        stylist: 'Marcus Vance',
+        role: 'Master Barber',
+        avatar: './avatar_marcus.png',
+        rating: 4.8,
+        reviews: 340,
+        price: 1800,
+        duration: '45 min'
+      }
+    ];
+
+    function setHairGender(gender) {
+      currentHairGender = gender;
+      // Default initial cut type per gender
+      currentHairCutType = gender === 'woman' ? "Layered & Textured Cut's" : "All";
+      
+      const womanBtn = document.getElementById('gender-pill-woman');
+      const manBtn = document.getElementById('gender-pill-man');
+      if (gender === 'woman') {
+        womanBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white border border-[#C59265] shadow-xs transition-all';
+        manBtn.className = 'px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs hover:border-stone-400 transition-all';
+      } else {
+        manBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white border border-[#C59265] shadow-xs transition-all';
+        womanBtn.className = 'px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs hover:border-stone-400 transition-all';
+      }
+
+      renderHairCutPills();
+      renderHairCutCards();
+    }
+
+    function setHairCutType(cutType) {
+      currentHairCutType = cutType;
+      renderHairCutPills();
+      renderHairCutCards();
+    }
+
+    function renderHairCutPills() {
+      const container = document.getElementById('hairCutPillsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      const pills = hairCutTypesData[currentHairGender] || [];
+      pills.forEach(pill => {
+        const isActive = (pill === currentHairCutType);
+        const btn = document.createElement('button');
+        btn.onclick = () => setHairCutType(pill);
+        if (isActive) {
+          btn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-[#C59265] text-white border border-[#C59265] shadow-xs transition-all shrink-0';
+        } else {
+          btn.className = 'px-4 py-1.5 rounded-full text-xs font-medium bg-white text-viora-dark border border-viora shadow-2xs hover:border-stone-400 transition-all shrink-0';
+        }
+        btn.innerText = pill;
+        container.appendChild(btn);
+      });
+
+      const badge = document.getElementById('hairCutCountBadge');
+      if (badge) {
+        badge.innerText = currentHairCutType === 'All' ? 'All Cuts' : currentHairCutType;
+      }
+    }
+
+    function renderHairCutCards() {
+      const grid = document.getElementById('hairCutCardsGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const filtered = hairCutCardsData.filter(card => {
+        if (card.gender !== currentHairGender) return false;
+        if (currentHairCutType === 'All') return true;
+        return card.categories.includes(currentHairCutType);
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-2 py-8 text-center text-xs text-stone-400">No cuts found for this selection.</div>';
+        return;
+      }
+
+      filtered.forEach(cut => {
+        const cardEl = document.createElement('div');
+        if (cut.isLayerCut || cut.isLongLayeredCut) {
+          cardEl.className = 'col-span-2 haircut-card bg-white rounded-2xl border border-[#C59265]/40 overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs hover:border-[#C59265] transition-all group';
+          cardEl.onclick = () => {
+            if (cut.isLongLayeredCut) {
+              goToScreen('long-layered-cut-detail');
+            } else {
+              goToScreen('layer-cut-detail');
+            }
+          };
+          const fallbackSrc = cut.isLongLayeredCut ? './long_layered_cut_front.jpg' : './layer_cut_front.jpg';
+          cardEl.innerHTML = `
+            <div class="h-64 sm:h-72 w-full bg-stone-100 overflow-hidden relative">
+              <img src="${cut.image}" alt="${cut.name}" onerror="this.onerror=null;this.src='${fallbackSrc}';" class="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500" />
+              <div class="absolute top-3 left-3 flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-[10px] text-white font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#C59265]"></span>
+                <span>Signature Cut • 360° Angles Preview</span>
+              </div>
+              <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[10px] font-bold text-viora-dark shadow-xs flex items-center space-x-1">
+                <span>Refine Look</span>
+                <span>→</span>
+              </div>
+            </div>
+            <div class="p-3.5 flex items-center justify-between bg-white">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="text-sm font-bold text-viora-dark">${cut.name}</span>
+                  <span class="px-2 py-0.5 rounded-full bg-[#FAF7F2] text-[#C59265] text-[9.5px] font-bold border border-[#C59265]/30">Premier</span>
+                </div>
+                <div class="text-[11px] text-viora-taupe mt-0.5">${cut.stylist} • ${cut.role}</div>
+                <div class="flex items-center space-x-1.5 text-[10.5px] font-bold text-viora-dark mt-1">
+                  <span class="text-[#C59265]">★</span>
+                  <span>${cut.rating.toFixed(1)}</span>
+                  <span class="text-stone-300">•</span>
+                  <span class="text-stone-400 font-normal">${cut.reviews} Reviews</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-base font-bold text-[#C59265]">₹${cut.price.toLocaleString('en-IN')}</div>
+                <div class="text-[10px] text-stone-400 mt-0.5">${cut.duration}</div>
+                <div class="text-[9.5px] font-semibold text-[#C59265] mt-1">Tap to Customize</div>
+              </div>
+            </div>
+          `;
+        } else {
+          cardEl.className = 'haircut-card bg-white rounded-2xl border border-viora overflow-hidden shadow-2xs cursor-pointer hover:shadow-xs hover:border-[#C59265] transition-all';
+          cardEl.onclick = () => selectAndBookHaircut(cut.name, cut.price, cut.stylist, cut.role, cut.avatar);
+          cardEl.innerHTML = `
+            <div class="h-28 w-full bg-stone-100 overflow-hidden relative">
+              <img src="${cut.image}" alt="${cut.name}" onerror="this.onerror=null;this.src='./layer_cut_front.jpg';" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+            </div>
+            <div class="p-2.5 flex flex-col justify-between h-28">
+              <div>
+                <div class="text-xs font-bold text-viora-dark truncate">${cut.name}</div>
+                <div class="text-[9px] text-stone-400 mt-0.5">Service By</div>
+                <div class="text-[10px] text-viora-taupe truncate">${cut.stylist} • ${cut.role}</div>
+              </div>
+              <div>
+                <div class="flex items-center space-x-1 text-[10px] font-bold text-viora-dark">
+                  <span class="text-[#C59265]">★</span>
+                  <span>${cut.rating.toFixed(1)}</span>
+                  <span class="text-stone-300">•</span>
+                  <span class="text-stone-400 font-normal">${cut.reviews} Reviews</span>
+                </div>
+                <div class="flex items-center justify-between mt-1">
+                  <div class="text-xs font-bold text-[#C59265]">₹${cut.price.toLocaleString('en-IN')}</div>
+                  <div class="text-[9px] text-stone-400">${cut.duration}</div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        grid.appendChild(cardEl);
+      });
+    }
+
+    function selectAndBookHaircut(name, price, stylistName, role, avatar) {
+      const dtService = document.querySelector('#screen-datetime .font-serif-luxury.text-base');
+      if (dtService) dtService.innerText = name;
+      const confService = document.querySelector('#screen-confirmed .text-sm.font-bold');
+      if (confService) confService.innerText = name;
+
+      const dtPrice = document.getElementById('dtFinalPrice');
+      if (dtPrice) dtPrice.innerText = '₹' + price.toLocaleString('en-IN');
+      const confPrice = document.getElementById('confirmFinalPrice');
+      if (confPrice) confPrice.innerText = '₹' + price.toLocaleString('en-IN');
+
+      const dtName = document.getElementById('dtStylistName');
+      if (dtName) dtName.innerText = 'with ' + stylistName;
+      const confDesc = document.getElementById('confirmStylistDesc');
+      if (confDesc) confDesc.innerText = `with ${stylistName.split(' ')[0]} (${role})`;
+
+      const dtAvatar = document.getElementById('dtStylistAvatar');
+      if (dtAvatar && avatar) dtAvatar.src = avatar;
+      const confAvatar = document.getElementById('confirmStylistAvatar');
+      if (confAvatar && avatar) confAvatar.src = avatar;
+
+      // Select matching stylist radio if present
+      if (stylistName.includes('Christian')) pickStylist('christian');
+      else if (stylistName.includes('Jessica')) pickStylist('jessica');
+      else if (stylistName.includes('Marcus')) pickStylist('marcus');
+      else if (stylistName.includes('Sophia')) pickStylist('sophia');
+
+      goToScreen('stylists');
+    }
+
+    function showHairNotice(name) {
+      alert(`"${name}" services are curated in-salon. Tap "Haircut & Styling" to explore cuts with double filters & instant booking!`);
+    }
+
+    function showServiceNotice(name) {
+      alert(`"${name}" services are curated in-salon. Tap "Nail Art" or "Haircut & Styling" to explore customizable looks & instant booking!`);
+    }
+
+    function goToScreen(key) {
+      document.querySelectorAll('.screen-content').forEach(s => s.classList.add('hidden'));
+      const t = document.getElementById('screen-' + key);
+      if (t) {
+        t.classList.remove('hidden');
+        t.scrollTop = 0;
+        if (key === 'long-layered-cut-detail') {
+          renderLongLayerStylingOptions();
+          setLongLayerCutImg(0);
+        }
+      }
+      document.querySelectorAll('.nav-tab').forEach(b => {
+        b.classList.remove('bg-[#C59265]', 'text-white');
+        b.classList.add('bg-stone-800', 'text-stone-300');
+      });
+      const activeTab = document.getElementById('tab-' + key);
+      if (activeTab) {
+        activeTab.classList.add('bg-[#C59265]', 'text-white');
+        activeTab.classList.remove('bg-stone-800', 'text-stone-300');
+      }
+    }
+
+    // Initialize: start right on Home screen showing everything like before
+    updateColorPills();
+    filterNailCards();
+    renderSelectedDesignsPills();
+    updateCustomizerUI();
+    setHairGender('woman');
+    setLayerCutImg(0);
+    initTouchSwipe();
+    renderStylingOptions();
+    updateLayerCutPrice();
+    renderLongLayerStylingOptions();
+    setLongLayerCutImg(0);
+    goToScreen('home');
+  </script>
+</body>
+</html>

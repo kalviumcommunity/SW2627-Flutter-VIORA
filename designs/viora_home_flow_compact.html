@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .font-serif-luxury { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .font-sans-clean { font-family: 'Inter', -apple-system, sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-2 font-sans-clean">
+  <div class="bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-2xl p-4 shadow-md max-w-2xl mx-auto">
+    <!-- Header with Quick Switcher -->
+    <div class="flex items-center justify-between pb-2.5 border-b border-[var(--border)]">
+      <div class="flex items-center space-x-2">
+        <div class="w-7 h-7 rounded-full bg-[#C59265] text-white flex items-center justify-center font-serif-luxury font-bold text-sm">V</div>
+        <div>
+          <h2 class="font-serif-luxury text-xl font-semibold text-[var(--foreground)]">VIORA — Luxury Salon Flow</h2>
+          <p class="text-[11px] text-[var(--muted-foreground)]">Complete App Flow • Home • Nails • Customizer • Booking</p>
+        </div>
+      </div>
+      <div class="flex bg-[var(--background)] p-1 rounded-xl border border-[var(--border)] space-x-1 overflow-x-auto no-scrollbar">
+        <button onclick="setMiniScreen('onboarding')" id="tab-m-onboarding" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Get Started
+        </button>
+        <button onclick="setMiniScreen('login')" id="tab-m-login" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Login
+        </button>
+        <button onclick="setMiniScreen('location')" id="tab-m-location" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Location
+        </button>
+        <button onclick="setMiniScreen('home')" id="tab-m-home" class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-[#C59265] text-white transition-all shrink-0">
+          Home
+        </button>
+        <button onclick="setMiniScreen('services')" id="tab-m-services" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Services
+        </button>
+        <button onclick="setMiniScreen('hair')" id="tab-m-hair" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Hair
+        </button>
+        <button onclick="setMiniScreen('hair-cuts')" id="tab-m-hair-cuts" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Hair Cuts
+        </button>
+        <button onclick="setMiniScreen('layer-cut-detail')" id="tab-m-layer-cut-detail" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Layer Cut
+        </button>
+        <button onclick="setMiniScreen('nails')" id="tab-m-nails" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Nails
+        </button>
+        <button onclick="setMiniScreen('nail-art')" id="tab-m-nail-art" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Nail Art
+        </button>
+        <button onclick="setMiniScreen('detail')" id="tab-m-detail" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Customize
+        </button>
+        <button onclick="setMiniScreen('stylists')" id="tab-m-stylists" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Stylists
+        </button>
+        <button onclick="setMiniScreen('datetime')" id="tab-m-datetime" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Date &amp; Time
+        </button>
+        <button onclick="setMiniScreen('confirmed')" id="tab-m-confirmed" class="tab-btn px-2 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] transition-all shrink-0">
+          Confirmed
+        </button>
+      </div>
+    </div>
+
+    <!-- Phone Viewport (~380px height) -->
+    <div class="mt-2.5 flex justify-center">
+      <div class="w-[320px] h-[390px] rounded-3xl bg-[#FAF8F5] border-4 border-stone-800 shadow-xl overflow-hidden relative flex flex-col select-none text-[#1F1E1C]">
+        
+        <!-- Status Bar -->
+        <div class="h-6 px-4 flex items-center justify-between text-[9px] font-semibold bg-[#FAF8F5]/90 shrink-0 z-20">
+          <span>9:41</span>
+          <div class="flex items-center space-x-1 text-[8px]">
+            <span>●●●</span>
+            <span>WiFi</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- 0A. ONBOARDING VIEW -->
+        <div id="m-view-onboarding" class="screen-box flex-1 flex flex-col justify-between overflow-hidden hidden bg-[#FAF8F5]">
+          <div class="h-[52%] w-full relative overflow-hidden shrink-0">
+            <img src="./salon_hero.png" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30"></div>
+          </div>
+          <div class="h-[48%] flex flex-col justify-between p-3 text-center">
+            <div>
+              <div class="font-serif-luxury text-2xl tracking-widest text-[#1F1E1C] uppercase font-light">VIORA</div>
+              <div class="text-[8px] tracking-[0.2em] font-medium text-[#7A7672] uppercase mt-0.5">YOUR BEAUTY, PERFECTED</div>
+            </div>
+            <div class="flex justify-center space-x-1.5 my-1">
+              <span class="w-2 h-2 rounded-full bg-[#C59265]"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#E8E2D9]"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#E8E2D9]"></span>
+            </div>
+            <button onclick="setMiniScreen('login')" class="w-full py-2.5 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider shadow-xs">
+              GET STARTED
+            </button>
+          </div>
+        </div>
+
+        <!-- 0B. SIGN IN VIEW (OPENS DIRECTLY AFTER GET STARTED) -->
+        <div id="m-view-login" class="screen-box flex-1 flex flex-col justify-between p-3.5 bg-[#FAF8F5] hidden overflow-y-auto no-scrollbar">
+          <div class="text-center pt-1">
+            <div class="font-serif-luxury text-xl uppercase tracking-wider">VIORA</div>
+            <div class="text-[7px] tracking-[0.2em] text-[#7A7672] uppercase">EXCLUSIVE SALON MEMBER ACCESS</div>
+          </div>
+          <div class="space-y-1.5 my-auto pt-1.5">
+            <div>
+              <div class="text-[7px] font-bold text-[#5A5652] uppercase mb-0.5">EMAIL ADDRESS</div>
+              <div class="bg-white rounded-lg border border-[#EDE8E1] px-2.5 py-1 text-[8px]">sarah.kothari@gmail.com</div>
+            </div>
+            <div>
+              <div class="text-[7px] font-bold text-[#5A5652] uppercase mb-0.5">PASSWORD</div>
+              <div class="bg-white rounded-lg border border-[#EDE8E1] px-2.5 py-1 text-[8px] flex justify-between">
+                <span>•••••••••••••</span>
+                <span class="text-[7.5px] text-[#7A7672]">👁</span>
+              </div>
+            </div>
+            <div class="space-y-1 pt-1">
+              <button onclick="setMiniScreen('location')" class="w-full py-2 rounded-full bg-[#C59265] text-white font-bold text-[8px] uppercase tracking-wider shadow-xs">
+                SIGN IN
+              </button>
+              <button onclick="setMiniScreen('location')" class="w-full py-2 rounded-full bg-white border border-[#EDE8E1] text-[#1F1E1C] font-bold text-[8px] uppercase tracking-wider">
+                CREATE ACCOUNT
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 0C. LOCATION VIEW (OPENS AFTER LOGIN) -->
+        <div id="m-view-location" class="screen-box flex-1 flex flex-col justify-between p-3.5 bg-[#FAF8F5] hidden">
+          <div class="text-center">
+            <span class="font-serif-luxury text-lg font-normal">Welcome</span>
+          </div>
+          <div class="flex justify-center my-auto">
+            <div class="w-20 h-20 rounded-full bg-[#F5ECE8] flex items-center justify-center">
+              <div class="w-12 h-12 rounded-full bg-white shadow-xs flex items-center justify-center border border-[#EDE8E1]">
+                <span class="text-lg">📍</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="font-serif-luxury text-sm font-normal">Find Your Nearest Salon</div>
+            <div class="text-[7.5px] text-[#7A7672] mt-0.5 leading-relaxed px-1">
+              Please allow access to your device location for accurate salon distances and booking.
+            </div>
+          </div>
+          <div class="flex flex-col space-y-1.5 mt-2">
+            <button onclick="setMiniScreen('home')" class="w-full py-2 rounded-full bg-[#C59265] text-white font-bold text-[8.5px] uppercase tracking-wider shadow-xs">
+              ALLOW LOCATION ACCESS
+            </button>
+            <button onclick="setMiniScreen('home')" class="text-[8px] text-[#C59265] underline text-center">
+              Enter Location Manually
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. HOME SCREEN VIEW (FULLY RESTORED) -->
+        <div id="m-view-home" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1">
+          <!-- Header -->
+          <div class="flex items-center justify-between py-1">
+            <div>
+              <h3 class="font-serif-luxury text-base font-normal leading-tight">Good Morning, Sarah</h3>
+              <div class="text-[8px] text-[#7A7672] flex items-center space-x-0.5">
+                <span class="text-[#C59265]">📍</span>
+                <span>Khar West, Mumbai</span>
+              </div>
+            </div>
+            <div class="w-8 h-8 rounded-full overflow-hidden border border-[#EDE8E1] p-0.5 shadow-2xs shrink-0">
+              <img src="./avatar_sarah.png" class="w-full h-full rounded-full object-cover" />
+            </div>
+          </div>
+
+          <!-- Hero Banner -->
+          <div class="mt-2 bg-[#C59265] rounded-xl p-2.5 text-white flex items-center justify-between shadow-xs">
+            <div class="pr-1">
+              <div class="font-serif-luxury text-xs italic leading-tight">Ready for absolute luxury?</div>
+              <div class="text-[8px] text-white/90 mt-0.5">Book premier hair &amp; spa experiences.</div>
+            </div>
+            <button onclick="setMiniScreen('services')" class="shrink-0 px-2 py-1 rounded-full bg-white text-[#C59265] font-bold text-[8px] uppercase tracking-wider shadow-2xs">
+              BOOK NOW
+            </button>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="mt-2 flex items-center bg-white rounded-lg border border-[#EDE8E1] px-2 py-1 text-[8.5px] text-[#7A7672] shadow-2xs">
+            <span class="mr-1.5">🔍</span>
+            <span>Search services, stylists, or branches</span>
+          </div>
+
+          <!-- Upcoming Appointment -->
+          <div class="mt-2.5">
+            <div class="text-[7.5px] font-bold tracking-wider text-[#7A7672] uppercase mb-1">UPCOMING APPOINTMENT</div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] p-2 shadow-2xs">
+              <div class="flex items-center justify-between text-[8px] font-bold">
+                <span class="flex items-center space-x-1">
+                  <span class="text-[#C59265]">📅</span>
+                  <span>Sat, 14 Oct • 11:30 AM</span>
+                </span>
+                <span class="px-1.5 py-0.5 rounded-full bg-[#F7EFE8] text-[#C59265] text-[7px] font-bold">CONFIRMED</span>
+              </div>
+              <div class="my-1.5 border-b border-[#F0EAE1]"></div>
+              <div class="flex items-center space-x-2">
+                <div class="w-7 h-7 rounded-full border border-[#EDE8E1] overflow-hidden shrink-0">
+                  <img src="./avatar_christian.png" class="w-full h-full object-cover" />
+                </div>
+                <div class="overflow-hidden">
+                  <div class="text-[8.5px] font-bold text-[#1F1E1C] truncate">Signature Balayage &amp; Blow Dry</div>
+                  <div class="text-[7.5px] text-[#7A7672]">with Christian (Art Director) • VIORA Khar</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nearest Salons -->
+          <div class="mt-2.5">
+            <div class="flex items-center justify-between text-[7.5px] font-bold mb-1">
+              <span class="tracking-wider text-[#7A7672] uppercase">YOUR NEAREST SALONS</span>
+              <span class="text-[#C59265] cursor-pointer" onclick="alert('Viewing all salons')">View All</span>
+            </div>
+            <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-0.5">
+              <div class="w-32 shrink-0 bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs">
+                <img src="./salon_khar.png" class="h-16 w-full object-cover" />
+                <div class="p-1.5">
+                  <div class="flex justify-between items-center text-[8.5px] font-bold">
+                    <span class="truncate">VIORA — Khar</span>
+                    <span class="text-[#C59265]">★ 4.9</span>
+                  </div>
+                  <div class="text-[7px] text-[#7A7672] mt-0.5">0.8 km • Khar West</div>
+                </div>
+              </div>
+              <div class="w-32 shrink-0 bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs">
+                <img src="./salon_juhu.png" class="h-16 w-full object-cover" />
+                <div class="p-1.5">
+                  <div class="flex justify-between items-center text-[8.5px] font-bold">
+                    <span class="truncate">VIORA — Juhu</span>
+                    <span class="text-[#C59265]">★ 4.8</span>
+                  </div>
+                  <div class="text-[7px] text-[#7A7672] mt-0.5">3.2 km • Juhu Tara Rd</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Explore Services -->
+          <div class="mt-2.5">
+            <div class="flex items-center justify-between text-[7.5px] font-bold mb-1">
+              <span class="tracking-wider text-[#7A7672] uppercase">EXPLORE SERVICES</span>
+              <span class="text-[#C59265] cursor-pointer" onclick="setMiniScreen('services')">View All</span>
+            </div>
+            <div class="flex space-x-1.5 overflow-x-auto no-scrollbar pb-0.5">
+              <div onclick="setMiniScreen('hair')" class="w-16 shrink-0 bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center cursor-pointer shadow-2xs hover:border-[#C59265]">
+                <img src="./service_hair.png" class="h-10 w-full object-cover" />
+                <div class="py-0.5 text-[8px] font-bold">Hair</div>
+              </div>
+              <div onclick="setMiniScreen('services')" class="w-16 shrink-0 bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center cursor-pointer shadow-2xs">
+                <img src="./service_skin.png" class="h-10 w-full object-cover" />
+                <div class="py-0.5 text-[8px] font-bold">Skin</div>
+              </div>
+              <div onclick="setMiniScreen('nails')" class="w-16 shrink-0 bg-white rounded-xl border-2 border-[#C59265] overflow-hidden text-center cursor-pointer shadow-xs">
+                <img src="./service_nails.png" class="h-10 w-full object-cover" />
+                <div class="py-0.5 text-[8px] font-bold text-[#C59265]">Nails →</div>
+              </div>
+              <div onclick="setMiniScreen('services')" class="w-16 shrink-0 bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center cursor-pointer shadow-2xs">
+                <img src="./service_brows.png" class="h-10 w-full object-cover" />
+                <div class="py-0.5 text-[8px] font-bold">Brows</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Cards -->
+          <div class="grid grid-cols-2 gap-1.5 mt-2.5">
+            <div class="bg-white rounded-xl border border-[#EDE8E1] p-2 shadow-2xs">
+              <span class="text-[#C59265] text-xs">✨</span>
+              <div class="font-serif-luxury text-[11px] font-semibold mt-0.5">Beauty Quiz</div>
+              <div class="text-[7px] text-[#7A7672] leading-tight mt-0.5">Uncover your signature profile.</div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] p-2 shadow-2xs">
+              <span class="text-[#C59265] text-xs">📷</span>
+              <div class="font-serif-luxury text-[11px] font-semibold mt-0.5">Inspiration</div>
+              <div class="text-[7px] text-[#7A7672] leading-tight mt-0.5">Browse curated visual styles.</div>
+            </div>
+          </div>
+
+          <!-- Recommended For You -->
+          <div class="mt-2.5 mb-2">
+            <div class="text-[7.5px] font-bold tracking-wider text-[#7A7672] uppercase mb-1">RECOMMENDED FOR YOU</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <div class="bg-white rounded-xl border border-[#EDE8E1] p-1.5 flex items-center space-x-1.5 shadow-2xs">
+                <img src="./service_hair.png" class="w-7 h-7 rounded-md object-cover shrink-0" />
+                <div class="overflow-hidden">
+                  <div class="text-[7.5px] font-bold truncate">Premium Hair Spa</div>
+                  <div class="text-[7px] text-[#C59265] font-semibold">From ₹1,500</div>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl border border-[#EDE8E1] p-1.5 flex items-center space-x-1.5 shadow-2xs">
+                <img src="./service_skin.png" class="w-7 h-7 rounded-md object-cover shrink-0" />
+                <div class="overflow-hidden">
+                  <div class="text-[7.5px] font-bold truncate">Hydrafacial</div>
+                  <div class="text-[7px] text-[#C59265] font-semibold">From ₹1,500</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mini Bottom Bar -->
+          <div class="mt-2 pt-1 border-t border-[#EDE8E1] flex items-center justify-around text-center py-1">
+            <div onclick="setMiniScreen('home')" class="cursor-pointer text-[#C59265] text-[7.5px] font-bold">🏠 Home</div>
+            <div onclick="setMiniScreen('services')" class="cursor-pointer text-[#7A7672] text-[7.5px]">📋 Services</div>
+            <div onclick="setMiniScreen('nails')" class="cursor-pointer text-[#7A7672] text-[7.5px]">💅 Nails</div>
+            <div onclick="setMiniScreen('confirmed')" class="cursor-pointer text-[#7A7672] text-[7.5px]">📅 Bookings</div>
+          </div>
+        </div>
+
+        <!-- 2. SERVICES CATEGORIES SCREEN VIEW -->
+        <div id="m-view-services" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('home')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Services</span>
+            <div class="w-6"></div>
+          </div>
+          <div class="my-1.5">
+            <span class="text-[7.5px] font-bold text-[#C59265] uppercase">CURATED BEAUTY MENU</span>
+            <div class="font-serif-luxury text-base">Select Category</div>
+          </div>
+          <div class="grid grid-cols-3 gap-1.5 pb-2">
+            <div onclick="setMiniScreen('hair')" class="bg-white rounded-xl border-2 border-[#C59265] overflow-hidden text-center cursor-pointer shadow-xs">
+              <img src="./service_hair.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[8px] font-bold text-[#C59265]">Hair →</div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center">
+              <img src="./service_skin.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[8px] font-bold">Skin</div>
+            </div>
+            <div onclick="setMiniScreen('nails')" class="bg-white rounded-xl border-2 border-[#C59265] overflow-hidden text-center cursor-pointer shadow-xs">
+              <img src="./service_nails.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[8px] font-bold text-[#C59265]">Nails →</div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center">
+              <img src="./service_removal.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[7.5px] font-bold">Hair Removal</div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center">
+              <img src="./service_brows.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[7.5px] font-bold">Eyes &amp; Brows</div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center">
+              <img src="./service_massage.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[8px] font-bold">Massage</div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center">
+              <img src="./service_makeup.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[8px] font-bold">Makeup</div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden text-center">
+              <img src="./service_grooming.png" class="h-11 w-full object-cover" />
+              <div class="py-0.5 text-[7.5px] font-bold">Men's Grooming</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HAIR SERVICES MENU (media_1790310783899.png) -->
+        <div id="m-view-hair" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('services')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Hair Services</span>
+            <div class="w-6"></div>
+          </div>
+          <div class="my-1.5">
+            <span class="text-[7.5px] font-bold text-[#C59265] tracking-wider uppercase">CURATED BEAUTY MENU</span>
+            <div class="font-serif-luxury text-base">Select a service</div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pb-2">
+            <div onclick="setMiniScreen('hair-cuts')" class="bg-white rounded-xl border-2 border-[#C59265] overflow-hidden shadow-2xs cursor-pointer">
+              <img src="./hair_cut_styling.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px]">Haircut &amp; Styling</div>
+            </div>
+            <div onclick="alert('Hair Colour services curated in-salon. Tap Haircut &amp; Styling for instant booking!')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer">
+              <img src="./hair_colour.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px]">Hair Colour</div>
+            </div>
+            <div onclick="alert('Hair Spa &amp; Care services curated in-salon.')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer">
+              <img src="./hair_spa_care.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px]">Hair Spa &amp; Care</div>
+            </div>
+            <div onclick="alert('Smoothening &amp; Texture services curated in-salon.')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer">
+              <img src="./hair_smoothening.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px]">Smoothening</div>
+            </div>
+            <div onclick="alert('Hair Extensions curated in-salon.')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer">
+              <img src="./hair_extensions.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px]">Hair Extensions</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HAIR CUT & STYLING SCREEN (media_1790310828580.png) -->
+        <div id="m-view-hair-cuts" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('hair')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Hair Cut &amp; Styling</span>
+            <div class="w-6"></div>
+          </div>
+          <div class="my-1.5">
+            <span class="text-[7.5px] font-bold text-[#C59265] tracking-wider uppercase">CURATED BEAUTY MENU</span>
+            <div class="font-serif-luxury text-base">Select a service</div>
+          </div>
+
+          <!-- Double Filter in Compact -->
+          <div class="mb-1.5">
+            <div class="text-[7px] font-bold tracking-wider text-[#7A7672] uppercase mb-1">FILTER BY GENDER</div>
+            <div class="flex space-x-1.5">
+              <button id="m-gender-woman" onclick="setMiniHairGender('woman')" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white">Woman's</button>
+              <button id="m-gender-man" onclick="setMiniHairGender('man')" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white text-[#1F1E1C] border border-[#EDE8E1]">Men's</button>
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <div class="text-[7px] font-bold tracking-wider text-[#7A7672] uppercase mb-1">FILTER BY CUT TYPES</div>
+            <div id="m-hairCutPills" class="flex space-x-1 overflow-x-auto no-scrollbar pb-0.5">
+              <!-- Dynamically populated cut pills -->
+            </div>
+          </div>
+
+          <!-- Haircut Cards Grid -->
+          <div id="m-hairCutGrid" class="grid grid-cols-2 gap-2 pb-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- LAYER CUT DETAIL SCREEN IN COMPACT -->
+        <div id="m-view-layer-cut-detail" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('hair-cuts')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Layer Cut</span>
+            <div class="w-6"></div>
+          </div>
+
+          <!-- Hero Image Carousel Container -->
+          <div class="mt-1.5 relative w-full h-64 rounded-xl overflow-hidden shadow-xs border border-[#EDE8E1] bg-stone-100">
+            <img id="m-layer-img" src="./layer_cut_front.jpg" class="w-full h-full object-cover transition-opacity duration-200" />
+            <div id="m-layer-badge" class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/60 text-[7px] text-white font-medium">Front View (1/3)</div>
+            <button onclick="cycleMiniLayerImg(-1)" class="absolute left-1 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-black/40 text-white flex items-center justify-center text-[10px]">‹</button>
+            <button onclick="cycleMiniLayerImg(1)" class="absolute right-1 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-black/40 text-white flex items-center justify-center text-[10px]">›</button>
+            <div id="m-layer-dots" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex space-x-1 bg-black/40 px-2 py-0.5 rounded-full">
+              <span onclick="setMiniLayerImg(0)" class="w-1.5 h-1.5 rounded-full bg-[#C59265] cursor-pointer"></span>
+              <span onclick="setMiniLayerImg(1)" class="w-1.5 h-1.5 rounded-full bg-white/50 cursor-pointer"></span>
+              <span onclick="setMiniLayerImg(2)" class="w-1.5 h-1.5 rounded-full bg-white/50 cursor-pointer"></span>
+            </div>
+          </div>
+
+          <!-- Title & Stats -->
+          <div class="mt-2 flex justify-between items-start">
+            <div>
+              <div class="font-serif-luxury text-sm font-semibold">Layer Cut</div>
+              <div class="text-[7.5px] text-[#7A7672]">★ 4.9 (580 Reviews) • 60-75 min</div>
+            </div>
+            <div class="font-bold text-xs text-[#C59265]" id="m-layer-price">₹2,400</div>
+          </div>
+          <p class="text-[7.5px] text-[#7A7672] mt-1 leading-tight">Multidimensional cut with feather-soft cascading layers that frame the face.</p>
+
+          <!-- Texture & Length & Styling Pills -->
+          <div class="mt-2">
+            <span class="text-[7px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">HAIR TEXTURE</span>
+            <div class="flex space-x-1">
+              <button onclick="pickMiniTexture('Straight')" id="m-tex-Straight" class="px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white">Straight</button>
+              <button onclick="pickMiniTexture('Wavy')" id="m-tex-Wavy" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Wavy</button>
+              <button onclick="pickMiniTexture('Curly')" id="m-tex-Curly" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Curly</button>
+              <button onclick="pickMiniTexture('Coily')" id="m-tex-Coily" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Coily</button>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <span class="text-[7px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">HAIR LENGTH</span>
+            <div class="flex space-x-1">
+              <button onclick="pickMiniLength('Long')" id="m-len-Long" class="px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white">Long</button>
+              <button onclick="pickMiniLength('Medium')" id="m-len-Medium" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Medium</button>
+              <button onclick="pickMiniLength('Short')" id="m-len-Short" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Short</button>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <span class="text-[7px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">STYLING &amp; FINISH</span>
+            <div id="m-layer-styling-container" class="flex space-x-1 overflow-x-auto no-scrollbar pb-0.5">
+            </div>
+          </div>
+
+          <button onclick="bookMiniLayerCut()" id="m-layer-book-btn" class="w-full mt-3 py-2 rounded-full bg-[#C59265] text-white font-bold text-[8.5px] uppercase tracking-wider shadow-xs">
+            BOOK THIS LOOK • ₹2,400
+          </button>
+        </div>
+
+        <!-- LONG LAYERED CUT DETAIL SCREEN IN COMPACT -->
+        <div id="m-view-long-layered-cut-detail" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('hair-cuts')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Long Layered Cut</span>
+            <div class="w-6"></div>
+          </div>
+
+          <!-- Hero Image Carousel Container -->
+          <div class="mt-1.5 relative w-full h-64 rounded-xl overflow-hidden shadow-xs border border-[#EDE8E1] bg-stone-100">
+            <img id="m-longlayer-img" src="./long_layered_cut_front.jpg" class="w-full h-full object-cover transition-opacity duration-200" />
+            <div id="m-longlayer-badge" class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/60 text-[7px] text-white font-medium">Front View (1/3)</div>
+            <button onclick="cycleMiniLongLayerImg(-1)" class="absolute left-1 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-black/40 text-white flex items-center justify-center text-[10px]">‹</button>
+            <button onclick="cycleMiniLongLayerImg(1)" class="absolute right-1 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-black/40 text-white flex items-center justify-center text-[10px]">›</button>
+            <div id="m-longlayer-dots" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex space-x-1 bg-black/40 px-2 py-0.5 rounded-full">
+              <span onclick="setMiniLongLayerImg(0)" class="w-1.5 h-1.5 rounded-full bg-[#C59265] cursor-pointer"></span>
+              <span onclick="setMiniLongLayerImg(1)" class="w-1.5 h-1.5 rounded-full bg-white/50 cursor-pointer"></span>
+              <span onclick="setMiniLongLayerImg(2)" class="w-1.5 h-1.5 rounded-full bg-white/50 cursor-pointer"></span>
+            </div>
+          </div>
+
+          <!-- Title & Stats -->
+          <div class="mt-2 flex justify-between items-start">
+            <div>
+              <div class="font-serif-luxury text-sm font-semibold">Long Layered Cut</div>
+              <div class="text-[7.5px] text-[#7A7672]">★ 4.9 (620 Reviews) • 65-75 min</div>
+            </div>
+            <div class="font-bold text-xs text-[#C59265]" id="m-longlayer-price">₹2,600</div>
+          </div>
+          <p class="text-[7.5px] text-[#7A7672] mt-1 leading-tight">Elongated luxury silhouette featuring cascading tiers and framing layers.</p>
+
+          <div class="mt-2">
+            <span class="text-[7px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">HAIR TEXTURE</span>
+            <div class="flex space-x-1">
+              <button onclick="pickMiniLongLayerTexture('Straight')" id="m-ll-tex-Straight" class="px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white">Straight</button>
+              <button onclick="pickMiniLongLayerTexture('Wavy')" id="m-ll-tex-Wavy" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Wavy</button>
+              <button onclick="pickMiniLongLayerTexture('Curly')" id="m-ll-tex-Curly" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Curly</button>
+              <button onclick="pickMiniLongLayerTexture('Coily')" id="m-ll-tex-Coily" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Coily</button>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <span class="text-[7px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">HAIR LENGTH</span>
+            <div class="flex space-x-1">
+              <button onclick="pickMiniLongLayerLength('Long')" id="m-ll-len-Long" class="px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white">Long</button>
+              <button onclick="pickMiniLongLayerLength('Medium')" id="m-ll-len-Medium" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Medium</button>
+              <button onclick="pickMiniLongLayerLength('Short')" id="m-ll-len-Short" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">Short</button>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <span class="text-[7px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">FRINGE &amp; BANGS</span>
+            <div class="flex space-x-1">
+              <button onclick="pickMiniLongLayerBangs('Curtain Bangs')" id="m-ll-bangs-Curtain" class="px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white">Curtain Bangs</button>
+              <button onclick="pickMiniLongLayerBangs('No Bangs')" id="m-ll-bangs-None" class="px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]">No Bangs</button>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <span class="text-[7px] font-bold text-[#6E6A66] uppercase tracking-wider block mb-1">STYLING &amp; FINISH</span>
+            <div id="m-longlayer-styling-container" class="flex space-x-1 overflow-x-auto no-scrollbar pb-0.5">
+            </div>
+          </div>
+
+          <button onclick="bookMiniLongLayerCut()" id="m-longlayer-book-btn" class="w-full mt-3 py-2 rounded-full bg-[#C59265] text-white font-bold text-[8.5px] uppercase tracking-wider shadow-xs">
+            BOOK THIS LOOK • ₹2,600
+          </button>
+        </div>
+
+        <!-- 3. NAILS SERVICES MENU (media_1790308649915.png) -->
+        <div id="m-view-nails" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('services')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Nails Services</span>
+            <div class="w-6"></div>
+          </div>
+          <div class="my-1.5">
+            <span class="text-[7.5px] font-bold text-[#C59265] tracking-wider uppercase">CURATED BEAUTY MENU</span>
+            <div class="font-serif-luxury text-base leading-tight">Select a service</div>
+          </div>
+
+          <!-- 2x2 Grid matching screenshot -->
+          <div class="grid grid-cols-2 gap-2 mt-2">
+            <!-- Nail Art -->
+            <div onclick="setMiniScreen('nail-art')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all">
+              <img src="./service_nail_art.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px] text-[#1F1E1C]">Nail Art</div>
+            </div>
+            <!-- Manicure -->
+            <div onclick="alert('Manicure is curated in-salon. Tap Nail Art for customizable looks!')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all">
+              <img src="./service_manicure.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px] text-[#1F1E1C]">Manicure</div>
+            </div>
+            <!-- Pedicure -->
+            <div onclick="alert('Pedicure is curated in-salon. Tap Nail Art for customizable looks!')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all">
+              <img src="./service_pedicure.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8.5px] text-[#1F1E1C]">Pedicure</div>
+            </div>
+            <!-- Nail Care -->
+            <div onclick="alert('Nail Care is curated in-salon. Tap Nail Art for customizable looks!')" class="bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] transition-all">
+              <img src="./service_nail_care.png" class="h-16 w-full object-cover" />
+              <div class="py-1 text-center font-bold text-[8px] text-[#1F1E1C] truncate px-1">Nail Care &amp; Maintenance</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. NAIL ART SERVICES SCREEN (RENAMED FROM NAILS SERVICES) -->
+        <div id="m-view-nail-art" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-6 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('nails')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-base font-semibold">Nail Art Services</span>
+            <div class="w-6"></div>
+          </div>
+          <div class="my-1.5">
+            <span class="text-[7.5px] font-bold text-[#C59265] tracking-wider uppercase">CURATED BEAUTY MENU</span>
+            <div class="font-serif-luxury text-base leading-tight">Select a service</div>
+          </div>
+
+          <!-- Color Pills (Max 2 simultaneous) -->
+          <div class="flex justify-between items-center text-[7.5px] text-[#7A7672] mb-1 font-bold">
+            <span>FILTER BY COLOUR</span>
+            <span id="m-count" class="text-[#C59265]">1/2 selected</span>
+          </div>
+          <div class="flex space-x-1.5 overflow-x-auto no-scrollbar pb-1">
+            <button onclick="toggleMiniColor('Amber')" id="m-pill-Amber" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white border border-[#EDE8E1] shrink-0">Amber</button>
+            <button onclick="toggleMiniColor('Brown')" id="m-pill-Brown" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white border border-[#C59265] shrink-0">Brown</button>
+            <button onclick="toggleMiniColor('Beige')" id="m-pill-Beige" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white border border-[#EDE8E1] shrink-0">Beige</button>
+            <button onclick="toggleMiniColor('Gold')" id="m-pill-Gold" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white border border-[#EDE8E1] shrink-0">Gold</button>
+            <button onclick="toggleMiniColor('Crimson')" id="m-pill-Crimson" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white border border-[#EDE8E1] shrink-0">Crimson</button>
+            <button onclick="toggleMiniColor('Green')" id="m-pill-Green" class="px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white border border-[#EDE8E1] shrink-0">Green</button>
+          </div>
+
+          <!-- All 3 Sections Exactly Like Your Screenshot -->
+          <div class="mt-2 space-y-2.5 pb-2">
+            <!-- 1. TRENDING -->
+            <div>
+              <div class="text-[7.5px] font-bold text-[#7A7672] tracking-wider mb-1">TRENDING</div>
+              <div class="grid grid-cols-2 gap-2">
+                <div onclick="setMiniScreen('detail')" class="m-card bg-white rounded-xl border border-[#EDE8E1] overflow-hidden p-1.5 shadow-2xs cursor-pointer hover:border-[#C59265]" data-c="Brown,Amber">
+                  <img src="./nail_brown_cat_eye.png" class="h-16 w-full object-cover rounded-lg" />
+                  <div class="text-[9px] font-bold mt-1 truncate">Brown Ombre Cat Eye</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Jessica Alba • ★ 4.0</div>
+                  <div class="flex justify-between items-center mt-1 text-[8.5px] font-extrabold">
+                    <span>₹1,800</span>
+                    <span class="text-[7.5px] font-normal text-[#7A7672]">60 min</span>
+                  </div>
+                </div>
+                <div onclick="setMiniScreen('detail')" class="m-card bg-white rounded-xl border border-[#EDE8E1] overflow-hidden p-1.5 shadow-2xs cursor-pointer hover:border-[#C59265]" data-c="Brown,Beige">
+                  <img src="./nail_mocha_flower.png" class="h-16 w-full object-cover rounded-lg" />
+                  <div class="text-[9px] font-bold mt-1 truncate">Mocha Latte Flower</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Jenny Bui • ★ 3.9</div>
+                  <div class="flex justify-between items-center mt-1 text-[8.5px] font-extrabold">
+                    <span>₹2,980</span>
+                    <span class="text-[7.5px] font-normal text-[#7A7672]">90 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. TOP RATED -->
+            <div>
+              <div class="text-[7.5px] font-bold text-[#7A7672] tracking-wider mb-1">TOP RATED</div>
+              <div class="grid grid-cols-2 gap-2">
+                <div onclick="setMiniScreen('detail')" class="m-card bg-white rounded-xl border border-[#EDE8E1] overflow-hidden p-1.5 shadow-2xs cursor-pointer hover:border-[#C59265]" data-c="Brown">
+                  <img src="./nail_matte_mocha.png" class="h-16 w-full object-cover rounded-lg" />
+                  <div class="text-[9px] font-bold mt-1 truncate">Classic Matte Mocha</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Coca Michelle • ★ 4.9</div>
+                  <div class="flex justify-between items-center mt-1 text-[8.5px] font-extrabold">
+                    <span>₹4,000</span>
+                    <span class="text-[7.5px] font-normal text-[#7A7672]">60 min</span>
+                  </div>
+                </div>
+                <div onclick="setMiniScreen('detail')" class="m-card bg-white rounded-xl border border-[#EDE8E1] overflow-hidden p-1.5 shadow-2xs cursor-pointer hover:border-[#C59265]" data-c="Brown,Gold,Amber">
+                  <img src="./nail_leopard_tortie.png" class="h-16 w-full object-cover rounded-lg" />
+                  <div class="text-[9px] font-bold mt-1 truncate">Leopard Tortie Gold</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Jenny Bui • ★ 4.8</div>
+                  <div class="flex justify-between items-center mt-1 text-[8.5px] font-extrabold">
+                    <span>₹4,800</span>
+                    <span class="text-[7.5px] font-normal text-[#7A7672]">180 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. EXPLORE THE COLLECTION -->
+            <div>
+              <div class="text-[7.5px] font-bold text-[#7A7672] tracking-wider mb-1">EXPLORE THE COLLECTION</div>
+              <div class="grid grid-cols-2 gap-2">
+                <div onclick="setMiniScreen('detail')" class="m-card bg-white rounded-xl border border-[#EDE8E1] overflow-hidden p-1.5 shadow-2xs cursor-pointer hover:border-[#C59265]" data-c="Brown,Gold">
+                  <img src="./nail_metallic_skittle.png" class="h-16 w-full object-cover rounded-lg" />
+                  <div class="text-[9px] font-bold mt-1 truncate">Metallic Skittle</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Betina R. • ★ 4.1</div>
+                  <div class="flex justify-between items-center mt-1 text-[8.5px] font-extrabold">
+                    <span>₹2,300</span>
+                    <span class="text-[7.5px] font-normal text-[#7A7672]">90 min</span>
+                  </div>
+                </div>
+                <div onclick="setMiniScreen('detail')" class="m-card bg-white rounded-xl border border-[#EDE8E1] overflow-hidden p-1.5 shadow-2xs cursor-pointer hover:border-[#C59265]" data-c="Brown,Beige">
+                  <img src="./nail_polka_cat_eye.png" class="h-16 w-full object-cover rounded-lg" />
+                  <div class="text-[9px] font-bold mt-1 truncate">Brown Polka Cat Eye</div>
+                  <div class="text-[7.5px] text-[#7A7672]">Cam Tran • ★ 3.9</div>
+                  <div class="flex justify-between items-center mt-1 text-[8.5px] font-extrabold">
+                    <span>₹2,000</span>
+                    <span class="text-[7.5px] font-normal text-[#7A7672]">90 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. CUSTOMIZER SCREEN -->
+        <div id="m-view-detail" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-8 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('nail-art')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-xs font-semibold">Brown Ombre Cat Eye</span>
+            <span class="text-xs">🔗</span>
+          </div>
+          <div class="mt-2 w-full h-24 rounded-xl overflow-hidden shadow-xs border border-[#EDE8E1]">
+            <img src="./nail_hero_large.png" class="w-full h-full object-cover" />
+          </div>
+          <div class="mt-2">
+            <div class="font-serif-luxury text-base font-normal">Brown Ombre Cat Eye</div>
+            <div class="text-[9px] text-[#7A7672]">★ 4.0 (888 Reviews) • <span id="m-badge-price" class="font-bold text-[#1F1E1C]">From ₹1,800</span></div>
+          </div>
+          <div class="mt-2 text-[8px] space-y-2">
+            <div class="text-[#C59265] font-bold uppercase tracking-wider text-[8.5px]">REFINE YOUR LOOK</div>
+            <!-- Top Coat -->
+            <div>
+              <span class="font-bold text-[#5A5652] block mb-0.5">TOP COAT</span>
+              <div class="flex space-x-1">
+                <button onclick="pickMiniOption('tc', 'Glossy', 0)" id="m-opt-tc-Glossy" class="px-2 py-0.5 rounded-full bg-[#C59265] text-white font-bold">Glossy</button>
+                <button onclick="pickMiniOption('tc', 'Satin', 100)" id="m-opt-tc-Satin" class="px-2 py-0.5 rounded-full bg-white border border-[#EDE8E1]">Satin</button>
+                <button onclick="pickMiniOption('tc', 'Matte', 150)" id="m-opt-tc-Matte" class="px-2 py-0.5 rounded-full bg-white border border-[#EDE8E1]">Matte</button>
+              </div>
+            </div>
+            <!-- Nail Length: Doesn't matter -->
+            <div>
+              <div class="flex justify-between items-center mb-0.5">
+                <span class="font-bold text-[#5A5652]">NAIL LENGTH</span>
+                <span class="text-[7.5px] text-[#7A7672]">Length included</span>
+              </div>
+              <div class="flex space-x-1">
+                <button onclick="pickMiniOption('len', 'Medium', 0)" id="m-opt-len-Medium" class="px-2.5 py-0.5 rounded-full bg-[#C59265] text-white font-bold">Medium</button>
+                <button onclick="pickMiniOption('len', 'Long', 0)" id="m-opt-len-Long" class="px-2.5 py-0.5 rounded-full bg-white border border-[#EDE8E1]">Long</button>
+                <button onclick="pickMiniOption('len', 'Short', 0)" id="m-opt-len-Short" class="px-2.5 py-0.5 rounded-full bg-white border border-[#EDE8E1]">Short</button>
+              </div>
+            </div>
+            <!-- Designs (Max 2) -->
+            <div>
+              <div class="flex justify-between items-center mb-0.5">
+                <span class="font-bold text-[#5A5652]">DESIGNS</span>
+                <span class="text-[#C59265] font-bold text-[7.5px]">Max 2 options (1/2)</span>
+              </div>
+              <div class="flex space-x-1">
+                <span class="px-2 py-0.5 rounded-full bg-[#F5ECE8] text-[#C59265] border border-[#C59265] font-bold">Inverted Ombre ✕</span>
+              </div>
+            </div>
+            <button onclick="setMiniScreen('stylists')" id="m-book-btn" class="w-full py-2 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider mt-2 shadow-xs">
+              BOOK THIS LOOK • ₹1,800
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. CHOOSE YOUR STYLIST SCREEN (media_1790274075053.png) -->
+        <div id="m-view-stylists" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-8 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('detail')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-sm font-semibold">Choose Your Stylist</span>
+            <div class="w-6"></div>
+          </div>
+          <div class="flex space-x-1.5 my-1.5">
+            <span class="px-2 py-0.5 rounded-full bg-[#C59265] text-white text-[8px] font-bold">All Salons ▾</span>
+            <span class="px-2 py-0.5 rounded-full bg-[#C59265] text-white text-[8px] font-bold">Sort ▾</span>
+          </div>
+
+          <div class="space-y-1.5 text-[8.5px]">
+            <!-- Christian Dior (Active) -->
+            <div onclick="pickMiniStylist('christian', 800)" id="m-stylist-christian" class="p-2 bg-[#FFFDF9] rounded-xl border-2 border-[#C59265] flex items-start justify-between cursor-pointer">
+              <div class="flex space-x-2">
+                <img src="./avatar_christian_dior.png" class="w-8 h-8 rounded-full border border-[#C59265] object-cover" />
+                <div>
+                  <div class="flex items-center space-x-1">
+                    <span class="font-serif-luxury text-xs font-semibold">Christian Dior</span>
+                    <span class="px-1.5 py-0.2 rounded-full bg-[#F5ECE8] text-[#C59265] text-[7px] font-bold">ART DIRECTOR</span>
+                  </div>
+                  <div class="text-[7.5px] text-[#7A7672]">Viora • Khar West</div>
+                  <div class="text-[7.5px] text-[#7A7672]">★ 4.9 (5826) • 8 Yrs Exp</div>
+                  <div class="font-bold text-[#C59265] mt-0.5" id="m-price-christian">75 min • ₹2,600</div>
+                </div>
+              </div>
+              <div class="w-3.5 h-3.5 rounded-full border-2 border-[#C59265] flex items-center justify-center p-0.5"><div class="w-full h-full bg-[#C59265] rounded-full"></div></div>
+            </div>
+
+            <!-- Jessica Alba -->
+            <div onclick="pickMiniStylist('jessica', 0)" id="m-stylist-jessica" class="p-2 bg-white rounded-xl border border-[#EDE8E1] flex items-start justify-between cursor-pointer">
+              <div class="flex space-x-2">
+                <img src="./avatar_jessica.png" class="w-8 h-8 rounded-full border border-[#EDE8E1] object-cover" />
+                <div>
+                  <div class="flex items-center space-x-1">
+                    <span class="font-serif-luxury text-xs font-semibold">Jessica Alba</span>
+                    <span class="px-1.5 py-0.2 rounded-full bg-[#F5ECE8] text-[#C59265] text-[7px] font-bold">SENIOR STYLIST</span>
+                  </div>
+                  <div class="text-[7.5px] text-[#7A7672]">Viora • Model Town</div>
+                  <div class="font-bold text-[#C59265] mt-0.5" id="m-price-jessica">60 min • ₹1,800</div>
+                </div>
+              </div>
+              <div class="w-3.5 h-3.5 rounded-full border border-[#EDE8E1]"></div>
+            </div>
+          </div>
+
+          <button onclick="setMiniScreen('datetime')" class="w-full py-2 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider mt-3 shadow-xs">
+            CONTINUE
+          </button>
+        </div>
+
+        <!-- 6. SELECT DATE & TIME SCREEN (media_1790274094135.png) -->
+        <div id="m-view-datetime" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-8 pt-1 hidden">
+          <div class="flex items-center justify-between py-1 border-b border-[#EDE8E1]">
+            <button onclick="setMiniScreen('stylists')" class="w-6 h-6 rounded-full bg-white border border-[#EDE8E1] flex items-center justify-center text-[10px]">←</button>
+            <span class="font-serif-luxury text-sm font-semibold">Select Date &amp; Time</span>
+            <div class="w-6"></div>
+          </div>
+          <div class="flex justify-between items-center my-1.5">
+            <span class="font-serif-luxury text-xs font-semibold">October 2023</span>
+            <div class="text-[10px] space-x-1"><span>‹</span><span>›</span></div>
+          </div>
+          <div class="flex space-x-1 overflow-x-auto no-scrollbar pb-1 text-center text-[8px]">
+            <div class="w-8 py-1.5 bg-white border border-[#EDE8E1] rounded-lg"><div>Mon</div><div class="font-bold text-[9px]">15</div></div>
+            <div class="w-8 py-1.5 bg-white border border-[#EDE8E1] rounded-lg"><div>Tue</div><div class="font-bold text-[9px]">16</div></div>
+            <div class="w-8 py-1.5 bg-[#C59265] text-white rounded-lg"><div>Wed</div><div class="font-bold text-[9px]">17</div></div>
+            <div class="w-8 py-1.5 bg-white border border-[#EDE8E1] rounded-lg"><div>Thu</div><div class="font-bold text-[9px]">18</div></div>
+            <div class="w-8 py-1.5 bg-white border border-[#EDE8E1] rounded-lg"><div>Fri</div><div class="font-bold text-[9px]">19</div></div>
+          </div>
+
+          <div class="text-[8px] font-bold text-[#6E6A66] mt-2 mb-1">AVAILABLE SLOTS</div>
+          <div class="grid grid-cols-3 gap-1 text-[8px]">
+            <div class="py-1 rounded-md bg-white border border-[#EDE8E1] text-center font-bold">10:00 AM</div>
+            <div class="py-1 rounded-md bg-white border border-[#EDE8E1] text-center font-bold">10:30 AM</div>
+            <div class="py-1 rounded-md bg-white border border-[#EDE8E1] text-center font-bold">11:00 AM</div>
+            <div class="py-1 rounded-md bg-[#F7EFE8] border border-[#C59265] text-[#C59265] text-center font-bold">11:30 AM</div>
+            <div class="py-1 rounded-md bg-white border border-[#EDE8E1] text-center font-bold">12:00 PM</div>
+            <div class="py-1 rounded-md bg-white border border-[#EDE8E1] text-center font-bold">01:30 PM</div>
+          </div>
+
+          <div class="mt-3 p-1.5 bg-white rounded-xl border border-[#EDE8E1] flex justify-between items-center text-[8px]">
+            <div class="flex items-center space-x-1.5">
+              <img src="./avatar_christian_dior.png" class="w-6 h-6 rounded-full object-cover" />
+              <div>
+                <div class="font-bold">Brown Ombre Cat Eye</div>
+                <div class="text-[7px] text-[#7A7672]">with Christian Dior</div>
+              </div>
+            </div>
+            <span class="font-bold text-[#C59265] text-[10px]" id="m-dt-price">₹2,600</span>
+          </div>
+
+          <button onclick="setMiniScreen('confirmed')" class="w-full py-2 rounded-full bg-[#C59265] text-white font-bold text-[9px] uppercase tracking-wider mt-2.5 shadow-xs">
+            BOOK APPOINTMENT
+          </button>
+        </div>
+
+        <!-- 7. BOOKING CONFIRMED SCREEN (media_1790274108354.png) -->
+        <div id="m-view-confirmed" class="screen-box flex-1 overflow-y-auto no-scrollbar px-3 pb-8 pt-2 text-center hidden">
+          <div class="w-10 h-10 rounded-full bg-[#F7EFE8] text-[#C59265] text-lg flex items-center justify-center mx-auto mb-1">
+            ✓
+          </div>
+          <div class="font-serif-luxury text-base font-semibold">Booking Confirmed!</div>
+          <div class="text-[8px] text-[#7A7672]">Your luxury experience is scheduled.</div>
+
+          <div class="mt-2.5 p-2 bg-white rounded-xl border border-[#EDE8E1] text-left text-[8px] space-y-1">
+            <div>
+              <span class="text-[#C59265] font-bold text-[7px] uppercase">SALON BRANCH</span>
+              <div class="font-serif-luxury text-xs font-semibold">Viora — Khar West</div>
+            </div>
+            <div class="border-t border-[#F0EAE1] pt-1 flex items-center space-x-1.5">
+              <img src="./avatar_christian_dior.png" class="w-6 h-6 rounded-full object-cover" />
+              <div>
+                <div class="font-bold">Brown Ombre Cat Eye Nails</div>
+                <div class="text-[7px] text-[#7A7672]">with Christian (Art Director)</div>
+              </div>
+            </div>
+            <div class="border-t border-[#F0EAE1] pt-1 flex justify-between font-bold">
+              <span>📅 Wed, 17 Oct • 11:30 AM</span>
+              <span class="text-[#1F1E1C]" id="m-conf-price">₹2,600</span>
+            </div>
+          </div>
+
+          <button onclick="alert('Added to calendar!')" class="w-full py-1.5 rounded-full bg-[#C59265] text-white font-bold text-[8.5px] uppercase mt-2.5">
+            ADD TO CALENDAR
+          </button>
+          <button onclick="setMiniScreen('home')" class="w-full py-1.5 rounded-full bg-white border border-[#EDE8E1] text-[#1F1E1C] font-bold text-[8.5px] uppercase mt-1">
+            VIEW APPOINTMENTS
+          </button>
+        </div>
+
+        <!-- Home Bar Indicator -->
+        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-20 h-0.5 bg-black/60 rounded-full z-20"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let miniColors = new Set(['Brown']);
+
+    function toggleMiniColor(c) {
+      if (miniColors.has(c)) {
+        miniColors.delete(c);
+      } else {
+        if (miniColors.size >= 2) {
+          const first = miniColors.values().next().value;
+          miniColors.delete(first);
+        }
+        miniColors.add(c);
+      }
+      updateMiniPills();
+      filterMiniCards();
+    }
+
+    function updateMiniPills() {
+      ['Amber', 'Brown', 'Beige', 'Gold', 'Crimson', 'Green'].forEach(c => {
+        const p = document.getElementById('m-pill-' + c);
+        if (!p) return;
+        if (miniColors.has(c)) {
+          p.className = 'px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white border border-[#C59265] shrink-0';
+        } else {
+          p.className = 'px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white text-[#1F1E1C] border border-[#EDE8E1] shrink-0';
+        }
+      });
+      const badge = document.getElementById('m-count');
+      if (badge) badge.innerText = `${miniColors.size}/2 selected`;
+    }
+
+    function filterMiniCards() {
+      document.querySelectorAll('.m-card').forEach(card => {
+        const cardColors = card.dataset.c ? card.dataset.c.split(',') : [];
+        if (miniColors.size === 0) {
+          card.classList.remove('hidden');
+        } else {
+          const match = cardColors.some(c => miniColors.has(c));
+          if (match) card.classList.remove('hidden');
+          else card.classList.add('hidden');
+        }
+      });
+    }
+
+    function setMiniScreen(s) {
+      document.querySelectorAll('.screen-box').forEach(b => b.classList.add('hidden'));
+      const active = document.getElementById('m-view-' + s);
+      if (active) {
+        active.classList.remove('hidden');
+        active.scrollTop = 0;
+      }
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-[#C59265]', 'text-white');
+        btn.classList.add('text-[var(--muted-foreground)]');
+      });
+      const b = document.getElementById('tab-m-' + s);
+      if (b) {
+        b.classList.add('bg-[#C59265]', 'text-white');
+        b.classList.remove('text-[var(--muted-foreground)]');
+      }
+    }
+
+    let miniPrice = 1800;
+    let miniDeltaTC = 0;
+    let miniStylistDelta = 800;
+
+    function pickMiniOption(group, val, delta) {
+      if (group === 'tc') miniDeltaTC = delta;
+      document.querySelectorAll(`[id^="m-opt-${group}-"]`).forEach(b => {
+        b.className = 'px-2 py-0.5 rounded-full bg-white border border-[#EDE8E1]';
+      });
+      const act = document.getElementById(`m-opt-${group}-${val}`);
+      if (act) act.className = 'px-2 py-0.5 rounded-full bg-[#C59265] text-white font-bold';
+      updateMiniPrice();
+    }
+
+    function pickMiniStylist(stylist, delta) {
+      miniStylistDelta = delta;
+      updateMiniPrice();
+      setMiniScreen('datetime');
+    }
+
+    function updateMiniPrice() {
+      const base = miniPrice + miniDeltaTC;
+      document.getElementById('m-badge-price').innerText = 'From ₹' + base.toLocaleString('en-IN');
+      document.getElementById('m-book-btn').innerText = 'BOOK THIS LOOK • ₹' + base.toLocaleString('en-IN');
+      document.getElementById('m-price-jessica').innerText = '60 min • ₹' + base.toLocaleString('en-IN');
+      document.getElementById('m-price-christian').innerText = '75 min • ₹' + (base + 800).toLocaleString('en-IN');
+      document.getElementById('m-dt-price').innerText = '₹' + (base + miniStylistDelta).toLocaleString('en-IN');
+      document.getElementById('m-conf-price').innerText = '₹' + (base + miniStylistDelta).toLocaleString('en-IN');
+    }
+
+    let mHairGender = 'woman';
+    let mHairCut = "Layered & Textured Cut's";
+
+    const mHairTypes = {
+      woman: ['All', "Layered & Textured Cut's", "Classic Cut's", "Bob Cut's", "Short Cut's", "Statement Cut's", "Bangs & Fringe", "Trending"],
+      man: ['All', 'Fade & Taper', 'Textured Crop', "Classic Cut's", "Short Cut's", 'Trending']
+    };
+
+    const mLayerLongImgs = [
+      { src: './layer_cut_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_side.jpg', angle: 'Side Angle (2/3)' },
+      { src: './layer_cut_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerLongImgs = [
+      { src: './long_layered_cut_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerStraightLongNoBangsImgs = [
+      { src: './long_layered_cut_straight_long_nobangs_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_straight_long_nobangs_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_straight_long_nobangs_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerMedImgs = [
+      { src: './long_layered_cut_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerShortImgs = [
+      { src: './long_layered_cut_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerWavyLongImgs = [
+      { src: './long_layered_cut_wavy_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_wavy_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_wavy_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerWavyMedImgs = [
+      { src: './long_layered_cut_wavy_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_wavy_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_wavy_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerWavyShortImgs = [
+      { src: './long_layered_cut_wavy_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_wavy_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_wavy_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerCurlyLongImgs = [
+      { src: './long_layered_cut_curly_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_curly_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_curly_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerCurlyMedImgs = [
+      { src: './long_layered_cut_curly_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_curly_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_curly_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerCurlyShortImgs = [
+      { src: './long_layered_cut_curly_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_curly_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_curly_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerCoilyLongImgs = [
+      { src: './long_layered_cut_coily_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_coily_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_coily_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerCoilyMedImgs = [
+      { src: './long_layered_cut_coily_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_coily_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_coily_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLongLayerCoilyShortImgs = [
+      { src: './long_layered_cut_coily_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './long_layered_cut_coily_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './long_layered_cut_coily_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerMedImgs = [
+      { src: './layer_cut_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_med_side.jpg', angle: 'Side Angle (2/3)' },
+      { src: './layer_cut_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerShortImgs = [
+      { src: './layer_cut_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_short_back.jpg', angle: 'Back View (3/3)' }
+    ];
+
+    const mLayerWavyLongImgs = [
+      { src: './layer_cut_wavy_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_wavy_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_wavy_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerWavyMedImgs = [
+      { src: './layer_cut_wavy_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_wavy_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_wavy_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerWavyShortImgs = [
+      { src: './layer_cut_wavy_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_wavy_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_wavy_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerCurlyLongImgs = [
+      { src: './layer_cut_curly_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_curly_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_curly_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerCurlyMedImgs = [
+      { src: './layer_cut_curly_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_curly_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_curly_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerCurlyShortImgs = [
+      { src: './layer_cut_curly_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_curly_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_curly_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerCoilyLongImgs = [
+      { src: './layer_cut_coily_long_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_coily_long_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_coily_long_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerCoilyMedImgs = [
+      { src: './layer_cut_coily_med_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_coily_med_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_coily_med_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    const mLayerCoilyShortImgs = [
+      { src: './layer_cut_coily_short_front.jpg', angle: 'Front View (1/3)' },
+      { src: './layer_cut_coily_short_side.jpg', angle: 'Side Profile (2/3)' },
+      { src: './layer_cut_coily_short_back.jpg', angle: 'Back Cascading (3/3)' }
+    ];
+
+    let mLayerImgs = mLayerLongImgs;
+    let mLayerIdx = 0;
+    let mTex = 'Straight';
+    let mLen = 'Long';
+
+    function setMiniLayerImg(i) {
+      if (!mLayerImgs || mLayerImgs.length === 0) return;
+      if (i < 0) i = mLayerImgs.length - 1;
+      if (i >= mLayerImgs.length) i = 0;
+      mLayerIdx = i;
+      const img = document.getElementById('m-layer-img');
+      const b = document.getElementById('m-layer-badge');
+      if (img && mLayerImgs[i]) img.src = mLayerImgs[i].src;
+      if (b && mLayerImgs[i]) b.innerText = mLayerImgs[i].angle;
+      const dots = document.getElementById('m-layer-dots');
+      if (dots) {
+        dots.innerHTML = '';
+        mLayerImgs.forEach((_, idx) => {
+          const d = document.createElement('span');
+          d.className = idx === i ? 'w-1.5 h-1.5 rounded-full bg-[#C59265] cursor-pointer' : 'w-1.5 h-1.5 rounded-full bg-white/50 cursor-pointer';
+          d.onclick = () => setMiniLayerImg(idx);
+          dots.appendChild(d);
+        });
+      }
+    }
+
+    function cycleMiniLayerImg(delta) {
+      setMiniLayerImg(mLayerIdx + delta);
+    }
+
+    function updateMiniActiveImages() {
+      if (mTex === 'Straight' && mLen === 'Long') {
+        mLayerImgs = mLayerLongImgs;
+      } else if (mTex === 'Straight' && mLen === 'Medium') {
+        mLayerImgs = mLayerMedImgs;
+      } else if (mTex === 'Straight' && mLen === 'Short') {
+        mLayerImgs = mLayerShortImgs;
+      } else if (mTex === 'Wavy' && mLen === 'Long') {
+        mLayerImgs = mLayerWavyLongImgs;
+      } else if (mTex === 'Wavy' && mLen === 'Medium') {
+        mLayerImgs = mLayerWavyMedImgs;
+      } else if (mTex === 'Wavy' && mLen === 'Short') {
+        mLayerImgs = mLayerWavyShortImgs;
+      } else if (mTex === 'Curly' && mLen === 'Long') {
+        mLayerImgs = mLayerCurlyLongImgs;
+      } else if (mTex === 'Curly' && mLen === 'Medium') {
+        mLayerImgs = mLayerCurlyMedImgs;
+      } else if (mTex === 'Curly' && mLen === 'Short') {
+        mLayerImgs = mLayerCurlyShortImgs;
+      } else if (mTex === 'Coily' && mLen === 'Long') {
+        mLayerImgs = mLayerCoilyLongImgs;
+      } else if (mTex === 'Coily' && mLen === 'Medium') {
+        mLayerImgs = mLayerCoilyMedImgs;
+      } else if (mTex === 'Coily' && mLen === 'Short') {
+        mLayerImgs = mLayerCoilyShortImgs;
+      } else if (mTex === 'Coily') {
+        mLayerImgs = mLayerCoilyMedImgs;
+      } else if (mTex === 'Curly') {
+        mLayerImgs = mLayerCurlyMedImgs;
+      } else if (mTex === 'Wavy') {
+        mLayerImgs = mLayerWavyMedImgs;
+      } else {
+        mLayerImgs = mLayerShortImgs;
+      }
+      setMiniLayerImg(0);
+    }
+
+    let mFinish = 'Signature Blowout';
+    const mStylingOptionsByTexture = {
+      'Straight': ['Signature Blowout', 'Sleek Glass Finish', 'Soft Waves', 'Natural Polish'],
+      'Wavy': ['Beach Waves', 'Bouncy Blowout', 'Diffused Waves', 'Sleek Smooth Press'],
+      'Curly': ['Diffused Curls', 'Voluminous Sculpt', 'Hydration Glaze', 'Thermal Silk Press'],
+      'Coily': ['Twist-Out Definition', 'Diffused Coil Set', 'Crown Sculpt', 'Nourishing Silk Press']
+    };
+
+    function renderMiniStylingOptions() {
+      const container = document.getElementById('m-layer-styling-container');
+      if (!container) return;
+      const opts = mStylingOptionsByTexture[mTex] || mStylingOptionsByTexture['Straight'];
+      container.innerHTML = '';
+      opts.forEach(opt => {
+        const btn = document.createElement('button');
+        const isSelected = (mFinish === opt);
+        btn.className = isSelected 
+          ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white shrink-0' 
+          : 'px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1] shrink-0 text-[#1F1E1C]';
+        btn.innerText = opt;
+        btn.onclick = () => pickMiniFinish(opt);
+        container.appendChild(btn);
+      });
+    }
+
+    function pickMiniFinish(f) {
+      mFinish = f;
+      renderMiniStylingOptions();
+      updateMiniLayerCutPrice();
+    }
+
+    function updateMiniLayerCutPrice() {
+      let price = 2400;
+      if (mFinish.includes('Silk') || mFinish.includes('Glass') || mFinish.includes('Press')) {
+        price += 350;
+      } else if (mFinish.includes('Blowout') && mFinish !== 'Signature Blowout') {
+        price += 250;
+      } else if (mFinish === 'Voluminous Sculpt' || mFinish === 'Crown Sculpt') {
+        price += 250;
+      } else if (mFinish === 'Soft Waves' || mFinish === 'Diffused Waves' || mFinish === 'Diffused Coil Set' || mFinish === 'Hydration Glaze') {
+        price += 200;
+      }
+
+      const pEl = document.getElementById('m-layer-price');
+      if (pEl) pEl.innerText = '₹' + price.toLocaleString('en-IN');
+      const bEl = document.getElementById('m-layer-book-btn');
+      if (bEl) bEl.innerText = 'BOOK THIS LOOK • ₹' + price.toLocaleString('en-IN');
+    }
+
+    function pickMiniTexture(t) {
+      mTex = t;
+      ['Straight', 'Wavy', 'Curly', 'Coily'].forEach(v => {
+        const btn = document.getElementById('m-tex-' + v);
+        if (btn) btn.className = v === t ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white' : 'px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]';
+      });
+      const opts = mStylingOptionsByTexture[t] || mStylingOptionsByTexture['Straight'];
+      if (!opts.includes(mFinish)) {
+        mFinish = opts[0];
+      }
+      renderMiniStylingOptions();
+      updateMiniActiveImages();
+      updateMiniLayerCutPrice();
+    }
+
+    function pickMiniLength(l) {
+      mLen = l;
+      ['Long', 'Medium', 'Short'].forEach(v => {
+        const btn = document.getElementById('m-len-' + v);
+        if (btn) btn.className = v === l ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white' : 'px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]';
+      });
+      updateMiniActiveImages();
+      updateMiniLayerCutPrice();
+    }
+
+    function bookMiniLayerCut() {
+      const nameEl = document.getElementById('m-conf-name');
+      if (nameEl) nameEl.innerText = `Layer Cut (${mTex} • ${mLen} • ${mFinish})`;
+      const pEl = document.getElementById('m-conf-price');
+      let price = 2400;
+      if (mFinish.includes('Silk') || mFinish.includes('Glass') || mFinish.includes('Press')) {
+        price += 350;
+      } else if (mFinish.includes('Blowout') && mFinish !== 'Signature Blowout') {
+        price += 250;
+      } else if (mFinish === 'Voluminous Sculpt' || mFinish === 'Crown Sculpt') {
+        price += 250;
+      } else if (mFinish === 'Soft Waves' || mFinish === 'Diffused Waves' || mFinish === 'Diffused Coil Set' || mFinish === 'Hydration Glaze') {
+        price += 200;
+      }
+      if (pEl) pEl.innerText = '₹' + price.toLocaleString('en-IN');
+      setMiniScreen('stylists');
+    }
+
+    let mLongLayerImgs = mLongLayerLongImgs;
+    let mLongLayerIdx = 0;
+    let mLongLayerTex = 'Straight';
+    let mLongLayerLen = 'Long';
+    let mLongLayerBangs = 'Curtain Bangs';
+    let mLongLayerFinish = 'Signature Blowout';
+
+    function setMiniLongLayerImg(i) {
+      if (!mLongLayerImgs || mLongLayerImgs.length === 0) return;
+      if (i < 0) i = mLongLayerImgs.length - 1;
+      if (i >= mLongLayerImgs.length) i = 0;
+      mLongLayerIdx = i;
+      const img = document.getElementById('m-longlayer-img');
+      const b = document.getElementById('m-longlayer-badge');
+      if (img && mLongLayerImgs[i]) img.src = mLongLayerImgs[i].src;
+      if (b && mLongLayerImgs[i]) b.innerText = mLongLayerImgs[i].angle;
+      const dots = document.getElementById('m-longlayer-dots');
+      if (dots) {
+        dots.innerHTML = '';
+        mLongLayerImgs.forEach((_, idx) => {
+          const d = document.createElement('span');
+          d.className = idx === i ? 'w-1.5 h-1.5 rounded-full bg-[#C59265] cursor-pointer' : 'w-1.5 h-1.5 rounded-full bg-white/50 cursor-pointer';
+          d.onclick = () => setMiniLongLayerImg(idx);
+          dots.appendChild(d);
+        });
+      }
+    }
+
+    function cycleMiniLongLayerImg(delta) {
+      setMiniLongLayerImg(mLongLayerIdx + delta);
+    }
+
+    function pickMiniLongLayerBangs(b) {
+      mLongLayerBangs = b;
+      ['Curtain', 'None'].forEach(v => {
+        const label = v === 'Curtain' ? 'Curtain Bangs' : 'No Bangs';
+        const btn = document.getElementById('m-ll-bangs-' + v);
+        if (btn) btn.className = (label === b) ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white' : 'px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]';
+      });
+      updateMiniLongLayerActiveImages();
+    }
+
+    function updateMiniLongLayerActiveImages() {
+      if (mLongLayerTex === 'Straight' && mLongLayerLen === 'Long') {
+        if (mLongLayerBangs === 'No Bangs') {
+          mLongLayerImgs = mLongLayerStraightLongNoBangsImgs;
+        } else {
+          mLongLayerImgs = mLongLayerLongImgs;
+        }
+      } else if (mLongLayerTex === 'Straight' && mLongLayerLen === 'Medium') {
+        mLongLayerImgs = mLongLayerMedImgs;
+      } else if (mLongLayerTex === 'Straight' && mLongLayerLen === 'Short') {
+        mLongLayerImgs = mLongLayerShortImgs;
+      } else if (mLongLayerTex === 'Wavy' && mLongLayerLen === 'Long') {
+        mLongLayerImgs = mLongLayerWavyLongImgs;
+      } else if (mLongLayerTex === 'Wavy' && mLongLayerLen === 'Medium') {
+        mLongLayerImgs = mLongLayerWavyMedImgs;
+      } else if (mLongLayerTex === 'Wavy' && mLongLayerLen === 'Short') {
+        mLongLayerImgs = mLongLayerWavyShortImgs;
+      } else if (mLongLayerTex === 'Curly' && mLongLayerLen === 'Long') {
+        mLongLayerImgs = mLongLayerCurlyLongImgs;
+      } else if (mLongLayerTex === 'Curly' && mLongLayerLen === 'Medium') {
+        mLongLayerImgs = mLongLayerCurlyMedImgs;
+      } else if (mLongLayerTex === 'Curly' && mLongLayerLen === 'Short') {
+        mLongLayerImgs = mLongLayerCurlyShortImgs;
+      } else if (mLongLayerTex === 'Coily' && mLongLayerLen === 'Long') {
+        mLongLayerImgs = mLongLayerCoilyLongImgs;
+      } else if (mLongLayerTex === 'Coily' && mLongLayerLen === 'Medium') {
+        mLongLayerImgs = mLongLayerCoilyMedImgs;
+      } else if (mLongLayerTex === 'Coily' && mLongLayerLen === 'Short') {
+        mLongLayerImgs = mLongLayerCoilyShortImgs;
+      } else {
+        mLongLayerImgs = mLongLayerLongImgs;
+      }
+      setMiniLongLayerImg(0);
+    }
+
+    function renderMiniLongLayerStylingOptions() {
+      const container = document.getElementById('m-longlayer-styling-container');
+      if (!container) return;
+      const opts = mStylingOptionsByTexture[mLongLayerTex] || mStylingOptionsByTexture['Straight'];
+      container.innerHTML = '';
+      opts.forEach(opt => {
+        const btn = document.createElement('button');
+        const isSelected = (mLongLayerFinish === opt);
+        btn.className = isSelected 
+          ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white shrink-0' 
+          : 'px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1] shrink-0 text-[#1F1E1C]';
+        btn.innerText = opt;
+        btn.onclick = () => pickMiniLongLayerFinish(opt);
+        container.appendChild(btn);
+      });
+    }
+
+    function pickMiniLongLayerFinish(f) {
+      mLongLayerFinish = f;
+      renderMiniLongLayerStylingOptions();
+      updateMiniLongLayerCutPrice();
+    }
+
+    function updateMiniLongLayerCutPrice() {
+      let price = 2600;
+      if (mLongLayerFinish.includes('Silk') || mLongLayerFinish.includes('Glass') || mLongLayerFinish.includes('Press')) {
+        price += 350;
+      } else if (mLongLayerFinish.includes('Blowout') && mLongLayerFinish !== 'Signature Blowout') {
+        price += 250;
+      } else if (mLongLayerFinish === 'Voluminous Sculpt' || mLongLayerFinish === 'Crown Sculpt') {
+        price += 250;
+      } else if (mLongLayerFinish === 'Soft Waves' || mLongLayerFinish === 'Diffused Waves' || mLongLayerFinish === 'Diffused Coil Set' || mLongLayerFinish === 'Hydration Glaze') {
+        price += 200;
+      }
+
+      const pEl = document.getElementById('m-longlayer-price');
+      if (pEl) pEl.innerText = '₹' + price.toLocaleString('en-IN');
+      const bEl = document.getElementById('m-longlayer-book-btn');
+      if (bEl) bEl.innerText = 'BOOK THIS LOOK • ₹' + price.toLocaleString('en-IN');
+    }
+
+    function pickMiniLongLayerTexture(t) {
+      mLongLayerTex = t;
+      ['Straight', 'Wavy', 'Curly', 'Coily'].forEach(v => {
+        const btn = document.getElementById('m-ll-tex-' + v);
+        if (btn) btn.className = v === t ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white' : 'px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]';
+      });
+      const opts = mStylingOptionsByTexture[t] || mStylingOptionsByTexture['Straight'];
+      if (!opts.includes(mLongLayerFinish)) {
+        mLongLayerFinish = opts[0];
+      }
+      renderMiniLongLayerStylingOptions();
+      updateMiniLongLayerActiveImages();
+      updateMiniLongLayerCutPrice();
+    }
+
+    function pickMiniLongLayerLength(l) {
+      mLongLayerLen = l;
+      ['Long', 'Medium', 'Short'].forEach(v => {
+        const btn = document.getElementById('m-ll-len-' + v);
+        if (btn) btn.className = v === l ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white' : 'px-2 py-0.5 rounded-full text-[8px] bg-white border border-[#EDE8E1]';
+      });
+      updateMiniLongLayerActiveImages();
+      updateMiniLongLayerCutPrice();
+    }
+
+    function bookMiniLongLayerCut() {
+      const nameEl = document.getElementById('m-conf-name');
+      if (nameEl) nameEl.innerText = `Long Layered Cut (${mLongLayerTex} • ${mLongLayerLen} • ${mLongLayerBangs} • ${mLongLayerFinish})`;
+      const pEl = document.getElementById('m-conf-price');
+      let price = 2600;
+      if (mLongLayerFinish.includes('Silk') || mLongLayerFinish.includes('Glass') || mLongLayerFinish.includes('Press')) {
+        price += 350;
+      } else if (mLongLayerFinish.includes('Blowout') && mLongLayerFinish !== 'Signature Blowout') {
+        price += 250;
+      } else if (mLongLayerFinish === 'Voluminous Sculpt' || mLongLayerFinish === 'Crown Sculpt') {
+        price += 250;
+      } else if (mLongLayerFinish === 'Soft Waves' || mLongLayerFinish === 'Diffused Waves' || mLongLayerFinish === 'Diffused Coil Set' || mLongLayerFinish === 'Hydration Glaze') {
+        price += 200;
+      }
+      if (pEl) pEl.innerText = '₹' + price.toLocaleString('en-IN');
+      setMiniScreen('stylists');
+    }
+
+    const mHairCards = [
+      { name: 'Layer Cut', gender: 'woman', cats: ['All', "Layered & Textured Cut's", "Classic Cut's", 'Trending'], img: './layer_cut_front.jpg', stylist: 'Christian Dior', price: 2400, time: '60 min', rating: '4.9', isLayerCut: true },
+      { name: 'Long Layered Cut', gender: 'woman', cats: ['All', "Layered & Textured Cut's", "Classic Cut's", 'Trending'], img: './long_layered_cut_front.jpg', stylist: 'Christian Dior', price: 2600, time: '65 min', rating: '4.9', isLongLayeredCut: true },
+      { name: 'Butterfly Layer Cut', gender: 'woman', cats: ["Layered & Textured Cut's", 'Trending'], img: './haircut_butterfly_cut.png', stylist: 'Christian Dior', price: 2500, time: '60 min', rating: '4.9' },
+      { name: 'French Bob Cut', gender: 'woman', cats: ["Bob Cut's", "Classic Cut's"], img: './haircut_french_bob.png', stylist: 'Jessica Alba', price: 2200, time: '50 min', rating: '4.8' },
+      { name: 'Curtain Bangs & Waves', gender: 'woman', cats: ["Bangs & Fringe", "Layered & Textured Cut's"], img: './haircut_curtain_bangs.png', stylist: 'Sarah Jenkins', price: 2100, time: '45 min', rating: '4.8' },
+      { name: 'Classic Feather Layer', gender: 'woman', cats: ["Classic Cut's", "Layered & Textured Cut's"], img: './haircut_classic_feather.png', stylist: 'Christian Dior', price: 2400, time: '55 min', rating: '4.9' },
+      { name: 'Pixie Textured Cut', gender: 'woman', cats: ["Short Cut's", "Statement Cut's"], img: './haircut_pixie_cut.png', stylist: 'Sophia Loren', price: 2300, time: '45 min', rating: '4.9' },
+      { name: '90s Wolf / Shag Cut', gender: 'woman', cats: ["Statement Cut's", "Trending", "Layered & Textured Cut's"], img: './haircut_wolf_cut.png', stylist: 'Sophia Loren', price: 2600, time: '60 min', rating: '4.9' },
+      { name: 'Low Fade & Crop', gender: 'man', cats: ['Fade & Taper', 'Textured Crop', "Short Cut's", 'Trending', "Classic Cut's"], img: './haircut_men_fade_crop.png', stylist: 'Marcus Vance', price: 1500, time: '40 min', rating: '4.9' },
+      { name: 'Classic Pompadour', gender: 'man', cats: ["Classic Cut's", 'Fade & Taper', 'Trending'], img: './haircut_men_pompadour.png', stylist: 'Marcus Vance', price: 1800, time: '45 min', rating: '4.8' }
+    ];
+
+    function setMiniHairGender(g) {
+      mHairGender = g;
+      mHairCut = g === 'woman' ? "Layered & Textured Cut's" : "All";
+      const wBtn = document.getElementById('m-gender-woman');
+      const mBtn = document.getElementById('m-gender-man');
+      if (g === 'woman') {
+        wBtn.className = 'px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white';
+        mBtn.className = 'px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white text-[#1F1E1C] border border-[#EDE8E1]';
+      } else {
+        mBtn.className = 'px-2.5 py-0.5 rounded-full text-[8.5px] font-bold bg-[#C59265] text-white';
+        wBtn.className = 'px-2.5 py-0.5 rounded-full text-[8.5px] font-medium bg-white text-[#1F1E1C] border border-[#EDE8E1]';
+      }
+      renderMiniHairPills();
+      renderMiniHairCards();
+    }
+
+    function setMiniHairCut(c) {
+      mHairCut = c;
+      renderMiniHairPills();
+      renderMiniHairCards();
+    }
+
+    function renderMiniHairPills() {
+      const container = document.getElementById('m-hairCutPills');
+      if (!container) return;
+      container.innerHTML = '';
+      (mHairTypes[mHairGender] || []).forEach(pill => {
+        const isAct = pill === mHairCut;
+        const b = document.createElement('button');
+        b.className = isAct ? 'px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#C59265] text-white shrink-0' : 'px-2 py-0.5 rounded-full text-[8px] bg-white text-[#1F1E1C] border border-[#EDE8E1] shrink-0';
+        b.innerText = pill;
+        b.onclick = () => setMiniHairCut(pill);
+        container.appendChild(b);
+      });
+    }
+
+    function renderMiniHairCards() {
+      const grid = document.getElementById('m-hairCutGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      const filtered = mHairCards.filter(c => {
+        if (c.gender !== mHairGender) return false;
+        if (mHairCut === 'All') return true;
+        return c.cats.includes(mHairCut);
+      });
+      filtered.forEach(c => {
+        const card = document.createElement('div');
+        if (c.isLayerCut || c.isLongLayeredCut) {
+          card.className = 'col-span-2 bg-white rounded-xl border border-[#C59265]/40 overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265] group';
+          card.onclick = () => {
+            if (c.isLongLayeredCut) {
+              setMiniScreen('long-layered-cut-detail');
+            } else {
+              setMiniScreen('layer-cut-detail');
+            }
+          };
+          card.innerHTML = `
+            <div class="h-40 w-full relative overflow-hidden bg-stone-100">
+              <img src="${c.img}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+              <div class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/60 text-[7px] text-white font-medium">Signature Cut • 360° Preview</div>
+              <div class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-full bg-white/90 text-[7px] font-bold text-[#1F1E1C]">Refine Look →</div>
+            </div>
+            <div class="p-2 flex items-center justify-between">
+              <div>
+                <div class="text-[9.5px] font-bold text-[#1F1E1C]">${c.name}</div>
+                <div class="text-[7.5px] text-[#7A7672]">${c.stylist}</div>
+                <div class="text-[7.5px] text-[#7A7672] mt-0.5">★ ${c.rating} (580 Reviews)</div>
+              </div>
+              <div class="text-right">
+                <span class="font-bold text-[10px] text-[#C59265]">₹${c.price.toLocaleString('en-IN')}</span>
+                <div class="text-[7px] text-[#7A7672]">${c.time}</div>
+              </div>
+            </div>
+          `;
+        } else {
+          card.className = 'bg-white rounded-xl border border-[#EDE8E1] overflow-hidden shadow-2xs cursor-pointer hover:border-[#C59265]';
+          card.onclick = () => {
+            const nameEl = document.getElementById('m-conf-name');
+            if (nameEl) nameEl.innerText = c.name;
+            const pEl = document.getElementById('m-conf-price');
+            if (pEl) pEl.innerText = '₹' + c.price.toLocaleString('en-IN');
+            setMiniScreen('stylists');
+          };
+          card.innerHTML = `
+            <div class="h-16 w-full relative">
+              <img src="${c.img}" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-1.5 flex flex-col justify-between">
+              <div>
+                <div class="text-[8.5px] font-bold truncate">${c.name}</div>
+                <div class="text-[7px] text-[#7A7672] truncate">${c.stylist}</div>
+              </div>
+              <div class="flex items-center justify-between mt-1 text-[7.5px]">
+                <span class="font-bold text-[#C59265]">₹${c.price.toLocaleString('en-IN')}</span>
+                <span class="text-[#7A7672]">★ ${c.rating}</span>
+              </div>
+            </div>
+          `;
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    updateMiniPills();
+    filterMiniCards();
+    updateMiniPrice();
+    setMiniHairGender('woman');
+    setMiniLayerImg(0);
+    renderMiniStylingOptions();
+    updateMiniLayerCutPrice();
+    setMiniLongLayerImg(0);
+    renderMiniLongLayerStylingOptions();
+    updateMiniLongLayerCutPrice();
+    setMiniScreen('home');
+  </script>
+</body>
+</html>

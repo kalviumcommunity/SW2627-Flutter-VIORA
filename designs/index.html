@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIORA — Core Architecture Stack (Dart, Flutter, Firebase)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    .font-serif-luxury { font-family: 'Cinzel', serif; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-code { font-family: 'Fira Code', monospace; }
+    .gold-glow { box-shadow: 0 8px 32px -4px rgba(197, 146, 101, 0.25); }
+    .gold-glow-hover:hover { box-shadow: 0 12px 40px -4px rgba(197, 146, 101, 0.35); }
+    .card-glass {
+      background: rgba(24, 23, 21, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-glass:hover {
+      border-color: rgba(197, 146, 101, 0.45);
+      transform: translateY(-3px);
+    }
+    .card-active {
+      border-color: #C59265 !important;
+      background: rgba(32, 29, 26, 0.95) !important;
+      box-shadow: 0 0 25px rgba(197, 146, 101, 0.22) !important;
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #F3E7D3 0%, #D4A373 50%, #A97448 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .bg-obsidian-mesh {
+      background-color: #0D0C0B;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(197, 146, 101, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(169, 116, 72, 0.06) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(20, 19, 18, 0.9) 0px, transparent 100%);
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-obsidian-mesh text-[#EFECE6] min-h-screen flex flex-col antialiased selection:bg-[#C59265]/30 selection:text-[#F3E7D3]">
+
+  <!-- Top Luxury Header Bar -->
+  <header class="border-b border-white/10 bg-[#141312]/90 backdrop-blur-md px-6 lg:px-12 py-4 sticky top-0 z-50 flex items-center justify-between gap-4">
+    <div class="flex items-center space-x-3.5">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D4A373] to-[#8C5E35] flex items-center justify-center font-serif-luxury font-bold text-white shadow-lg text-xl border border-white/15">
+        V
+      </div>
+      <div>
+        <div class="flex items-center space-x-2.5">
+          <span class="font-serif-luxury font-bold text-lg tracking-widest text-[#F4E9DC]">VIORA</span>
+          <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#C59265]/20 text-[#D4A373] border border-[#C59265]/30">
+            Architecture Stack
+          </span>
+        </div>
+        <p class="text-xs text-[#9E988E]">Haute Coiffure &amp; Luxury Member Experience • Mobile &amp; Web Platform</p>
+      </div>
+    </div>
+
+    <!-- Right Actions -->
+    <div class="flex items-center space-x-3">
+      <a href="./viora_home_flow.html" target="_blank" class="px-4 py-2 rounded-xl bg-[#C59265]/20 hover:bg-[#C59265]/30 text-[#E5BE97] border border-[#C59265]/40 text-xs font-semibold tracking-wide transition-all flex items-center space-x-2 group">
+        <span>Preview Salon Prototype</span>
+        <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Title Section -->
+  <section class="max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-8 text-center sm:text-left">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-6 border-b border-white/10">
+      <div>
+        <div class="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-widest text-[#D4A373] mb-2">
+          <span class="w-2 h-2 rounded-full bg-[#C59265] animate-pulse"></span>
+          <span>Core Engineering Stack</span>
+        </div>
+        <h1 class="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#F7F4EF]">
+          The 5 Core Pillars
+        </h1>
+        <p class="text-sm sm:text-base text-[#9E988E] mt-2 max-w-2xl font-light">
+          High-performance, null-safe mobile &amp; cloud architecture engineered for instant VIP booking, 360° photoshoot studios, and synchronized member experiences.
+        </p>
+      </div>
+      <div class="flex items-center space-x-2 text-xs text-[#8A857C] shrink-0 self-start sm:self-end">
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 font-code text-[#D4A373]">
+          5 / 5 Systems Active
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- The 5 Core Pillar Cards Grid -->
+  <main class="max-w-7xl mx-auto px-6 lg:px-12 pb-8 flex-1">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5">
+
+      <!-- Card 1: D - Dart -->
+      <div id="card-dart" onclick="selectPillar('dart')" class="card-glass card-active p-6 rounded-2xl cursor-pointer flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-[#D4A373]/10 rounded-full blur-2xl group-hover:bg-[#D4A373]/20 transition-all"></div>
+        
+        <div>
+          <!-- Monogram Badge -->
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#D4A373] to-[#8C5E35] flex items-center justify-center font-serif-luxury font-extrabold text-2xl text-white shadow-lg mb-5 border border-white/20">
+            D
+          </div>
+          
+          <div class="text-[11px] font-bold uppercase tracking-wider text-[#D4A373] mb-1 font-code">
+            Core Language
+          </div>
+          
+          <h2 class="text-2xl font-bold tracking-tight text-[#F7F4EF] mb-1 group-hover:text-[#D4A373] transition-colors">
+            Dart
+          </h2>
+          
+          <p class="text-sm font-medium text-[#C59265] mb-3">
+            The language Flutter runs on
+          </p>
+          
+          <p class="text-xs text-[#9E988E] leading-relaxed">
+            Fast, null-safe object-oriented language compiling directly to native machine code with reactive async streams and immutable models.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#B8B2A7]">
+          <span class="font-code text-[11px] text-[#A8A296]">lib/models/</span>
+          <span class="text-[#D4A373] group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </div>
+
+      <!-- Card 2: F - Flutter -->
+      <div id="card-flutter" onclick="selectPillar('flutter')" class="card-glass p-6 rounded-2xl cursor-pointer flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-[#D4A373]/10 rounded-full blur-2xl group-hover:bg-[#D4A373]/20 transition-all"></div>
+        
+        <div>
+          <!-- Monogram Badge -->
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#C59265] to-[#7A502A] flex items-center justify-center font-serif-luxury font-extrabold text-2xl text-white shadow-lg mb-5 border border-white/20">
+            F
+          </div>
+          
+          <div class="text-[11px] font-bold uppercase tracking-wider text-[#D4A373] mb-1 font-code">
+            UI Engine
+          </div>
+          
+          <h2 class="text-2xl font-bold tracking-tight text-[#F7F4EF] mb-1 group-hover:text-[#D4A373] transition-colors">
+            Flutter
+          </h2>
+          
+          <p class="text-sm font-medium text-[#C59265] mb-3">
+            Cross-platform UI framework
+          </p>
+          
+          <p class="text-xs text-[#9E988E] leading-relaxed">
+            Google's multi-platform framework delivering 60fps animations, obsidian-gold responsive design, and cross-platform compilation.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#B8B2A7]">
+          <span class="font-code text-[11px] text-[#A8A296]">lib/screens/</span>
+          <span class="text-[#D4A373] group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </div>
+
+      <!-- Card 3: A - Firebase Auth -->
+      <div id="card-auth" onclick="selectPillar('auth')" class="card-glass p-6 rounded-2xl cursor-pointer flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-[#D4A373]/10 rounded-full blur-2xl group-hover:bg-[#D4A373]/20 transition-all"></div>
+        
+        <div>
+          <!-- Monogram Badge -->
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#D4A373] to-[#8C5E35] flex items-center justify-center font-serif-luxury font-extrabold text-2xl text-white shadow-lg mb-5 border border-white/20">
+            A
+          </div>
+          
+          <div class="text-[11px] font-bold uppercase tracking-wider text-[#D4A373] mb-1 font-code">
+            Identity &amp; Security
+          </div>
+          
+          <h2 class="text-2xl font-bold tracking-tight text-[#F7F4EF] mb-1 group-hover:text-[#D4A373] transition-colors">
+            Firebase Auth
+          </h2>
+          
+          <p class="text-sm font-medium text-[#C59265] mb-3">
+            User identity &amp; sessions
+          </p>
+          
+          <p class="text-xs text-[#9E988E] leading-relaxed">
+            Multi-provider client authentication (Google, Apple, Email/Password), VIP guest passes, and automatic membership tier resolution.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#B8B2A7]">
+          <span class="font-code text-[11px] text-[#A8A296]">lib/services/auth_service.dart</span>
+          <span class="text-[#D4A373] group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </div>
+
+      <!-- Card 4: C - Cloud Firestore -->
+      <div id="card-firestore" onclick="selectPillar('firestore')" class="card-glass p-6 rounded-2xl cursor-pointer flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-[#D4A373]/10 rounded-full blur-2xl group-hover:bg-[#D4A373]/20 transition-all"></div>
+        
+        <div>
+          <!-- Monogram Badge -->
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#C59265] to-[#7A502A] flex items-center justify-center font-serif-luxury font-extrabold text-2xl text-white shadow-lg mb-5 border border-white/20">
+            C
+          </div>
+          
+          <div class="text-[11px] font-bold uppercase tracking-wider text-[#D4A373] mb-1 font-code">
+            Real-Time NoSQL
+          </div>
+          
+          <h2 class="text-2xl font-bold tracking-tight text-[#F7F4EF] mb-1 group-hover:text-[#D4A373] transition-colors">
+            Cloud Firestore
+          </h2>
+          
+          <p class="text-sm font-medium text-[#C59265] mb-3">
+            Real-time NoSQL database
+          </p>
+          
+          <p class="text-xs text-[#9E988E] leading-relaxed">
+            Sub-second reactive document collections powering live appointment booking, senior stylist schedules, and haircut catalogs.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#B8B2A7]">
+          <span class="font-code text-[11px] text-[#A8A296]">lib/services/firestore_service.dart</span>
+          <span class="text-[#D4A373] group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </div>
+
+      <!-- Card 5: S - Firebase Storage -->
+      <div id="card-storage" onclick="selectPillar('storage')" class="card-glass p-6 rounded-2xl cursor-pointer flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-[#D4A373]/10 rounded-full blur-2xl group-hover:bg-[#D4A373]/20 transition-all"></div>
+        
+        <div>
+          <!-- Monogram Badge -->
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#D4A373] to-[#8C5E35] flex items-center justify-center font-serif-luxury font-extrabold text-2xl text-white shadow-lg mb-5 border border-white/20">
+            S
+          </div>
+          
+          <div class="text-[11px] font-bold uppercase tracking-wider text-[#D4A373] mb-1 font-code">
+            Media Cloud CDN
+          </div>
+          
+          <h2 class="text-2xl font-bold tracking-tight text-[#F7F4EF] mb-1 group-hover:text-[#D4A373] transition-colors">
+            Firebase Storage
+          </h2>
+          
+          <p class="text-sm font-medium text-[#C59265] mb-3">
+            File &amp; media storage
+          </p>
+          
+          <p class="text-xs text-[#9E988E] leading-relaxed">
+            High-speed cloud asset storage hosting the full 360° hairstyle angle galleries, nail art lookbooks, and client consultation uploads.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#B8B2A7]">
+          <span class="font-code text-[11px] text-[#A8A296]">lib/services/storage_service.dart</span>
+          <span class="text-[#D4A373] group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Deep-Dive Architecture Drawer -->
+    <div class="mt-8 bg-[#151413]/90 border border-white/10 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+        <div class="flex items-center space-x-4">
+          <div id="inspector-badge" class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#D4A373] to-[#8C5E35] flex items-center justify-center font-serif-luxury font-bold text-2xl text-white shadow-md border border-white/20">
+            D
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <h3 id="inspector-title" class="font-serif-luxury text-2xl font-bold text-[#F7F4EF]">Dart</h3>
+              <span id="inspector-tag" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#C59265]/20 text-[#D4A373] border border-[#C59265]/30">
+                Core Language
+              </span>
+            </div>
+            <p id="inspector-subtitle" class="text-xs text-[#C59265] font-medium">The language Flutter runs on</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="text-[#8A857C]">Implementation Source:</span>
+          <code id="inspector-path" class="px-2.5 py-1 rounded-lg bg-black/50 border border-white/10 font-code text-[#D4A373] text-[11px]">
+            lib/models/
+          </code>
+        </div>
+      </div>
+
+      <!-- Drawer Content Body -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6">
+        <!-- Left: Technical Overview & Capabilities -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-[#B8B2A7]">Architectural Role &amp; Features</h4>
+          <p id="inspector-desc" class="text-sm text-[#CCC7BD] leading-relaxed">
+            Dart is the strongly typed, null-safe programming foundation for the VIORA application. It provides compile-time safety, asynchronous streams for real-time Firestore updates, and frictionless compilation to ARM64 native binaries on iOS and Android as well as modern WebAssembly and CanvasKit for Web.
+          </p>
+
+          <div class="pt-2">
+            <h5 class="text-xs font-semibold text-[#D4A373] uppercase tracking-wider mb-2">Key Production Capabilities:</h5>
+            <ul id="inspector-features" class="space-y-2 text-xs text-[#B0AAA0]">
+              <li class="flex items-center space-x-2">
+                <span class="text-[#C59265]">✦</span>
+                <span>Sound Null Safety guarantees zero runtime null reference exceptions.</span>
+              </li>
+              <li class="flex items-center space-x-2">
+                <span class="text-[#C59265]">✦</span>
+                <span>Reactive asynchronous stream primitives powering live appointment streams.</span>
+              </li>
+              <li class="flex items-center space-x-2">
+                <span class="text-[#C59265]">✦</span>
+                <span>Clean MVVM service architecture with decoupled models and business logic.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right: Code & Configuration Snippet -->
+        <div class="bg-black/60 rounded-2xl border border-white/10 p-4 font-code text-xs relative flex flex-col justify-between">
+          <div class="flex items-center justify-between pb-3 border-b border-white/10 text-[11px] text-[#8C877E]">
+            <span id="code-snippet-filename">models/appointment_model.dart</span>
+            <span class="text-[10px] uppercase tracking-wider text-[#A97448] bg-[#C59265]/10 px-2 py-0.5 rounded">Production Code</span>
+          </div>
+
+          <pre id="code-snippet-body" class="pt-3 text-[#E0DDD5] overflow-x-auto no-scrollbar leading-relaxed">
+class Appointment {
+  final String id;
+  final String serviceName;
+  final String stylistName;
+  final DateTime dateTime;
+  final double price;
+  final String status; // 'confirmed', 'completed', 'cancelled'
+
+  const Appointment({
+    required this.id,
+    required this.serviceName,
+    required this.stylistName,
+    required this.dateTime,
+    required this.price,
+    this.status = 'confirmed',
+  });
+}</pre>
+
+          <div class="pt-3 mt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-[#7A756D]">
+            <span>Verified Null-Safe Dart 3.x</span>
+            <span class="text-[#D4A373]">Live &amp; Compiled</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Luxury Minimal Footer -->
+  <footer class="border-t border-white/10 bg-[#0F0E0D] px-6 lg:px-12 py-5 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8A857C]">
+      <div class="flex items-center space-x-3">
+        <span class="font-serif-luxury font-bold text-[#D4A373] tracking-widest">VIORA</span>
+        <span>•</span>
+        <span>Maison de Beauté Architecture Suite</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="hover:text-[#CCC7BD] transition-colors">Dart</span>
+        <span>•</span>
+        <span class="hover:text-[#CCC7BD] transition-colors">Flutter</span>
+        <span>•</span>
+        <span class="hover:text-[#CCC7BD] transition-colors">Firebase Auth</span>
+        <span>•</span>
+        <span class="hover:text-[#CCC7BD] transition-colors">Cloud Firestore</span>
+        <span>•</span>
+        <span class="hover:text-[#CCC7BD] transition-colors">Firebase Storage</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive State Script -->
+  <script>
+    const pillarData = {
+      dart: {
+        letter: 'D',
+        title: 'Dart',
+        subtitle: 'The language Flutter runs on',
+        tag: 'Core Language',
+        path: 'lib/models/ & lib/core/',
+        filename: 'lib/models/appointment_model.dart',
+        desc: 'Dart is the strongly typed, null-safe programming foundation for the VIORA application. It provides compile-time safety, asynchronous streams for real-time Firestore updates, and frictionless compilation to ARM64 native binaries on iOS and Android as well as modern WebAssembly and CanvasKit for Web.',
+        features: [
+          'Sound Null Safety guarantees zero runtime null reference exceptions.',
+          'Reactive asynchronous stream primitives powering live appointment streams.',
+          'Clean MVVM service architecture with decoupled models and business logic.'
+        ],
+        code: `class Appointment {
+  final String id;
+  final String serviceName;
+  final String stylistName;
+  final DateTime dateTime;
+  final double price;
+  final String status; // 'confirmed', 'completed', 'cancelled'
+
+  const Appointment({
+    required this.id,
+    required this.serviceName,
+    required this.stylistName,
+    required this.dateTime,
+    required this.price,
+    this.status = 'confirmed',
+  });
+}`
+      },
+      flutter: {
+        letter: 'F',
+        title: 'Flutter',
+        subtitle: 'Cross-platform UI framework',
+        tag: 'UI Engine',
+        path: 'lib/main.dart & lib/screens/',
+        filename: 'lib/widgets/responsive_web_container.dart',
+        desc: 'Flutter is Google’s modern UI toolkit for building natively compiled applications from a single codebase. In VIORA, Flutter renders our bespoke obsidian & champagne gold theme, fluid 60fps micro-animations, and responsive desktop/mobile containers.',
+        features: [
+          'Pixel-perfect rendering engine running on Skia & Impeller.',
+          'ResponsiveWebContainer framing mobile flows cleanly on desktop displays.',
+          'Custom physics-based scrolls and transitions across all 16 interactive screens.'
+        ],
+        code: `class VioraApp extends StatelessWidget {
+  const VioraApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'VIORA Maison de Beauté',
+      theme: VioraTheme.luxuryDarkTheme,
+      home: const ResponsiveWebContainer(
+        child: OnboardingScreen(),
+      ),
+    );
+  }
+}`
+      },
+      auth: {
+        letter: 'A',
+        title: 'Firebase Auth',
+        subtitle: 'User identity & sessions',
+        tag: 'Identity & Security',
+        path: 'lib/services/auth_service.dart',
+        filename: 'lib/services/auth_service.dart',
+        desc: 'Firebase Authentication manages identity, secure tokens, and session persistence for VIORA members. It supports multi-factor credentials, VIP guest tokens, and automatically synchronizes customer tier status (Silver, Gold, Platinum, Black Card).',
+        features: [
+          'Multi-provider sign-in: Email/Password, Google, Apple ID, and VIP Guest passes.',
+          'Reactive Stream<User?> listeners triggering real-time UI auth state updates.',
+          'Secure token storage and membership tier resolution for bespoke salon perks.'
+        ],
+        code: `class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  User? get currentUser => _auth.currentUser;
+
+  Future<UserCredential> signInWithEmail(String email, String password) async {
+    return await _auth.signInWithEmailAndPassword(
+      email: email.trim(),
+      password: password,
+    );
+  }
+}`
+      },
+      firestore: {
+        letter: 'C',
+        title: 'Cloud Firestore',
+        subtitle: 'Real-time NoSQL database',
+        tag: 'Real-Time NoSQL',
+        path: 'lib/services/firestore_service.dart',
+        filename: 'lib/services/firestore_service.dart',
+        desc: 'Cloud Firestore is our real-time NoSQL document database. It powers live appointment reservations, stylist schedules, multi-texture haircut catalogs, and nail art customizer pricing with sub-second synchronization across all clients.',
+        features: [
+          'Live streams for upcoming appointments and real-time stylist availability.',
+          'Centralized collections for Branches, Services, Cuts, and Senior Stylists.',
+          'Offline caching allowing full browsing even with intermittent connectivity.'
+        ],
+        code: `class FirestoreService {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  Stream<List<Appointment>> streamUserAppointments(String userId) {
+    return _db
+        .collection('appointments')
+        .where('userId', isEqualTo: userId)
+        .orderBy('dateTime', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Appointment.fromFirestore(doc))
+            .toList());
+  }
+}`
+      },
+      storage: {
+        letter: 'S',
+        title: 'Firebase Storage',
+        subtitle: 'File & media storage',
+        tag: 'Media Cloud CDN',
+        path: 'lib/services/storage_service.dart',
+        filename: 'lib/services/storage_service.dart',
+        desc: 'Firebase Storage delivers lightning-fast content distribution for VIORA’s media-heavy catalog: 360° photoshoot angle views across all hair lengths and textures, bespoke nail art lookbooks, and client consultation photo uploads.',
+        features: [
+          'Ultra-high definition asset hosting with global edge caching and compression.',
+          'Secure bucket security rules restricting access to authenticated VIP members.',
+          'Asynchronous upload tasks for client reference photos and stylist portfolios.'
+        ],
+        code: `class StorageService {
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Future<String> uploadClientReferencePhoto({
+    required String userId,
+    required Uint8List fileBytes,
+    required String fileName,
+  }) async {
+    final ref = _storage.ref().child('clients/$userId/consultations/$fileName');
+    final uploadTask = await ref.putData(fileBytes);
+    return await uploadTask.ref.getDownloadURL();
+  }
+}`
+      }
+    };
+
+    function selectPillar(key) {
+      const data = pillarData[key];
+      if (!data) return;
+
+      // Update active cards
+      const keys = ['dart', 'flutter', 'auth', 'firestore', 'storage'];
+      keys.forEach(k => {
+        const el = document.getElementById('card-' + k);
+        if (el) {
+          if (k === key) {
+            el.classList.add('card-active');
+          } else {
+            el.classList.remove('card-active');
+          }
+        }
+      });
+
+      // Update Inspector Drawer
+      document.getElementById('inspector-badge').textContent = data.letter;
+      document.getElementById('inspector-title').textContent = data.title;
+      document.getElementById('inspector-subtitle').textContent = data.subtitle;
+      document.getElementById('inspector-tag').textContent = data.tag;
+      document.getElementById('inspector-path').textContent = data.path;
+      document.getElementById('inspector-desc').textContent = data.desc;
+      document.getElementById('code-snippet-filename').textContent = data.filename;
+      document.getElementById('code-snippet-body').textContent = data.code;
+
+      // Update features list
+      const ul = document.getElementById('inspector-features');
+      ul.innerHTML = '';
+      data.features.forEach(feat => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center space-x-2';
+        li.innerHTML = '<span class="text-[#C59265]">✦</span><span>' + feat + '</span>';
+        ul.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>

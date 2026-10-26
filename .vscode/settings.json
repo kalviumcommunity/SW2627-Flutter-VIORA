@@ -1,0 +1,9 @@
+{
+  "liveServer.settings.root": "/designs",
+  "liveServer.settings.port": 5500,
+  "files.associations": {
+    "*.dart": "dart",
+    "*.html": "html"
+  },
+  "editor.formatOnSave": true
+}
