@@ -18,6 +18,13 @@ if (-not $flutterCmd) {
         "$env:LOCALAPPDATA\flutter\bin",
         "C:\src\flutter\bin"
     )
+
+    # Version compatible search for C:\flutter*
+    $versionedPaths = Get-ChildItem -Path "C:\" -Filter "flutter*" -Directory -ErrorAction SilentlyContinue | ForEach-Object { "$($_.FullName)\flutter\bin", "$($_.FullName)\bin" }
+    if ($versionedPaths) {
+        $searchPaths += $versionedPaths
+    }
+
     foreach ($p in $searchPaths) {
         if (Test-Path "$p\flutter.bat") {
             $env:PATH = "$p;" + $env:PATH

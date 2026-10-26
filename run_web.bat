@@ -34,6 +34,20 @@ if exist "C:\src\flutter\bin\flutter.bat" (
     goto RUN_FLUTTER
 )
 
+REM Version compatible search for C:\flutter*
+for /d %%D in ("C:\flutter*") do (
+    if exist "%%D\flutter\bin\flutter.bat" (
+        set "PATH=%%D\flutter\bin;!PATH!"
+        echo [INFO] Found Flutter SDK at %%D\flutter\bin
+        goto RUN_FLUTTER
+    )
+    if exist "%%D\bin\flutter.bat" (
+        set "PATH=%%D\bin;!PATH!"
+        echo [INFO] Found Flutter SDK at %%D\bin
+        goto RUN_FLUTTER
+    )
+)
+
 echo [!] Flutter SDK was not found in PATH or standard folders.
 echo     To run natively:
 echo     1. Download Flutter from https://docs.flutter.dev/get-started/install/windows
