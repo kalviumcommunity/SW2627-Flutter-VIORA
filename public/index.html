@@ -350,6 +350,90 @@
               </svg>
             </div>
 
+            <!-- PERSON 3: INSPIRATION TILE -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tileInspiration" role="button" aria-label="Open Atelier Inspiration & Discovery">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Atelier Inspiration & Looks</span>
+                <span class="tile-value" id="profileInspirationSummary">Explore & Request</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- PERSON 3: REVIEWS & RATINGS TILE -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tileReviews" role="button" aria-label="Open Reviews and Ratings">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Reviews & Look Ratings</span>
+                <span class="tile-value" id="profileReviewsSummary">Rate Treatments</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- PERSON 3: NOTIFICATIONS TILE -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tileNotifications" role="button" aria-label="Open Notifications">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Notifications</span>
+                <span class="tile-value" id="profileNotifSummary">0 Unread</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- PERSON 3: STYLIST PORTAL TILE (Visible for stylists and admins) -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tileStylistPortal" style="display: none;" role="button" aria-label="Open Stylist Portal">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Stylist Atelier Portal</span>
+                <span class="tile-value">Inbox & Portfolio</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
+            <!-- PERSON 3: ADMIN INTELLIGENCE & ANALYTICS TILE -->
+            <div class="menu-tile-item highlight-tile" tabindex="0" id="tileAdminAnalytics" style="display: none;" role="button" aria-label="Open Admin Analytics Dashboard">
+              <div class="tile-icon-box">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+              </div>
+              <div class="tile-text-group">
+                <span class="tile-title">Admin Intelligence & Analytics</span>
+                <span class="tile-value">Revenue & KPIs</span>
+              </div>
+              <svg class="tile-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </div>
+
             <!-- 8. Sign Out -->
             <div class="menu-tile-item tile-signout" tabindex="0" id="tileSignOut" role="button" aria-label="Sign Out">
               <div class="tile-icon-box signout-icon">
@@ -1103,6 +1187,651 @@
 
 
         <!-- ============================================== -->
+        <!-- PERSON 3: SCREEN 10: ATELIER INSPIRATION HOME  -->
+        <!-- ============================================== -->
+        <section id="screenInspiration" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnInspBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Atelier Inspiration</h2>
+            <button type="button" class="nav-text-btn" id="btnOpenInspirationForm" aria-label="New Request">
+              <span>+ Request</span>
+            </button>
+          </nav>
+
+          <div class="screen-hero-banner">
+            <span class="screen-hero-eyebrow">VIORA ATELIER COUTURE</span>
+            <h3 class="screen-hero-title">Curated Look Discovery</h3>
+            <p class="screen-hero-desc">Explore master stylist creations or submit reference photos for custom look consultation.</p>
+          </div>
+
+          <!-- Category filter scroll -->
+          <div class="category-filter-scroll" id="inspCategoryFilterScroll">
+            <button type="button" class="category-chip-btn active" data-category="All">All Looks</button>
+            <button type="button" class="category-chip-btn" data-category="Hair">Hair</button>
+            <button type="button" class="category-chip-btn" data-category="Nails">Nails</button>
+            <button type="button" class="category-chip-btn" data-category="Skin">Skin</button>
+            <button type="button" class="category-chip-btn" data-category="Makeup">Makeup</button>
+            <button type="button" class="category-chip-btn" data-category="Other">Other</button>
+          </div>
+
+          <!-- My Active Inspiration Requests (if any) -->
+          <div id="myRequestsSection" style="margin-bottom: 20px;">
+            <div class="section-title-with-badge" style="margin-bottom: 10px;">
+              <span class="detail-section-eyebrow">MY LOOK CONSULTATIONS</span>
+              <span class="badge-count" id="myRequestsCountBadge">0 Active</span>
+            </div>
+            <div id="myRequestsContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Discovery Feed Section -->
+          <div>
+            <div class="section-title-with-badge" style="margin-bottom: 10px;">
+              <span class="detail-section-eyebrow">TRENDING ATELIER DESIGNS</span>
+            </div>
+            <div class="inspiration-grid" id="discoveryGrid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================== -->
+        <!-- PERSON 3: SCREEN 11: NEW INSPIRATION REQUEST   -->
+        <!-- ============================================== -->
+        <section id="screenInspirationRequest" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnInspReqBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Bespoke Consultation</h2>
+            <div style="width: 32px;"></div>
+          </nav>
+
+          <form id="inspRequestForm" style="padding-bottom: 24px;">
+            <!-- Reference Images Upload Dropzone -->
+            <div class="form-group">
+              <label class="form-label">INSPIRATION / REFERENCE PHOTOS</label>
+              <div class="upload-dropzone" id="inspDropzone">
+                <input type="file" id="inspFileInput" accept="image/png,image/jpeg,image/webp" multiple style="display: none;">
+                <svg class="upload-dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <div class="upload-dropzone-text">Tap or drop photos here</div>
+                <div class="upload-dropzone-hint">Upload up to 5 photos (PNG, JPEG, WebP - max 5MB each)</div>
+              </div>
+
+              <!-- Preview thumbnail strip -->
+              <div class="upload-previews-grid" id="inspPreviewsGrid"></div>
+            </div>
+
+            <!-- Service Category -->
+            <div class="form-group">
+              <label class="form-label">SERVICE CATEGORY</label>
+              <select id="inspReqCategory" class="form-input">
+                <option value="Hair">Hair Styling & Color</option>
+                <option value="Nails">Nails & Couture Apex</option>
+                <option value="Skin">Facial & Cellular Therapy</option>
+                <option value="Makeup">Editorial & Occasion Makeup</option>
+                <option value="Other">Bespoke Consultation</option>
+              </select>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+              <label class="form-label" for="inspReqDesc">DESIRED LOOK & SPECIFICATIONS</label>
+              <textarea id="inspReqDesc" class="form-input" rows="3" placeholder="Describe tone, volume, cut, finish, or occasion preferences..." required maxlength="1000"></textarea>
+            </div>
+
+            <!-- Preferred Branch -->
+            <div class="form-group">
+              <label class="form-label" for="inspReqBranch">PREFERRED ATELIER BRANCH</label>
+              <select id="inspReqBranch" class="form-input">
+                <option value="">Any MAISON Branch</option>
+              </select>
+            </div>
+
+            <!-- Preferred Date & Flexibility -->
+            <div class="form-group">
+              <label class="form-label" for="inspReqDate">PREFERRED DATE (OPTIONAL)</label>
+              <input type="date" id="inspReqDate" class="form-input">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+              <input type="checkbox" id="inspReqFlexible" checked style="accent-color: var(--color-bronze);">
+              <label for="inspReqFlexible" style="font-size: 12px; color: var(--color-text-muted);">I have flexible timing with stylist recommendations</label>
+            </div>
+
+            <!-- Estimated Budget -->
+            <div class="form-group">
+              <label class="form-label" for="inspReqBudget">ESTIMATED BUDGET (₹ OPTIONAL)</label>
+              <input type="number" id="inspReqBudget" class="form-input" placeholder="e.g. 5000" min="0">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary" id="btnSubmitInspRequest">
+              <span class="btn-text">DISPATCH TO STYLISTS</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+        </section>
+
+
+        <!-- ============================================== -->
+        <!-- PERSON 3: SCREEN 12: STYLIST RESPONSES & CHOOSE -->
+        <!-- ============================================== -->
+        <section id="screenInspirationResponses" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnInspResponsesBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Stylist Proposals</h2>
+            <div style="width: 32px;"></div>
+          </nav>
+
+          <!-- Request Summary Banner -->
+          <div class="request-summary-card" id="inspResponseSummaryBox">
+            <div class="request-card-header">
+              <span class="request-status-pill status-pending" id="respDetailStatusPill">Pending</span>
+              <span style="font-size: 11px; color: var(--color-text-light);" id="respDetailRequestId">INSP-0001</span>
+            </div>
+            <h4 style="font-family: var(--font-serif); font-size: 16px; margin-bottom: 4px;" id="respDetailCategoryTitle">Hair Look</h4>
+            <p style="font-size: 12px; color: var(--color-text-muted);" id="respDetailDescText">Description...</p>
+          </div>
+
+          <!-- Comparison Mode Switcher -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span class="detail-section-eyebrow">RESPONDING STYLISTS</span>
+            <button type="button" class="btn-secondary" id="btnToggleCompareMode" style="padding: 4px 10px; font-size: 11px;">
+              <span>Compare Side-by-Side</span>
+            </button>
+          </div>
+
+          <!-- Stylist Responses Container -->
+          <div id="stylistResponsesContainer">
+            <!-- Rendered via JS -->
+          </div>
+
+          <!-- Booking Handoff Card (When Stylist Chosen) -->
+          <div id="bookingHandoffCard" class="admin-detail-section-card" style="display: none; border-color: var(--color-bronze); background: #FAF7F2; margin-top: 14px;">
+            <span class="detail-section-eyebrow">SELECTED STYLIST CONCIERGE</span>
+            <h4 style="font-family: var(--font-serif); font-size: 17px; margin: 4px 0;" id="handoffStylistTitle">Julian Vance Selected</h4>
+            <p style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 12px;">
+              Your bespoke look consultation is confirmed with your selected master stylist. Continue to schedule your atelier appointment.
+            </p>
+            <button type="button" class="btn-primary" id="btnProceedBookingHandoff">
+              <span class="btn-text">PROCEED TO FINAL BOOKING</span>
+            </button>
+          </div>
+        </section>
+
+
+        <!-- ============================================== -->
+        <!-- PERSON 3: SCREEN 13: REVIEWS & RATINGS         -->
+        <!-- ============================================== -->
+        <section id="screenReviews" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnReviewsBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Reviews & Look Ratings</h2>
+            <div style="width: 32px;"></div>
+          </nav>
+
+          <!-- Review Tabs -->
+          <div class="auth-tabs" role="tablist" style="margin-bottom: 16px;">
+            <button type="button" class="auth-tab active" id="tabReviewsEligible" role="tab" aria-selected="true">Eligible Treatments</button>
+            <button type="button" class="auth-tab" id="tabReviewsHistory" role="tab" aria-selected="false">My Submitted Reviews</button>
+          </div>
+
+          <!-- Eligible Appointments View -->
+          <div id="viewReviewsEligible">
+            <div class="section-title-with-badge" style="margin-bottom: 10px;">
+              <span class="detail-section-eyebrow">COMPLETED APPOINTMENTS AWAITING RATING</span>
+            </div>
+            <div id="reviewsEligibleList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Review History View -->
+          <div id="viewReviewsHistory" style="display: none;">
+            <div class="section-title-with-badge" style="margin-bottom: 10px;">
+              <span class="detail-section-eyebrow">MY PAST VERIFIED REVIEWS</span>
+            </div>
+            <div id="reviewsHistoryList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Submit Review Modal / Bottom Sheet -->
+          <div id="submitReviewModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
+            <div class="modal-card">
+              <div class="modal-header">
+                <div>
+                  <span class="modal-eyebrow">RATE TREATMENT EXPERIENCE</span>
+                  <h3 class="modal-title" id="reviewModalServiceName">French Balayage</h3>
+                </div>
+                <button type="button" class="modal-close-btn" id="btnCloseReviewModal" aria-label="Close">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <form id="reviewSubmitForm" class="modal-body">
+                <input type="hidden" id="reviewAppointmentId">
+
+                <!-- Overall Stylist Rating -->
+                <div class="form-group">
+                  <label class="form-label">STYLIST PERFORMANCE RATING (1 - 5 STARS)</label>
+                  <div class="star-rating-widget" id="starWidgetStylist" data-value="5">
+                    <span class="star-icon active" data-rating="1">★</span>
+                    <span class="star-icon active" data-rating="2">★</span>
+                    <span class="star-icon active" data-rating="3">★</span>
+                    <span class="star-icon active" data-rating="4">★</span>
+                    <span class="star-icon active" data-rating="5">★</span>
+                    <span style="font-size: 13px; font-weight: 600; color: var(--color-bronze); margin-left: 6px;" id="starValStylist">5.0</span>
+                  </div>
+                </div>
+
+                <!-- Look & Design Rating -->
+                <div class="form-group">
+                  <label class="form-label">LOOK & DESIGN ACCURACY (1 - 5 STARS)</label>
+                  <div class="star-rating-widget" id="starWidgetLook" data-value="5">
+                    <span class="star-icon active" data-rating="1">★</span>
+                    <span class="star-icon active" data-rating="2">★</span>
+                    <span class="star-icon active" data-rating="3">★</span>
+                    <span class="star-icon active" data-rating="4">★</span>
+                    <span class="star-icon active" data-rating="5">★</span>
+                    <span style="font-size: 13px; font-weight: 600; color: var(--color-bronze); margin-left: 6px;" id="starValLook">5.0</span>
+                  </div>
+                </div>
+
+                <!-- Written Review -->
+                <div class="form-group">
+                  <label class="form-label" for="reviewTextInput">WRITTEN TESTIMONIAL</label>
+                  <textarea id="reviewTextInput" class="form-input" rows="3" placeholder="Share your experience with the cut, color, finish, and salon atmosphere..." maxlength="1000"></textarea>
+                </div>
+
+                <div class="modal-footer" style="padding: 12px 0 0;">
+                  <button type="submit" class="btn-primary" id="btnConfirmSubmitReview">
+                    <span class="btn-text">PUBLISH ATELIER REVIEW</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================== -->
+        <!-- PERSON 3: SCREEN 14: NOTIFICATIONS CENTER      -->
+        <!-- ============================================== -->
+        <section id="screenNotifications" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnNotifBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Notifications</h2>
+            <button type="button" class="nav-text-btn" id="btnMarkAllNotifsRead" aria-label="Mark all read">
+              <span>Read All</span>
+            </button>
+          </nav>
+
+          <!-- Notification Filter Pills -->
+          <div class="category-filter-scroll" style="margin-bottom: 12px;">
+            <button type="button" class="category-chip-btn active" id="filterNotifAll">All Alerts</button>
+            <button type="button" class="category-chip-btn" id="filterNotifUnread">Unread Only</button>
+          </div>
+
+          <div id="notificationsContainer">
+            <!-- Rendered via JS -->
+          </div>
+        </section>
+
+
+        <!-- ============================================== -->
+        <!-- PERSON 3: SCREEN 15: STYLIST ATELIER PORTAL    -->
+        <!-- ============================================== -->
+        <section id="screenStylistPortal" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnStylistPortalBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Stylist Atelier Portal</h2>
+            <div style="width: 32px;"></div>
+          </nav>
+
+          <!-- Stylist Sub Tabs -->
+          <div class="auth-tabs" role="tablist" style="margin-bottom: 16px;">
+            <button type="button" class="auth-tab active" id="tabStylistRequests" role="tab">Look Inbox</button>
+            <button type="button" class="auth-tab" id="tabStylistPortfolio" role="tab">My Portfolio</button>
+            <button type="button" class="auth-tab" id="tabStylistReviews" role="tab">Reviews</button>
+          </div>
+
+          <!-- 1. Inbox View -->
+          <div id="viewStylistRequests">
+            <div class="section-title-with-badge" style="margin-bottom: 10px;">
+              <span class="detail-section-eyebrow">CLIENT INSPIRATION REQUESTS</span>
+              <span class="badge-count" id="stylistRequestsBadge">0 Requests</span>
+            </div>
+            <div id="stylistInboxList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- 2. Portfolio View -->
+          <div id="viewStylistPortfolio" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span class="detail-section-eyebrow">MY ATELIER PORTFOLIO</span>
+              <button type="button" class="btn-primary" id="btnOpenAddPortfolioModal" style="padding: 6px 12px; font-size: 11px;">
+                <span>+ Add Look</span>
+              </button>
+            </div>
+            <div class="inspiration-grid" id="stylistPortfolioGrid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- 3. Reviews View -->
+          <div id="viewStylistReviews" style="display: none;">
+            <div class="admin-kpi-grid" style="margin-bottom: 16px;">
+              <div class="admin-kpi-card">
+                <span class="admin-kpi-label">OVERALL RATING</span>
+                <span class="admin-kpi-val" id="stylistKpiAvgRating">5.0★</span>
+                <span class="admin-kpi-sub" id="stylistKpiTotalReviews">0 Reviews</span>
+              </div>
+              <div class="admin-kpi-card">
+                <span class="admin-kpi-label">LOOK ACCURACY</span>
+                <span class="admin-kpi-val" id="stylistKpiAvgLook">5.0★</span>
+                <span class="admin-kpi-sub">Client Look Score</span>
+              </div>
+            </div>
+            <div id="stylistReviewsList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Stylist Respond Modal -->
+          <div id="stylistRespondModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
+            <div class="modal-card">
+              <div class="modal-header">
+                <div>
+                  <span class="modal-eyebrow">RESPOND TO CLIENT</span>
+                  <h3 class="modal-title" id="respondModalTitle">Look Consultation</h3>
+                </div>
+                <button type="button" class="modal-close-btn" id="btnCloseRespondModal" aria-label="Close">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <form id="stylistRespondForm" class="modal-body">
+                <input type="hidden" id="respondRequestId">
+
+                <div class="form-group">
+                  <label class="form-label" for="respondMessage">MESSAGE TO CLIENT</label>
+                  <textarea id="respondMessage" class="form-input" rows="3" placeholder="Share your styling vision, technique recommendations, and suggestions..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="respondEstPrice">PROPOSED ESTIMATED PRICE (₹)</label>
+                  <input type="number" id="respondEstPrice" class="form-input" placeholder="e.g. 6500" min="0">
+                </div>
+
+                <div class="modal-footer" style="padding: 12px 0 0;">
+                  <button type="submit" class="btn-primary" id="btnSubmitStylistResponse">
+                    <span class="btn-text">SEND PROPOSAL TO CLIENT</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Add Portfolio Modal -->
+          <div id="addPortfolioModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
+            <div class="modal-card">
+              <div class="modal-header">
+                <div>
+                  <span class="modal-eyebrow">PORTFOLIO SHOWCASE</span>
+                  <h3 class="modal-title">Upload Portfolio Look</h3>
+                </div>
+                <button type="button" class="modal-close-btn" id="btnClosePortfolioModal" aria-label="Close">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <form id="addPortfolioForm" class="modal-body">
+                <div class="form-group">
+                  <label class="form-label" for="portTitle">LOOK TITLE</label>
+                  <input type="text" id="portTitle" class="form-input" placeholder="e.g. Soft Honey Balayage" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="portCategory">CATEGORY</label>
+                  <select id="portCategory" class="form-input">
+                    <option value="Hair">Hair</option>
+                    <option value="Nails">Nails</option>
+                    <option value="Skin">Skin</option>
+                    <option value="Makeup">Makeup</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="portDesc">DESCRIPTION / TECHNIQUE</label>
+                  <textarea id="portDesc" class="form-input" rows="2" placeholder="Describe formula, technique, or maintenance..."></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="portFileInput">IMAGE PHOTO (UPLOAD OR URL)</label>
+                  <input type="file" id="portFileInput" class="form-input" accept="image/*">
+                  <input type="url" id="portUrlInput" class="form-input" placeholder="Or enter image URL" style="margin-top: 6px;">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="portTags">TAGS (COMMA SEPARATED)</label>
+                  <input type="text" id="portTags" class="form-input" placeholder="e.g. Blonde, Balayage, Textured">
+                </div>
+
+                <div class="modal-footer" style="padding: 12px 0 0;">
+                  <button type="submit" class="btn-primary" id="btnSubmitPortfolio">
+                    <span class="btn-text">PUBLISH PORTFOLIO ITEM</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ============================================== -->
+        <!-- PERSON 3: SCREEN 16: ADMIN INTELLIGENCE & KPIS -->
+        <!-- ============================================== -->
+        <section id="screenAdminAnalytics" class="app-screen" style="display: none;">
+          <nav class="nav-bar">
+            <button type="button" class="nav-icon-btn" id="btnAdminAnalyticsBack" aria-label="Back">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <h2 class="nav-title">Admin Intelligence</h2>
+            <button type="button" class="nav-text-btn" id="btnRefreshAnalytics" aria-label="Refresh">
+              <span>Refresh</span>
+            </button>
+          </nav>
+
+          <!-- Analytics Controls: Branch & Date range -->
+          <div class="admin-analytics-controls">
+            <select id="analyticsBranchFilter" class="admin-select-input">
+              <option value="">All Branches</option>
+            </select>
+            <select id="analyticsDateFilter" class="admin-select-input">
+              <option value="all">All Time</option>
+              <option value="30">Last 30 Days</option>
+              <option value="7">Last 7 Days</option>
+            </select>
+          </div>
+
+          <!-- Executive KPI Grid (Authoritative Database Aggregations) -->
+          <div class="admin-kpi-grid">
+            <div class="admin-kpi-card">
+              <span class="admin-kpi-label">TOTAL BOOKINGS</span>
+              <span class="admin-kpi-val" id="kpiTotalBookings">0</span>
+              <span class="admin-kpi-sub" id="kpiCompletedBookings">0 Completed</span>
+            </div>
+            <div class="admin-kpi-card">
+              <span class="admin-kpi-label">TOTAL REVENUE</span>
+              <span class="admin-kpi-val" id="kpiTotalRevenue">₹0</span>
+              <span class="admin-kpi-sub">Verified Completed Spend</span>
+            </div>
+            <div class="admin-kpi-card">
+              <span class="admin-kpi-label">TOTAL CLIENTS</span>
+              <span class="admin-kpi-val" id="kpiTotalCustomers">0</span>
+              <span class="admin-kpi-sub" id="kpiActiveCustomers">0 Active</span>
+            </div>
+            <div class="admin-kpi-card">
+              <span class="admin-kpi-label">RETENTION RATE</span>
+              <span class="admin-kpi-val" id="kpiRetentionRate">0%</span>
+              <span class="admin-kpi-sub" id="kpiReturningClients">0 Returning Clients</span>
+            </div>
+          </div>
+
+          <!-- Analytics Navigation Tabs -->
+          <div class="auth-tabs" role="tablist" style="margin-bottom: 14px;">
+            <button type="button" class="auth-tab active" id="tabAdminOverview" role="tab">Overview</button>
+            <button type="button" class="auth-tab" id="tabAdminPerformance" role="tab">Performance</button>
+            <button type="button" class="auth-tab" id="tabAdminPopular" role="tab">Popularity</button>
+            <button type="button" class="auth-tab" id="tabAdminModeration" role="tab">Reviews</button>
+          </div>
+
+          <!-- Tab Content 1: Overview & Booking Trends -->
+          <div id="adminPanelOverview">
+            <div class="admin-detail-section-card">
+              <span class="detail-section-eyebrow">BOOKINGS & REVENUE VELOCITY</span>
+              <div id="analyticsTrendTimeline" style="margin-top: 8px;">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Branch & Stylist Performance -->
+          <div id="adminPanelPerformance" style="display: none;">
+            <!-- Branch Performance Table -->
+            <div class="admin-detail-section-card" style="margin-bottom: 16px;">
+              <span class="detail-section-eyebrow">BRANCH PERFORMANCE BENCHMARKS</span>
+              <div class="analytics-table-wrap">
+                <table class="analytics-table">
+                  <thead>
+                    <tr>
+                      <th>Branch</th>
+                      <th>Bookings</th>
+                      <th>Revenue</th>
+                      <th>Clients</th>
+                      <th>Rating</th>
+                    </tr>
+                  </thead>
+                  <tbody id="branchPerformanceTbody">
+                    <!-- Rendered via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Stylist Ranking Leaderboard -->
+            <div class="admin-detail-section-card">
+              <span class="detail-section-eyebrow">STYLIST PERFORMANCE RANKING</span>
+              <div class="analytics-table-wrap">
+                <table class="analytics-table">
+                  <thead>
+                    <tr>
+                      <th>Stylist</th>
+                      <th>Branch</th>
+                      <th>Completed</th>
+                      <th>Revenue</th>
+                      <th>Rating</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stylistPerformanceTbody">
+                    <!-- Rendered via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content 3: Popular Services & Looks -->
+          <div id="adminPanelPopular" style="display: none;">
+            <div class="admin-detail-section-card" style="margin-bottom: 16px;">
+              <span class="detail-section-eyebrow">TOP RANKED SERVICES</span>
+              <div id="adminPopularServicesContent">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+
+            <div class="admin-detail-section-card">
+              <span class="detail-section-eyebrow">POPULAR LOOK CATEGORIES</span>
+              <div id="adminPopularLooksContent">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content 4: Review Moderation -->
+          <div id="adminPanelModeration" style="display: none;">
+            <div class="admin-detail-section-card">
+              <div class="section-title-with-badge">
+                <span class="detail-section-eyebrow">REVIEW AUDIT & MODERATION</span>
+                <span class="badge-count" id="adminReviewCountBadge">0 Total</span>
+              </div>
+              <div class="analytics-table-wrap">
+                <table class="analytics-table">
+                  <thead>
+                    <tr>
+                      <th>Client / Stylist</th>
+                      <th>Rating</th>
+                      <th>Look</th>
+                      <th>Review Text</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminReviewsTbody">
+                    <!-- Rendered via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- ============================================== -->
         <!-- REBOOK INTEGRATION MODAL / BOTTOM SHEET        -->
         <!-- Safe integration point with Booking flow       -->
         <!-- ============================================== -->
@@ -1135,6 +1864,31 @@
         </div>
 
       </main>
+
+      <!-- Universal Bottom Nav Bar for Quick Switching -->
+      <nav class="viora-bottom-nav" id="mainBottomNav" style="display: none;">
+        <button type="button" class="nav-tab-btn active" id="navTabProfile" aria-label="Profile">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Profile</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="navTabInspiration" aria-label="Inspiration">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <span>Inspiration</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="navTabReviews" aria-label="Reviews">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          <span>Reviews</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="navTabNotifications" aria-label="Notifications">
+          <span class="nav-badge-dot" id="navNotifDot" style="display: none;"></span>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span>Alerts</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="navTabDashboard" aria-label="Dashboard">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span id="navTabDashboardLabel">Atelier</span>
+        </button>
+      </nav>
 
       <!-- Global Loading Overlay -->
       <div id="loadingOverlay" class="loading-overlay" style="display: none;" aria-hidden="true">

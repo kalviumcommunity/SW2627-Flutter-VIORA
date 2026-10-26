@@ -101,7 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
     screenBeautyQuiz: document.getElementById('screenBeautyQuiz'),
     screenQuizResults: document.getElementById('screenQuizResults'),
     screenAdminCustomers: document.getElementById('screenAdminCustomers'),
-    screenAdminCustomerDetail: document.getElementById('screenAdminCustomerDetail')
+    screenAdminCustomerDetail: document.getElementById('screenAdminCustomerDetail'),
+    screenInspiration: document.getElementById('screenInspiration'),
+    screenInspirationRequest: document.getElementById('screenInspirationRequest'),
+    screenInspirationResponses: document.getElementById('screenInspirationResponses'),
+    screenReviews: document.getElementById('screenReviews'),
+    screenNotifications: document.getElementById('screenNotifications'),
+    screenStylistPortal: document.getElementById('screenStylistPortal'),
+    screenAdminAnalytics: document.getElementById('screenAdminAnalytics')
   };
 
   // Auth elements
@@ -310,15 +317,58 @@ document.addEventListener('DOMContentLoaded', () => {
   function navigateTo(screenId) {
     state.currentScreen = screenId;
     Object.keys(screens).forEach((key) => {
-      if (key === screenId) {
-        screens[key].style.display = 'flex';
-      } else {
-        screens[key].style.display = 'none';
+      if (screens[key]) {
+        screens[key].style.display = (key === screenId) ? 'flex' : 'none';
       }
     });
+
+    // Handle universal bottom nav bar visibility and active tab state
+    const bottomNav = document.getElementById('mainBottomNav');
+    if (bottomNav) {
+      if (screenId === 'screenAuth' || !window.vioraApi.isAuthenticated()) {
+        bottomNav.style.display = 'none';
+      } else {
+        bottomNav.style.display = 'flex';
+        updateBottomNavActiveTab(screenId);
+      }
+    }
+
     // Scroll container to top
     const container = document.getElementById('appContainer');
     if (container) container.scrollTop = 0;
+  }
+
+  function updateBottomNavActiveTab(screenId) {
+    const tabs = {
+      navTabProfile: ['screenProfile', 'screenEditProfile', 'screenPreferences', 'screenBeautyJourney', 'screenBeautyQuiz', 'screenQuizResults'],
+      navTabInspiration: ['screenInspiration', 'screenInspirationRequest', 'screenInspirationResponses'],
+      navTabReviews: ['screenReviews'],
+      navTabNotifications: ['screenNotifications'],
+      navTabDashboard: ['screenStylistPortal', 'screenAdminAnalytics', 'screenAdminCustomers', 'screenAdminCustomerDetail']
+    };
+
+    Object.keys(tabs).forEach((tabId) => {
+      const btn = document.getElementById(tabId);
+      if (btn) {
+        if (tabs[tabId].includes(screenId)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      }
+    });
+
+    const user = window.vioraApi.getUser();
+    const dashLabel = document.getElementById('navTabDashboardLabel');
+    if (dashLabel && user) {
+      if (user.role === 'admin' || user.role === 'branch_manager') {
+        dashLabel.textContent = 'Admin';
+      } else if (user.role === 'stylist') {
+        dashLabel.textContent = 'Stylist';
+      } else {
+        dashLabel.textContent = 'Atelier';
+      }
+    }
   }
 
   // ==========================================
@@ -2185,17 +2235,1447 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // =========================================================================
+  // PERSON 3: INSPIRATION, REVIEWS, NOTIFICATIONS & ANALYTICS MODULE
+  // =========================================================================
+  state.inspReferenceImages = [];
+  state.activeInspCategory = 'All';
+  state.compareMode = false;
+  state.selectedInspRequestId = null;
+  state.reviewStylistRating = 5;
+  state.reviewLookRating = 5;
+
+  // Selectors for Person 3
+  const tileInspiration = document.getElementById('tileInspiration');
+  const tileReviews = document.getElementById('tileReviews');
+  const tileNotifications = document.getElementById('tileNotifications');
+  const tileStylistPortal = document.getElementById('tileStylistPortal');
+  const tileAdminAnalytics = document.getElementById('tileAdminAnalytics');
+
+  const btnInspBack = document.getElementById('btnInspBack');
+  const btnOpenInspirationForm = document.getElementById('btnOpenInspirationForm');
+  const btnInspReqBack = document.getElementById('btnInspReqBack');
+  const btnInspResponsesBack = document.getElementById('btnInspResponsesBack');
+  const btnReviewsBack = document.getElementById('btnReviewsBack');
+  const btnNotifBack = document.getElementById('btnNotifBack');
+  const btnStylistPortalBack = document.getElementById('btnStylistPortalBack');
+  const btnAdminAnalyticsBack = document.getElementById('btnAdminAnalyticsBack');
+
+  // Bottom Nav Elements
+  const navTabProfile = document.getElementById('navTabProfile');
+  const navTabInspiration = document.getElementById('navTabInspiration');
+  const navTabReviews = document.getElementById('navTabReviews');
+  const navTabNotifications = document.getElementById('navTabNotifications');
+  const navTabDashboard = document.getElementById('navTabDashboard');
+  const navNotifDot = document.getElementById('navNotifDot');
+
+  // Bottom Nav Navigation Wireup
+  if (navTabProfile) navTabProfile.addEventListener('click', () => navigateTo('screenProfile'));
+  if (navTabInspiration) navTabInspiration.addEventListener('click', () => { navigateTo('screenInspiration'); loadInspirationFeed(); });
+  if (navTabReviews) navTabReviews.addEventListener('click', () => { navigateTo('screenReviews'); loadReviewsScreen(); });
+  if (navTabNotifications) navTabNotifications.addEventListener('click', () => { navigateTo('screenNotifications'); loadNotificationsScreen(); });
+  if (navTabDashboard) navTabDashboard.addEventListener('click', () => {
+    const user = window.vioraApi.getUser();
+    if (user && (user.role === 'admin' || user.role === 'branch_manager')) {
+      navigateTo('screenAdminAnalytics');
+      loadAdminAnalyticsScreen();
+    } else if (user && user.role === 'stylist') {
+      navigateTo('screenStylistPortal');
+      loadStylistPortalScreen();
+    } else {
+      navigateTo('screenInspiration');
+      loadInspirationFeed();
+    }
+  });
+
+  // Profile Tile Wireup
+  if (tileInspiration) tileInspiration.addEventListener('click', () => { navigateTo('screenInspiration'); loadInspirationFeed(); });
+  if (tileReviews) tileReviews.addEventListener('click', () => { navigateTo('screenReviews'); loadReviewsScreen(); });
+  if (tileNotifications) tileNotifications.addEventListener('click', () => { navigateTo('screenNotifications'); loadNotificationsScreen(); });
+  if (tileStylistPortal) tileStylistPortal.addEventListener('click', () => { navigateTo('screenStylistPortal'); loadStylistPortalScreen(); });
+  if (tileAdminAnalytics) tileAdminAnalytics.addEventListener('click', () => { navigateTo('screenAdminAnalytics'); loadAdminAnalyticsScreen(); });
+
+  // Back Buttons
+  if (btnInspBack) btnInspBack.addEventListener('click', () => navigateTo('screenProfile'));
+  if (btnInspReqBack) btnInspReqBack.addEventListener('click', () => navigateTo('screenInspiration'));
+  if (btnInspResponsesBack) btnInspResponsesBack.addEventListener('click', () => navigateTo('screenInspiration'));
+  if (btnReviewsBack) btnReviewsBack.addEventListener('click', () => navigateTo('screenProfile'));
+  if (btnNotifBack) btnNotifBack.addEventListener('click', () => navigateTo('screenProfile'));
+  if (btnStylistPortalBack) btnStylistPortalBack.addEventListener('click', () => navigateTo('screenProfile'));
+  if (btnAdminAnalyticsBack) btnAdminAnalyticsBack.addEventListener('click', () => navigateTo('screenProfile'));
+
+  if (btnOpenInspirationForm) {
+    btnOpenInspirationForm.addEventListener('click', () => openNewInspirationForm());
+  }
+
   // ==========================================
-  // INITIALIZATION
+  // INSPIRATION MODULE FUNCTIONS
+  // ==========================================
+  async function loadInspirationFeed() {
+    try {
+      setGlobalLoading(true);
+
+      // Load branches if not cached
+      if (!state.branches || state.branches.length === 0) {
+        const branchRes = await window.vioraApi.getBranches().catch(() => null);
+        if (branchRes && branchRes.data) {
+          state.branches = branchRes.data;
+        }
+      }
+
+      // 1. Load active client inspiration requests
+      const reqRes = await window.vioraApi.getInspirationRequests().catch(() => null);
+      renderMyInspirationRequests(reqRes && reqRes.data ? reqRes.data : []);
+
+      // 2. Load discovery feed
+      const discRes = await window.vioraApi.getDiscovery(state.activeInspCategory).catch(() => null);
+      renderDiscoveryGrid(discRes && discRes.data ? discRes.data : []);
+
+    } catch (err) {
+      console.error('Error loading inspiration feed:', err);
+      showToast('Could not load inspiration feed.', 'error');
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  function renderMyInspirationRequests(requests) {
+    const container = document.getElementById('myRequestsContainer');
+    const badge = document.getElementById('myRequestsCountBadge');
+    if (!container) return;
+
+    if (badge) badge.textContent = `${requests.length} Request${requests.length === 1 ? '' : 's'}`;
+
+    if (!requests || requests.length === 0) {
+      container.innerHTML = `
+        <div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 16px; text-align: center;">
+          <p style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 8px;">No active look consultations yet.</p>
+          <button type="button" class="btn-secondary" id="btnEmptyNewInsp" style="padding: 6px 12px; font-size: 11px;">+ Request Custom Look</button>
+        </div>
+      `;
+      const btn = document.getElementById('btnEmptyNewInsp');
+      if (btn) btn.addEventListener('click', () => openNewInspirationForm());
+      return;
+    }
+
+    container.innerHTML = requests.map(req => {
+      let statusClass = 'status-pending';
+      let statusLabel = 'Awaiting Stylists';
+      if (req.status === 'responded') { statusClass = 'status-responded'; statusLabel = 'Proposals Ready'; }
+      if (req.status === 'accepted') { statusClass = 'status-accepted'; statusLabel = 'Stylist Selected'; }
+      if (req.status === 'declined') { statusClass = 'status-declined'; statusLabel = 'Declined'; }
+
+      const dateStr = req.createdAt ? new Date(req.createdAt).toLocaleDateString() : '';
+      const thumb = (req.referenceImages && req.referenceImages.length > 0)
+        ? req.referenceImages[0]
+        : 'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=200&auto=format&fit=crop&q=80';
+
+      return `
+        <div class="request-summary-card" data-req-id="${req.requestId}" style="cursor: pointer;" tabindex="0">
+          <div class="request-card-header">
+            <span class="request-status-pill ${statusClass}">${statusLabel}</span>
+            <span style="font-size: 11px; color: var(--color-text-light);">${req.requestId} • ${dateStr}</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center; margin-top: 6px;">
+            <img src="${thumb}" alt="Ref" style="width: 48px; height: 48px; border-radius: var(--radius-sm); object-fit: cover; flex-shrink: 0;">
+            <div style="flex: 1; min-width: 0;">
+              <h5 style="font-family: var(--font-serif); font-size: 15px; margin-bottom: 2px;">${req.category} Bespoke Look</h5>
+              <p style="font-size: 11.5px; color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${req.description || ''}</p>
+            </div>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.querySelectorAll('.request-summary-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const rId = card.dataset.reqId;
+        openInspirationResponses(rId);
+      });
+    });
+  }
+
+  function renderDiscoveryGrid(looks) {
+    const grid = document.getElementById('discoveryGrid');
+    if (!grid) return;
+
+    if (!looks || looks.length === 0) {
+      grid.innerHTML = '<p style="font-size: 12px; color: var(--color-text-muted); padding: 16px; text-align: center;">No looks matching this category.</p>';
+      return;
+    }
+
+    grid.innerHTML = looks.map(look => `
+      <div class="inspiration-card">
+        <div class="inspiration-card-img-wrap">
+          <img src="${look.imageUrl}" alt="${look.title}" class="inspiration-card-img" onerror="this.src='https://images.unsplash.com/photo-1560869713-7d0a29430803?w=600&auto=format&fit=crop&q=80'">
+          <span class="inspiration-card-badge">${look.category}</span>
+          <span class="inspiration-card-rating">★ ${look.rating || '5.0'}</span>
+        </div>
+        <div class="inspiration-card-body">
+          <h4 class="inspiration-card-title">${look.title}</h4>
+          <div class="inspiration-card-meta">
+            <span>By ${look.stylistName || 'Master Stylist'}</span>
+            <span>${look.branchName || 'MAISON'}</span>
+          </div>
+          <p class="inspiration-card-desc">${look.description || ''}</p>
+          <div class="inspiration-card-footer">
+            <button type="button" class="btn-secondary btn-request-this-look" data-title="${look.title}" data-category="${look.category}" style="padding: 6px 12px; font-size: 11px;">
+              Request Similar Look
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    grid.querySelectorAll('.btn-request-this-look').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openNewInspirationForm(btn.dataset.category, `Inspired by ${btn.dataset.title}: `);
+      });
+    });
+  }
+
+  // Category filter chips in Inspiration Home
+  const inspCategoryFilterScroll = document.getElementById('inspCategoryFilterScroll');
+  if (inspCategoryFilterScroll) {
+    inspCategoryFilterScroll.querySelectorAll('.category-chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        inspCategoryFilterScroll.querySelectorAll('.category-chip-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.activeInspCategory = btn.dataset.category;
+        loadInspirationFeed();
+      });
+    });
+  }
+
+  // ==========================================
+  // INSPIRATION REQUEST FORM
+  // ==========================================
+  function openNewInspirationForm(prefillCategory = 'Hair', prefillDesc = '') {
+    state.inspReferenceImages = [];
+    renderInspPreviews();
+
+    const catSelect = document.getElementById('inspReqCategory');
+    if (catSelect && prefillCategory) catSelect.value = prefillCategory;
+
+    const descInput = document.getElementById('inspReqDesc');
+    if (descInput) descInput.value = prefillDesc || '';
+
+    // Populate branch select
+    const branchSelect = document.getElementById('inspReqBranch');
+    if (branchSelect && state.branches && state.branches.length > 0) {
+      branchSelect.innerHTML = '<option value="">Any MAISON Flagship</option>' +
+        state.branches.map(b => `<option value="${b._id}">${b.name} (${b.address || ''})</option>`).join('');
+    }
+
+    navigateTo('screenInspirationRequest');
+  }
+
+  // Dropzone file handling
+  const inspDropzone = document.getElementById('inspDropzone');
+  const inspFileInput = document.getElementById('inspFileInput');
+
+  if (inspDropzone && inspFileInput) {
+    inspDropzone.addEventListener('click', () => inspFileInput.click());
+
+    inspDropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      inspDropzone.classList.add('dragover');
+    });
+
+    inspDropzone.addEventListener('dragleave', () => inspDropzone.classList.remove('dragover'));
+
+    inspDropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      inspDropzone.classList.remove('dragover');
+      if (e.dataTransfer.files) handleInspFiles(e.dataTransfer.files);
+    });
+
+    inspFileInput.addEventListener('change', (e) => {
+      if (e.target.files) handleInspFiles(e.target.files);
+    });
+  }
+
+  function handleInspFiles(files) {
+    const maxFiles = 5;
+    Array.from(files).slice(0, maxFiles - state.inspReferenceImages.length).forEach(file => {
+      if (file.size > 5 * 1024 * 1024) {
+        showToast(`File ${file.name} exceeds 5MB limit.`, 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        state.inspReferenceImages.push(e.target.result);
+        renderInspPreviews();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderInspPreviews() {
+    const grid = document.getElementById('inspPreviewsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = state.inspReferenceImages.map((src, index) => `
+      <div class="upload-preview-item">
+        <img src="${src}" alt="Preview ${index + 1}" class="upload-preview-img">
+        <button type="button" class="upload-preview-remove" data-index="${index}" aria-label="Remove photo">×</button>
+      </div>
+    `).join('');
+
+    grid.querySelectorAll('.upload-preview-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.index, 10);
+        state.inspReferenceImages.splice(idx, 1);
+        renderInspPreviews();
+      });
+    });
+  }
+
+  // Submit Inspiration Request Form
+  const inspRequestForm = document.getElementById('inspRequestForm');
+  if (inspRequestForm) {
+    inspRequestForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const desc = document.getElementById('inspReqDesc').value.trim();
+      const category = document.getElementById('inspReqCategory').value;
+      const preferredBranchId = document.getElementById('inspReqBranch').value || null;
+      const preferredDate = document.getElementById('inspReqDate').value || null;
+      const flexibleDate = document.getElementById('inspReqFlexible').checked;
+      const estimatedBudget = document.getElementById('inspReqBudget').value || null;
+
+      if (!desc) {
+        showToast('Please provide a description of your desired look.', 'error');
+        return;
+      }
+
+      try {
+        setGlobalLoading(true);
+
+        const payload = {
+          category,
+          referenceImages: state.inspReferenceImages,
+          description: desc,
+          preferredBranchId,
+          preferredDate,
+          flexibleDate,
+          estimatedBudget
+        };
+
+        const response = await window.vioraApi.createInspirationRequest(payload);
+        if (response && response.success) {
+          showToast('Inspiration request dispatched to stylists!', 'success');
+          inspRequestForm.reset();
+          state.inspReferenceImages = [];
+          navigateTo('screenInspiration');
+          loadInspirationFeed();
+        } else {
+          throw new Error(response.message || 'Submission failed');
+        }
+      } catch (err) {
+        console.error('Error submitting inspiration request:', err);
+        showToast(err.message || 'Failed to submit request.', 'error');
+      } finally {
+        setGlobalLoading(false);
+      }
+    });
+  }
+
+  // ==========================================
+  // STYLIST RESPONSES & COMPARISON
+  // ==========================================
+  async function openInspirationResponses(requestId) {
+    state.selectedInspRequestId = requestId;
+    state.compareMode = false;
+
+    try {
+      setGlobalLoading(true);
+      const res = await window.vioraApi.getInspirationRequest(requestId);
+      if (!res || !res.success || !res.data) {
+        throw new Error('Could not retrieve request details.');
+      }
+
+      const { request, responses } = res.data;
+
+      // Update Header Summary
+      const pill = document.getElementById('respDetailStatusPill');
+      if (pill) {
+        pill.textContent = request.status.toUpperCase();
+        pill.className = `request-status-pill status-${request.status}`;
+      }
+
+      const reqIdEl = document.getElementById('respDetailRequestId');
+      if (reqIdEl) reqIdEl.textContent = request.requestId;
+
+      const catTitle = document.getElementById('respDetailCategoryTitle');
+      if (catTitle) catTitle.textContent = `${request.category} Atelier Consultation`;
+
+      const descText = document.getElementById('respDetailDescText');
+      if (descText) descText.textContent = request.description;
+
+      renderStylistResponses(request, responses || []);
+
+      navigateTo('screenInspirationResponses');
+    } catch (err) {
+      console.error('Error opening inspiration responses:', err);
+      showToast(err.message || 'Failed to load responses.', 'error');
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  function renderStylistResponses(request, responses) {
+    const container = document.getElementById('stylistResponsesContainer');
+    const handoffCard = document.getElementById('bookingHandoffCard');
+    const handoffTitle = document.getElementById('handoffStylistTitle');
+    if (!container) return;
+
+    if (request.status === 'accepted' && request.chosenStylistId) {
+      if (handoffCard) handoffCard.style.display = 'block';
+    } else {
+      if (handoffCard) handoffCard.style.display = 'none';
+    }
+
+    if (!responses || responses.length === 0) {
+      container.innerHTML = `
+        <div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 24px 16px; text-align: center;">
+          <p style="font-size: 13px; font-weight: 500; color: var(--color-text-main); margin-bottom: 4px;">Stylists are reviewing your request</p>
+          <p style="font-size: 11.5px; color: var(--color-text-muted);">You will receive a notification as soon as our master stylists formulate a look proposal.</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (state.compareMode) {
+      // Comparison Table Layout
+      container.innerHTML = `
+        <div class="analytics-table-wrap">
+          <table class="analytics-table">
+            <thead>
+              <tr>
+                <th>Stylist</th>
+                <th>Rating</th>
+                <th>Branch</th>
+                <th>Suggested Service</th>
+                <th>Est. Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${responses.map(r => {
+                const s = r.stylistId || {};
+                const u = s.userId || {};
+                const b = s.branchId || {};
+                const serv = r.suggestedServiceId || {};
+                const isSelected = request.chosenResponseId && (request.chosenResponseId === r._id || request.chosenResponseId._id === r._id);
+
+                return `
+                  <tr style="${isSelected ? 'background: #FAF5EF; font-weight: 600;' : ''}">
+                    <td>${u.name || 'Master Stylist'}</td>
+                    <td>★ ${s.rating || 5.0}</td>
+                    <td>${b.name || 'MAISON'}</td>
+                    <td>${serv.name || 'Bespoke Atelier Treatment'}</td>
+                    <td>${r.estimatedPrice ? '₹' + r.estimatedPrice : 'Standard'}</td>
+                    <td>
+                      ${isSelected ? '<span style="color: var(--color-success); font-size: 11px;">✓ Selected</span>' : `
+                        <button type="button" class="btn-primary btn-choose-stylist" data-resp-id="${r._id}" style="padding: 4px 8px; font-size: 10px;">Select</button>
+                      `}
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else {
+      // Card list layout
+      container.innerHTML = responses.map(r => {
+        const s = r.stylistId || {};
+        const u = s.userId || {};
+        const b = s.branchId || {};
+        const serv = r.suggestedServiceId || {};
+        const isSelected = request.chosenResponseId && (request.chosenResponseId === r._id || request.chosenResponseId._id === r._id);
+
+        const avatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
+
+        return `
+          <div class="stylist-response-card ${isSelected ? 'selected-stylist' : ''}">
+            <div class="stylist-response-header">
+              <img src="${avatar}" alt="${u.name}" class="stylist-response-avatar">
+              <div class="stylist-response-info">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <h4 class="stylist-response-name">${u.name || 'Master Stylist'}</h4>
+                  ${isSelected ? '<span class="request-status-pill status-accepted">Selected Stylist</span>' : ''}
+                </div>
+                <div class="stylist-response-rating">
+                  <span style="color: #F59E0B;">★ ${s.rating || 5.0}</span>
+                  <span>•</span>
+                  <span>${b.name || 'MAISON Atelier'}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="stylist-response-bubble">
+              "${r.message || 'I would love to craft this bespoke look for you.'}"
+            </div>
+
+            <div class="stylist-response-details">
+              <span>Suggested Service: <strong>${serv.name || 'Bespoke Treatment'}</strong></span>
+              <span>Estimated: <strong>${r.estimatedPrice ? '₹' + r.estimatedPrice : 'Standard Pricing'}</strong></span>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+              ${isSelected ? `
+                <button type="button" class="btn-primary" disabled style="opacity: 0.8; padding: 8px 14px; font-size: 11px;">
+                  ✓ Confirmed Selection
+                </button>
+              ` : `
+                <button type="button" class="btn-primary btn-choose-stylist" data-resp-id="${r._id}" style="padding: 8px 14px; font-size: 11px;">
+                  Choose This Stylist
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Attach Choose Stylist click handlers
+    container.querySelectorAll('.btn-choose-stylist').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const responseId = btn.dataset.respId;
+        try {
+          setGlobalLoading(true);
+          const chooseRes = await window.vioraApi.chooseStylist(request.requestId, { responseId });
+          if (chooseRes && chooseRes.success) {
+            showToast('Stylist selected! You can now proceed to scheduling.', 'success');
+            openInspirationResponses(request.requestId);
+          } else {
+            throw new Error(chooseRes.message || 'Failed to select stylist');
+          }
+        } catch (err) {
+          console.error('Error choosing stylist:', err);
+          showToast(err.message || 'Could not select stylist.', 'error');
+        } finally {
+          setGlobalLoading(false);
+        }
+      });
+    });
+  }
+
+  // Toggle Compare Mode Button
+  const btnToggleCompareMode = document.getElementById('btnToggleCompareMode');
+  if (btnToggleCompareMode) {
+    btnToggleCompareMode.addEventListener('click', () => {
+      state.compareMode = !state.compareMode;
+      btnToggleCompareMode.textContent = state.compareMode ? 'Standard Cards' : 'Compare Side-by-Side';
+      if (state.selectedInspRequestId) {
+        openInspirationResponses(state.selectedInspRequestId);
+      }
+    });
+  }
+
+  // Booking Handoff Button
+  const btnProceedBookingHandoff = document.getElementById('btnProceedBookingHandoff');
+  if (btnProceedBookingHandoff) {
+    btnProceedBookingHandoff.addEventListener('click', async () => {
+      if (!state.selectedInspRequestId) return;
+      try {
+        setGlobalLoading(true);
+        const handoffRes = await window.vioraApi.getBookingHandoff(state.selectedInspRequestId);
+        if (handoffRes && handoffRes.success && handoffRes.data) {
+          const payload = handoffRes.data;
+
+          // Dispatch event contract for booking engine integration
+          const handoffEvent = new CustomEvent('viora:inspiration-booking-handoff', {
+            detail: payload
+          });
+          window.dispatchEvent(handoffEvent);
+
+          // Populate rebook/booking modal safely
+          const modal = document.getElementById('rebookModal');
+          const modalBody = document.getElementById('rebookModalBody');
+          const modalTitle = document.getElementById('rebookModalTitle');
+
+          if (modal && modalBody) {
+            if (modalTitle) modalTitle.textContent = `Schedule Atelier Look (${payload.category})`;
+            modalBody.innerHTML = `
+              <div class="rebook-service-summary">
+                <span class="detail-section-eyebrow">LOOK CONSULTATION HANDOFF</span>
+                <h4 style="font-family: var(--font-serif); font-size: 17px; margin: 4px 0;">${payload.suggestedService ? payload.suggestedService.name : payload.category + ' Styling'}</h4>
+                <p style="font-size: 12px; color: var(--color-text-muted);">
+                  Stylist: <strong>${payload.stylist.name}</strong> • Branch: <strong>${payload.branch.name}</strong>
+                </p>
+                <p style="font-size: 12px; color: var(--color-bronze); margin-top: 6px;">
+                  Estimated Price: ${payload.estimatedPrice ? '₹' + payload.estimatedPrice : 'Standard Atelier Rate'}
+                </p>
+              </div>
+            `;
+            modal.style.display = 'flex';
+          }
+        }
+      } catch (err) {
+        console.error('Error during booking handoff:', err);
+        showToast(err.message || 'Could not complete booking handoff.', 'error');
+      } finally {
+        setGlobalLoading(false);
+      }
+    });
+  }
+
+  // ==========================================
+  // REVIEWS & RATINGS MODULE
+  // ==========================================
+  const tabReviewsEligible = document.getElementById('tabReviewsEligible');
+  const tabReviewsHistory = document.getElementById('tabReviewsHistory');
+  const viewReviewsEligible = document.getElementById('viewReviewsEligible');
+  const viewReviewsHistory = document.getElementById('viewReviewsHistory');
+
+  if (tabReviewsEligible && tabReviewsHistory) {
+    tabReviewsEligible.addEventListener('click', () => {
+      tabReviewsEligible.classList.add('active');
+      tabReviewsHistory.classList.remove('active');
+      if (viewReviewsEligible) viewReviewsEligible.style.display = 'block';
+      if (viewReviewsHistory) viewReviewsHistory.style.display = 'none';
+      loadEligibleReviews();
+    });
+
+    tabReviewsHistory.addEventListener('click', () => {
+      tabReviewsHistory.classList.add('active');
+      tabReviewsEligible.classList.remove('active');
+      if (viewReviewsEligible) viewReviewsEligible.style.display = 'none';
+      if (viewReviewsHistory) viewReviewsHistory.style.display = 'block';
+      loadMyReviews();
+    });
+  }
+
+  async function loadReviewsScreen() {
+    loadEligibleReviews();
+  }
+
+  async function loadEligibleReviews() {
+    const container = document.getElementById('reviewsEligibleList');
+    if (!container) return;
+
+    try {
+      setGlobalLoading(true);
+      const res = await window.vioraApi.getEligibleAppointments();
+      const appointments = res && res.data ? res.data : [];
+
+      if (appointments.length === 0) {
+        container.innerHTML = `
+          <div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 24px 16px; text-align: center;">
+            <p style="font-size: 12.5px; color: var(--color-text-muted);">All completed treatments have been reviewed. Thank you!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = appointments.map(apt => {
+        const s = apt.serviceId || {};
+        const st = (apt.stylistId && apt.stylistId.userId) ? apt.stylistId.userId.name : 'Master Stylist';
+        const br = apt.branchId ? apt.branchId.name : 'MAISON Atelier';
+        const dateStr = apt.date ? new Date(apt.date).toLocaleDateString() : 'Recent';
+
+        return `
+          <div class="request-summary-card">
+            <div class="request-card-header">
+              <span class="request-status-pill status-accepted">Completed Treatment</span>
+              <span style="font-size: 11px; color: var(--color-text-light);">${dateStr}</span>
+            </div>
+            <h4 style="font-family: var(--font-serif); font-size: 16px; margin: 4px 0;">${s.name || 'Salon Treatment'}</h4>
+            <p style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 10px;">Stylist: ${st} • ${br}</p>
+            <button type="button" class="btn-primary btn-open-review-modal" data-appt-id="${apt._id}" data-service-name="${s.name || 'Treatment'}" style="padding: 7px 14px; font-size: 11px;">
+              ★ Rate This Treatment
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.btn-open-review-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+          openReviewModal(btn.dataset.apptId, btn.dataset.serviceName);
+        });
+      });
+    } catch (err) {
+      console.error('Error loading eligible reviews:', err);
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  async function loadMyReviews() {
+    const container = document.getElementById('reviewsHistoryList');
+    if (!container) return;
+
+    try {
+      setGlobalLoading(true);
+      const res = await window.vioraApi.getMyReviews();
+      const reviews = res && res.data ? res.data : [];
+
+      if (reviews.length === 0) {
+        container.innerHTML = `
+          <div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 24px 16px; text-align: center;">
+            <p style="font-size: 12.5px; color: var(--color-text-muted);">No reviews submitted yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = reviews.map(rev => {
+        const st = (rev.stylistId && rev.stylistId.userId) ? rev.stylistId.userId.name : 'Master Stylist';
+        const s = rev.serviceId ? rev.serviceId.name : 'Bespoke Look';
+        const dateStr = rev.createdAt ? new Date(rev.createdAt).toLocaleDateString() : '';
+
+        return `
+          <div class="stylist-response-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <div>
+                <h4 style="font-family: var(--font-serif); font-size: 16px;">${s}</h4>
+                <p style="font-size: 11.5px; color: var(--color-text-muted);">Stylist: ${st} • ${dateStr}</p>
+              </div>
+              <span class="inspiration-card-rating">★ ${rev.rating}.0 (Look: ${rev.lookRating}.0)</span>
+            </div>
+            ${rev.reviewText ? `<p style="font-size: 12px; color: var(--color-text-main); line-height: 1.4; margin-top: 6px;">"${rev.reviewText}"</p>` : ''}
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error loading my reviews:', err);
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  function openReviewModal(appointmentId, serviceName) {
+    const modal = document.getElementById('submitReviewModal');
+    const hiddenId = document.getElementById('reviewAppointmentId');
+    const titleEl = document.getElementById('reviewModalServiceName');
+
+    if (hiddenId) hiddenId.value = appointmentId;
+    if (titleEl) titleEl.textContent = serviceName;
+
+    // Reset stars
+    state.reviewStylistRating = 5;
+    state.reviewLookRating = 5;
+    updateStarWidget('starWidgetStylist', 'starValStylist', 5);
+    updateStarWidget('starWidgetLook', 'starValLook', 5);
+
+    if (modal) modal.style.display = 'flex';
+  }
+
+  const btnCloseReviewModal = document.getElementById('btnCloseReviewModal');
+  if (btnCloseReviewModal) {
+    btnCloseReviewModal.addEventListener('click', () => {
+      const modal = document.getElementById('submitReviewModal');
+      if (modal) modal.style.display = 'none';
+    });
+  }
+
+  // Star Rating Interaction
+  function setupStarWidgets() {
+    ['starWidgetStylist', 'starWidgetLook'].forEach(widgetId => {
+      const widget = document.getElementById(widgetId);
+      if (!widget) return;
+      const valElId = widgetId === 'starWidgetStylist' ? 'starValStylist' : 'starValLook';
+
+      widget.querySelectorAll('.star-icon').forEach(star => {
+        star.addEventListener('click', () => {
+          const rating = parseInt(star.dataset.rating, 10);
+          if (widgetId === 'starWidgetStylist') state.reviewStylistRating = rating;
+          if (widgetId === 'starWidgetLook') state.reviewLookRating = rating;
+          updateStarWidget(widgetId, valElId, rating);
+        });
+      });
+    });
+  }
+
+  function updateStarWidget(widgetId, valElId, rating) {
+    const widget = document.getElementById(widgetId);
+    const valEl = document.getElementById(valElId);
+    if (!widget) return;
+
+    widget.querySelectorAll('.star-icon').forEach(star => {
+      const r = parseInt(star.dataset.rating, 10);
+      if (r <= rating) {
+        star.classList.add('active');
+      } else {
+        star.classList.remove('active');
+      }
+    });
+
+    if (valEl) valEl.textContent = `${rating}.0`;
+  }
+
+  setupStarWidgets();
+
+  // Submit Review Form
+  const reviewSubmitForm = document.getElementById('reviewSubmitForm');
+  if (reviewSubmitForm) {
+    reviewSubmitForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const appointmentId = document.getElementById('reviewAppointmentId').value;
+      const reviewText = document.getElementById('reviewTextInput').value.trim();
+
+      try {
+        setGlobalLoading(true);
+        const res = await window.vioraApi.submitReview({
+          appointmentId,
+          rating: state.reviewStylistRating,
+          lookRating: state.reviewLookRating,
+          reviewText
+        });
+
+        if (res && res.success) {
+          showToast('Thank you! Your verified review is published.', 'success');
+          const modal = document.getElementById('submitReviewModal');
+          if (modal) modal.style.display = 'none';
+          reviewSubmitForm.reset();
+          loadEligibleReviews();
+        } else {
+          throw new Error(res.message || 'Review submission failed');
+        }
+      } catch (err) {
+        console.error('Error submitting review:', err);
+        showToast(err.message || 'Failed to submit review.', 'error');
+      } finally {
+        setGlobalLoading(false);
+      }
+    });
+  }
+
+  // ==========================================
+  // NOTIFICATIONS MODULE
+  // ==========================================
+  async function loadNotificationsScreen(unreadOnly = false) {
+    const container = document.getElementById('notificationsContainer');
+    if (!container) return;
+
+    try {
+      setGlobalLoading(true);
+      const res = await window.vioraApi.getNotifications(unreadOnly);
+      const notifs = res && res.data ? res.data : [];
+      const unreadCount = res ? res.unreadCount : 0;
+
+      // Update badges
+      if (navNotifDot) navNotifDot.style.display = unreadCount > 0 ? 'block' : 'none';
+      const pNotifSum = document.getElementById('profileNotifSummary');
+      if (pNotifSum) pNotifSum.textContent = `${unreadCount} Unread`;
+
+      if (notifs.length === 0) {
+        container.innerHTML = `
+          <div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 24px 16px; text-align: center;">
+            <p style="font-size: 12.5px; color: var(--color-text-muted);">No notifications at this time.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = notifs.map(n => `
+        <div class="notification-item ${n.read ? '' : 'unread'}" data-notif-id="${n.notificationId}" data-entity-type="${n.entityType}" data-entity-id="${n.entityId}" tabindex="0" style="cursor: pointer;">
+          <div class="notification-icon-wrap">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </div>
+          <div class="notification-content">
+            <h5 class="notification-title">${n.title}</h5>
+            <p class="notification-message">${n.message}</p>
+            <span class="notification-time">${new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • ${new Date(n.createdAt).toLocaleDateString()}</span>
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.notification-item').forEach(item => {
+        item.addEventListener('click', async () => {
+          const id = item.dataset.notifId;
+          const entityType = item.dataset.entityType;
+          const entityId = item.dataset.entityId;
+
+          // Mark read
+          await window.vioraApi.markNotificationRead(id).catch(() => {});
+          item.classList.remove('unread');
+
+          // Navigate if relevant
+          if (entityType === 'InspirationRequest') {
+            navigateTo('screenInspiration');
+            loadInspirationFeed();
+          } else if (entityType === 'Review') {
+            navigateTo('screenReviews');
+            loadReviewsScreen();
+          }
+        });
+      });
+    } catch (err) {
+      console.error('Error loading notifications:', err);
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  const btnMarkAllNotifsRead = document.getElementById('btnMarkAllNotifsRead');
+  if (btnMarkAllNotifsRead) {
+    btnMarkAllNotifsRead.addEventListener('click', async () => {
+      try {
+        await window.vioraApi.markAllNotificationsRead();
+        showToast('All notifications marked as read', 'success');
+        loadNotificationsScreen();
+      } catch (err) {
+        showToast('Could not mark all as read.', 'error');
+      }
+    });
+  }
+
+  // ==========================================
+  // STYLIST PORTAL MODULE
+  // ==========================================
+  const tabStylistRequests = document.getElementById('tabStylistRequests');
+  const tabStylistPortfolio = document.getElementById('tabStylistPortfolio');
+  const tabStylistReviews = document.getElementById('tabStylistReviews');
+
+  const viewStylistRequests = document.getElementById('viewStylistRequests');
+  const viewStylistPortfolio = document.getElementById('viewStylistPortfolio');
+  const viewStylistReviews = document.getElementById('viewStylistReviews');
+
+  if (tabStylistRequests && tabStylistPortfolio && tabStylistReviews) {
+    tabStylistRequests.addEventListener('click', () => {
+      tabStylistRequests.classList.add('active');
+      tabStylistPortfolio.classList.remove('active');
+      tabStylistReviews.classList.remove('active');
+      if (viewStylistRequests) viewStylistRequests.style.display = 'block';
+      if (viewStylistPortfolio) viewStylistPortfolio.style.display = 'none';
+      if (viewStylistReviews) viewStylistReviews.style.display = 'none';
+      loadStylistRequests();
+    });
+
+    tabStylistPortfolio.addEventListener('click', () => {
+      tabStylistPortfolio.classList.add('active');
+      tabStylistRequests.classList.remove('active');
+      tabStylistReviews.classList.remove('active');
+      if (viewStylistRequests) viewStylistRequests.style.display = 'none';
+      if (viewStylistPortfolio) viewStylistPortfolio.style.display = 'block';
+      if (viewStylistReviews) viewStylistReviews.style.display = 'none';
+      loadStylistPortfolio();
+    });
+
+    tabStylistReviews.addEventListener('click', () => {
+      tabStylistReviews.classList.add('active');
+      tabStylistRequests.classList.remove('active');
+      tabStylistPortfolio.classList.remove('active');
+      if (viewStylistRequests) viewStylistRequests.style.display = 'none';
+      if (viewStylistPortfolio) viewStylistPortfolio.style.display = 'none';
+      if (viewStylistReviews) viewStylistReviews.style.display = 'block';
+      loadStylistReviews();
+    });
+  }
+
+  async function loadStylistPortalScreen() {
+    loadStylistRequests();
+  }
+
+  async function loadStylistRequests() {
+    const container = document.getElementById('stylistInboxList');
+    const badge = document.getElementById('stylistRequestsBadge');
+    if (!container) return;
+
+    try {
+      setGlobalLoading(true);
+      const res = await window.vioraApi.getInspirationRequests();
+      const requests = res && res.data ? res.data : [];
+
+      if (badge) badge.textContent = `${requests.length} Requests`;
+
+      if (requests.length === 0) {
+        container.innerHTML = '<div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 24px 16px; text-align: center;"><p style="font-size: 12.5px; color: var(--color-text-muted);">No client consultation requests matching your branch.</p></div>';
+        return;
+      }
+
+      container.innerHTML = requests.map(req => {
+        const thumb = (req.referenceImages && req.referenceImages.length > 0)
+          ? req.referenceImages[0]
+          : 'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=200&auto=format&fit=crop&q=80';
+
+        return `
+          <div class="stylist-response-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <span class="request-status-pill status-${req.status}">${req.status}</span>
+              <span style="font-size: 11px; color: var(--color-text-light);">${req.requestId}</span>
+            </div>
+            <div style="display: flex; gap: 12px; margin-bottom: 10px;">
+              <img src="${thumb}" alt="Client Ref" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
+              <div style="flex: 1;">
+                <h5 style="font-family: var(--font-serif); font-size: 16px;">${req.category} Consultation</h5>
+                <p style="font-size: 12px; color: var(--color-text-muted); line-height: 1.35;">"${req.description}"</p>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+              <button type="button" class="btn-primary btn-stylist-respond-trigger" data-req-id="${req.requestId}" style="padding: 6px 12px; font-size: 11px;">
+                Respond to Client
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.btn-stylist-respond-trigger').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const reqId = btn.dataset.reqId;
+          const modal = document.getElementById('stylistRespondModal');
+          const hiddenId = document.getElementById('respondRequestId');
+          const title = document.getElementById('respondModalTitle');
+
+          if (hiddenId) hiddenId.value = reqId;
+          if (title) title.textContent = `Respond to ${reqId}`;
+          if (modal) modal.style.display = 'flex';
+        });
+      });
+    } catch (err) {
+      console.error('Error loading stylist requests:', err);
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  const btnCloseRespondModal = document.getElementById('btnCloseRespondModal');
+  if (btnCloseRespondModal) {
+    btnCloseRespondModal.addEventListener('click', () => {
+      const modal = document.getElementById('stylistRespondModal');
+      if (modal) modal.style.display = 'none';
+    });
+  }
+
+  const stylistRespondForm = document.getElementById('stylistRespondForm');
+  if (stylistRespondForm) {
+    stylistRespondForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const requestId = document.getElementById('respondRequestId').value;
+      const message = document.getElementById('respondMessage').value.trim();
+      const estimatedPrice = document.getElementById('respondEstPrice').value || null;
+
+      try {
+        setGlobalLoading(true);
+        const res = await window.vioraApi.respondToInspiration(requestId, {
+          message,
+          estimatedPrice
+        });
+
+        if (res && res.success) {
+          showToast('Proposal sent to client successfully!', 'success');
+          const modal = document.getElementById('stylistRespondModal');
+          if (modal) modal.style.display = 'none';
+          stylistRespondForm.reset();
+          loadStylistRequests();
+        } else {
+          throw new Error(res.message || 'Failed to send response');
+        }
+      } catch (err) {
+        showToast(err.message || 'Error responding to request.', 'error');
+      } finally {
+        setGlobalLoading(false);
+      }
+    });
+  }
+
+  async function loadStylistPortfolio() {
+    const grid = document.getElementById('stylistPortfolioGrid');
+    if (!grid) return;
+
+    try {
+      setGlobalLoading(true);
+      const res = await window.vioraApi.getMyPortfolio();
+      const items = res && res.data ? res.data : [];
+
+      if (items.length === 0) {
+        grid.innerHTML = '<div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 24px 16px; text-align: center;"><p style="font-size: 12.5px; color: var(--color-text-muted);">No portfolio work uploaded yet.</p></div>';
+        return;
+      }
+
+      grid.innerHTML = items.map(item => `
+        <div class="inspiration-card">
+          <div class="inspiration-card-img-wrap">
+            <img src="${item.imageUrl}" alt="${item.title}" class="inspiration-card-img">
+            <span class="inspiration-card-badge">${item.category}</span>
+          </div>
+          <div class="inspiration-card-body">
+            <h4 class="inspiration-card-title">${item.title}</h4>
+            <p class="inspiration-card-desc">${item.description || ''}</p>
+            <div style="display: flex; justify-content: flex-end;">
+              <button type="button" class="btn-secondary btn-delete-portfolio-item" data-item-id="${item.portfolioId}" style="padding: 4px 8px; font-size: 10px; color: var(--color-danger);">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      grid.querySelectorAll('.btn-delete-portfolio-item').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Are you sure you want to remove this portfolio look?')) return;
+          try {
+            await window.vioraApi.deletePortfolioItem(btn.dataset.itemId);
+            showToast('Portfolio item removed', 'success');
+            loadStylistPortfolio();
+          } catch (err) {
+            showToast('Could not delete portfolio item.', 'error');
+          }
+        });
+      });
+    } catch (err) {
+      console.error('Error loading portfolio:', err);
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  const btnOpenAddPortfolioModal = document.getElementById('btnOpenAddPortfolioModal');
+  const btnClosePortfolioModal = document.getElementById('btnClosePortfolioModal');
+  const addPortfolioModal = document.getElementById('addPortfolioModal');
+
+  if (btnOpenAddPortfolioModal && addPortfolioModal) {
+    btnOpenAddPortfolioModal.addEventListener('click', () => {
+      addPortfolioModal.style.display = 'flex';
+    });
+  }
+
+  if (btnClosePortfolioModal && addPortfolioModal) {
+    btnClosePortfolioModal.addEventListener('click', () => {
+      addPortfolioModal.style.display = 'none';
+    });
+  }
+
+  const addPortfolioForm = document.getElementById('addPortfolioForm');
+  if (addPortfolioForm) {
+    addPortfolioForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('portTitle').value.trim();
+      const category = document.getElementById('portCategory').value;
+      const description = document.getElementById('portDesc').value.trim();
+      const tags = document.getElementById('portTags').value.split(',').map(t => t.trim()).filter(Boolean);
+      const urlInput = document.getElementById('portUrlInput').value.trim();
+      const fileInput = document.getElementById('portFileInput');
+
+      try {
+        setGlobalLoading(true);
+
+        let finalImage = urlInput || 'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=800&auto=format&fit=crop&q=80';
+
+        if (fileInput && fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          const base64Promise = new Promise(resolve => {
+            reader.onload = ev => resolve(ev.target.result);
+            reader.readAsDataURL(fileInput.files[0]);
+          });
+          finalImage = await base64Promise;
+        }
+
+        const res = await window.vioraApi.createPortfolioItem({
+          title,
+          category,
+          description,
+          tags,
+          image: finalImage.startsWith('data:') ? finalImage : null,
+          imageUrl: !finalImage.startsWith('data:') ? finalImage : null
+        });
+
+        if (res && res.success) {
+          showToast('Portfolio look published!', 'success');
+          addPortfolioModal.style.display = 'none';
+          addPortfolioForm.reset();
+          loadStylistPortfolio();
+        }
+      } catch (err) {
+        showToast(err.message || 'Could not upload portfolio work.', 'error');
+      } finally {
+        setGlobalLoading(false);
+      }
+    });
+  }
+
+  async function loadStylistReviews() {
+    const container = document.getElementById('stylistReviewsList');
+    if (!container) return;
+
+    try {
+      setGlobalLoading(true);
+      const res = await window.vioraApi.getMyStylistReviews();
+      const { stats, data } = res || {};
+
+      if (stats) {
+        const avgR = document.getElementById('stylistKpiAvgRating');
+        if (avgR) avgR.textContent = `${stats.avgStylistRating}★`;
+        const totalR = document.getElementById('stylistKpiTotalReviews');
+        if (totalR) totalR.textContent = `${stats.totalReviews} Reviews`;
+        const avgL = document.getElementById('stylistKpiAvgLook');
+        if (avgL) avgL.textContent = `${stats.avgLookRating}★`;
+      }
+
+      if (!data || data.length === 0) {
+        container.innerHTML = '<div style="background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 24px 16px; text-align: center;"><p style="font-size: 12.5px; color: var(--color-text-muted);">No client reviews recorded yet.</p></div>';
+        return;
+      }
+
+      container.innerHTML = data.map(rev => `
+        <div class="stylist-response-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+            <div>
+              <h5 style="font-family: var(--font-serif); font-size: 15px;">${rev.serviceId ? rev.serviceId.name : 'Salon Look'}</h5>
+              <span style="font-size: 11px; color: var(--color-text-light);">${new Date(rev.createdAt).toLocaleDateString()}</span>
+            </div>
+            <span class="inspiration-card-rating">★ ${rev.rating}.0 (Look: ${rev.lookRating}.0)</span>
+          </div>
+          ${rev.reviewText ? `<p style="font-size: 12px; color: var(--color-text-main); margin-top: 4px;">"${rev.reviewText}"</p>` : ''}
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('Error loading stylist reviews:', err);
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  // ==========================================
+  // ADMIN ANALYTICS & INTELLIGENCE DASHBOARD
+  // ==========================================
+  const tabAdminOverview = document.getElementById('tabAdminOverview');
+  const tabAdminPerformance = document.getElementById('tabAdminPerformance');
+  const tabAdminPopular = document.getElementById('tabAdminPopular');
+  const tabAdminModeration = document.getElementById('tabAdminModeration');
+
+  const adminPanelOverview = document.getElementById('adminPanelOverview');
+  const adminPanelPerformance = document.getElementById('adminPanelPerformance');
+  const adminPanelPopular = document.getElementById('adminPanelPopular');
+  const adminPanelModeration = document.getElementById('adminPanelModeration');
+
+  if (tabAdminOverview && tabAdminPerformance && tabAdminPopular && tabAdminModeration) {
+    tabAdminOverview.addEventListener('click', () => switchAdminAnalyticsTab(tabAdminOverview, adminPanelOverview));
+    tabAdminPerformance.addEventListener('click', () => switchAdminAnalyticsTab(tabAdminPerformance, adminPanelPerformance));
+    tabAdminPopular.addEventListener('click', () => switchAdminAnalyticsTab(tabAdminPopular, adminPanelPopular));
+    tabAdminModeration.addEventListener('click', () => switchAdminAnalyticsTab(tabAdminModeration, adminPanelModeration));
+  }
+
+  function switchAdminAnalyticsTab(activeTab, activePanel) {
+    [tabAdminOverview, tabAdminPerformance, tabAdminPopular, tabAdminModeration].forEach(t => t.classList.remove('active'));
+    [adminPanelOverview, adminPanelPerformance, adminPanelPopular, adminPanelModeration].forEach(p => p.style.display = 'none');
+
+    activeTab.classList.add('active');
+    activePanel.style.display = 'block';
+  }
+
+  const btnRefreshAnalytics = document.getElementById('btnRefreshAnalytics');
+  if (btnRefreshAnalytics) {
+    btnRefreshAnalytics.addEventListener('click', () => loadAdminAnalyticsScreen());
+  }
+
+  const analyticsBranchFilter = document.getElementById('analyticsBranchFilter');
+  const analyticsDateFilter = document.getElementById('analyticsDateFilter');
+
+  if (analyticsBranchFilter) analyticsBranchFilter.addEventListener('change', () => loadAdminAnalyticsScreen());
+  if (analyticsDateFilter) analyticsDateFilter.addEventListener('change', () => loadAdminAnalyticsScreen());
+
+  async function loadAdminAnalyticsScreen() {
+    try {
+      setGlobalLoading(true);
+
+      const branchId = analyticsBranchFilter ? analyticsBranchFilter.value : '';
+      const dateOption = analyticsDateFilter ? analyticsDateFilter.value : 'all';
+
+      let startDate = null;
+      if (dateOption === '7') {
+        startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      } else if (dateOption === '30') {
+        startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      }
+
+      // Populate branches dropdown
+      if (analyticsBranchFilter && analyticsBranchFilter.options.length <= 1) {
+        const bRes = await window.vioraApi.getBranches().catch(() => null);
+        if (bRes && bRes.data) {
+          bRes.data.forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b._id;
+            opt.textContent = b.name;
+            analyticsBranchFilter.appendChild(opt);
+          });
+        }
+      }
+
+      const params = {};
+      if (branchId) params.branchId = branchId;
+      if (startDate) params.startDate = startDate;
+
+      // 1. Overview KPIs
+      const overviewRes = await window.vioraApi.getAnalyticsOverview(params).catch(() => null);
+      if (overviewRes && overviewRes.data && overviewRes.data.overview) {
+        const o = overviewRes.data.overview;
+        const totalB = document.getElementById('kpiTotalBookings');
+        if (totalB) totalB.textContent = o.totalBookings;
+        const compB = document.getElementById('kpiCompletedBookings');
+        if (compB) compB.textContent = `${o.completedBookings} Completed`;
+
+        const revEl = document.getElementById('kpiTotalRevenue');
+        if (revEl) revEl.textContent = `₹${o.totalRevenue.toLocaleString()}`;
+
+        const custEl = document.getElementById('kpiTotalCustomers');
+        if (custEl) custEl.textContent = o.totalCustomers;
+        const actCustEl = document.getElementById('kpiActiveCustomers');
+        if (actCustEl) actCustEl.textContent = `${o.activeCustomers} Active`;
+
+        const retEl = document.getElementById('kpiRetentionRate');
+        if (retEl) retEl.textContent = `${o.returningRate}%`;
+        const retSub = document.getElementById('kpiReturningClients');
+        if (retSub) retSub.textContent = `${o.returningCustomers} Returning Clients`;
+
+        // Render Trend Timeline
+        const trendEl = document.getElementById('analyticsTrendTimeline');
+        if (trendEl && overviewRes.data.trends) {
+          trendEl.innerHTML = overviewRes.data.trends.map(t => `
+            <div style="display: flex; justify-content: space-between; font-size: 11.5px; padding: 6px 0; border-bottom: 1px dashed var(--color-border);">
+              <span>${t.date}</span>
+              <span><strong>${t.bookings}</strong> Bookings (₹${t.revenue.toLocaleString()})</span>
+            </div>
+          `).join('') || '<p style="font-size: 12px; color: var(--color-text-muted);">No timeline data.</p>';
+        }
+      }
+
+      // 2. Branch Performance Table
+      const branchRes = await window.vioraApi.getBranchPerformance(params).catch(() => null);
+      const branchTbody = document.getElementById('branchPerformanceTbody');
+      if (branchTbody && branchRes && branchRes.data) {
+        branchTbody.innerHTML = branchRes.data.map(b => `
+          <tr>
+            <td><strong>${b.name}</strong></td>
+            <td>${b.totalBookings} (${b.completedBookings} completed)</td>
+            <td>₹${b.revenue.toLocaleString()}</td>
+            <td>${b.uniqueCustomers} (${b.returningClients} returning)</td>
+            <td>★ ${b.avgRating}</td>
+          </tr>
+        `).join('');
+      }
+
+      // 3. Stylist Performance Table
+      const stylistRes = await window.vioraApi.getStylistPerformance(params).catch(() => null);
+      const stylistTbody = document.getElementById('stylistPerformanceTbody');
+      if (stylistTbody && stylistRes && stylistRes.data) {
+        stylistTbody.innerHTML = stylistRes.data.map(s => `
+          <tr>
+            <td><strong>${s.name}</strong></td>
+            <td>${s.branchName}</td>
+            <td>${s.completedBookings}</td>
+            <td>₹${s.revenue.toLocaleString()}</td>
+            <td>★ ${s.avgRating} (${s.reviewCount})</td>
+          </tr>
+        `).join('');
+      }
+
+      // 4. Popular Services & Looks
+      const servicesRes = await window.vioraApi.getPopularServices(params).catch(() => null);
+      const servEl = document.getElementById('adminPopularServicesContent');
+      if (servEl && servicesRes && servicesRes.data) {
+        servEl.innerHTML = servicesRes.data.map(s => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--color-border); font-size: 12px;">
+            <div>
+              <strong>${s.name}</strong> <span style="font-size: 10.5px; color: var(--color-text-muted);">(${s.category})</span>
+              <div style="font-size: 11px; color: var(--color-text-light);">${s.branches.join(', ')}</div>
+            </div>
+            <div style="text-align: right;">
+              <div><strong>${s.totalBookings}</strong> Bookings</div>
+              <div style="color: var(--color-bronze);">₹${s.totalRevenue.toLocaleString()}</div>
+            </div>
+          </div>
+        `).join('') || '<p style="font-size: 12px; color: var(--color-text-muted);">No booking data recorded.</p>';
+      }
+
+      const looksRes = await window.vioraApi.getPopularLooks().catch(() => null);
+      const looksEl = document.getElementById('adminPopularLooksContent');
+      if (looksEl && looksRes && looksRes.data) {
+        looksEl.innerHTML = looksRes.data.map(l => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--color-border); font-size: 12px;">
+            <div>
+              <strong>${l.category} Look</strong>
+              <div style="font-size: 11px; color: var(--color-text-muted);">${l.requestCount} Requests • ${l.portfolioCount} Portfolio Works</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="inspiration-card-rating">★ ${l.avgLookRating}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // 5. Review Moderation
+      const revRes = await window.vioraApi.getAdminReviews(params).catch(() => null);
+      const revTbody = document.getElementById('adminReviewsTbody');
+      const revBadge = document.getElementById('adminReviewCountBadge');
+
+      if (revBadge && revRes && revRes.data) {
+        revBadge.textContent = `${revRes.data.length} Total`;
+      }
+
+      if (revTbody && revRes && revRes.data) {
+        revTbody.innerHTML = revRes.data.map(r => {
+          const st = (r.stylistId && r.stylistId.userId) ? r.stylistId.userId.name : 'Stylist';
+          return `
+            <tr>
+              <td>${r.customerId}<br><span style="font-size: 10px; color: var(--color-text-muted);">${st}</span></td>
+              <td>★ ${r.rating}</td>
+              <td>★ ${r.lookRating}</td>
+              <td style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.reviewText || '-'}</td>
+              <td><span class="request-status-pill status-${r.moderationStatus === 'approved' ? 'accepted' : (r.moderationStatus === 'flagged' ? 'pending' : 'declined')}">${r.moderationStatus}</span></td>
+              <td>
+                <div style="display: flex; gap: 4px;">
+                  <button type="button" class="btn-secondary btn-mod-action" data-id="${r.reviewId}" data-status="approved" style="padding: 2px 6px; font-size: 9.5px;">Approve</button>
+                  <button type="button" class="btn-secondary btn-mod-action" data-id="${r.reviewId}" data-status="flagged" style="padding: 2px 6px; font-size: 9.5px; color: #B45309;">Flag</button>
+                  <button type="button" class="btn-secondary btn-mod-action" data-id="${r.reviewId}" data-status="hidden" style="padding: 2px 6px; font-size: 9.5px; color: var(--color-danger);">Hide</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('') || '<tr><td colspan="6" style="text-align: center; color: var(--color-text-muted);">No reviews found.</td></tr>';
+
+        revTbody.querySelectorAll('.btn-mod-action').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const status = btn.dataset.status;
+            try {
+              await window.vioraApi.moderateReview(id, status);
+              showToast(`Review status updated to ${status}`, 'success');
+              loadAdminAnalyticsScreen();
+            } catch (err) {
+              showToast('Could not moderate review.', 'error');
+            }
+          });
+        });
+      }
+
+    } catch (err) {
+      console.error('Error loading admin analytics:', err);
+      showToast('Could not load analytics.', 'error');
+    } finally {
+      setGlobalLoading(false);
+    }
+  }
+
+  // ==========================================
+  // INITIALIZATION (EXTENDED FOR ROLES & TILES)
   // ==========================================
   if (window.vioraApi.isAuthenticated()) {
     const user = window.vioraApi.getUser();
     if (user && (user.role === 'admin' || user.role === 'branch_manager')) {
       if (tileAdminCustomers) tileAdminCustomers.style.display = 'flex';
-      navigateTo('screenAdminCustomers');
-      loadAdminDashboard();
+      if (tileAdminAnalytics) tileAdminAnalytics.style.display = 'flex';
+      if (tileStylistPortal) tileStylistPortal.style.display = 'flex';
+      navigateTo('screenAdminAnalytics');
+      loadAdminAnalyticsScreen();
+    } else if (user && user.role === 'stylist') {
+      if (tileStylistPortal) tileStylistPortal.style.display = 'flex';
+      navigateTo('screenStylistPortal');
+      loadStylistPortalScreen();
     } else {
       if (tileAdminCustomers) tileAdminCustomers.style.display = 'none';
+      if (tileAdminAnalytics) tileAdminAnalytics.style.display = 'none';
+      if (tileStylistPortal) tileStylistPortal.style.display = 'none';
       loadCustomerProfile();
     }
   } else {
