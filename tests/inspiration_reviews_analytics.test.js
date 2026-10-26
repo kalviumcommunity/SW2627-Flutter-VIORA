@@ -439,6 +439,13 @@ async function runPerson3Tests() {
     }
     console.log('✓ Booking handoff payload verified with customerId, stylistId, branchId, and serviceId');
 
+    // 6b. Verify frontend event listener and storage contract in app.js
+    const appJsContent = fs.readFileSync(path.join(__dirname, '..', 'public', 'js', 'app.js'), 'utf8');
+    if (!appJsContent.includes("viora:inspiration-booking-handoff") || !appJsContent.includes("viora:activeInspirationHandoff")) {
+      throw new Error('app.js does not register resilient listener or session persistence for viora:inspiration-booking-handoff');
+    }
+    console.log('✓ Frontend viora:inspiration-booking-handoff resilient listener and storage verified in app.js');
+
     // =========================================================================
     // TEST 7: Stylist Portfolio Management & Ownership Security
     // =========================================================================
@@ -646,6 +653,17 @@ async function runPerson3Tests() {
     }
     console.log(`✓ Branch Performance verified across ${branchPerfRes.body.data.length} branches`);
 
+    // 10c-1. Reject invalid branchId with HTTP 400
+    const invalidBranchRes = await request({
+      method: 'GET',
+      path: '/api/admin/analytics/branches?branchId=invalid-format-id',
+      headers: { Authorization: `Bearer ${adminToken}` }
+    });
+    if (invalidBranchRes.status !== 400 || !invalidBranchRes.body.message.includes('Invalid branch identifier')) {
+      throw new Error(`Expected HTTP 400 for invalid branchId, got ${invalidBranchRes.status}`);
+    }
+    console.log('✓ Invalid branchId filter safely rejected with HTTP 400 Bad Request');
+
     // 10d. Stylist Performance
     const stylistPerfRes = await request({
       method: 'GET',
@@ -656,6 +674,17 @@ async function runPerson3Tests() {
       throw new Error('Stylist performance ranking retrieval failed');
     }
     console.log(`✓ Stylist Performance verified: Top stylist ${stylistPerfRes.body.data[0].name}`);
+
+    // 10d-1. Reject invalid stylistId with HTTP 400
+    const invalidStylistRes = await request({
+      method: 'GET',
+      path: '/api/admin/analytics/stylists?stylistId=invalid-format-id',
+      headers: { Authorization: `Bearer ${adminToken}` }
+    });
+    if (invalidStylistRes.status !== 400 || !invalidStylistRes.body.message.includes('Invalid stylist identifier')) {
+      throw new Error(`Expected HTTP 400 for invalid stylistId, got ${invalidStylistRes.status}`);
+    }
+    console.log('✓ Invalid stylistId filter safely rejected with HTTP 400 Bad Request');
 
     // 10e. Popular Services & Looks
     const popularServRes = await request({

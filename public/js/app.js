@@ -984,6 +984,12 @@ document.addEventListener('DOMContentLoaded', () => {
       btnProceedRebook.style.cursor = 'pointer';
     }
     state.selectedRebookData = null;
+    if (state.activeInspirationHandoff) {
+      state.activeInspirationHandoff = null;
+      try {
+        sessionStorage.removeItem('viora:activeInspirationHandoff');
+      } catch (e) {}
+    }
   }
 
   function handleProceedRebook() {
@@ -2777,6 +2783,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Register global listener for inspiration booking handoff contract
+  window.addEventListener('viora:inspiration-booking-handoff', (event) => {
+    if (!event.detail) return;
+    const payload = event.detail;
+
+    // Validate required fields
+    if (!payload.customerId || !payload.stylist || !payload.branch) {
+      console.warn('Inspiration booking handoff missing required fields');
+      return;
+    }
+
+    // Persist in state & sessionStorage for navigation and mounting resilience
+    state.activeInspirationHandoff = payload;
+    try {
+      sessionStorage.setItem('viora:activeInspirationHandoff', JSON.stringify(payload));
+    } catch (e) {}
+
+    // Populate rebook/booking modal safely
+    const modal = document.getElementById('rebookModal');
+    const modalBody = document.getElementById('rebookModalBody');
+    const modalTitle = document.getElementById('rebookModalTitle');
+
+    if (modal && modalBody) {
+      if (modalTitle) modalTitle.textContent = `Schedule Atelier Look (${payload.category || 'Styling'})`;
+      modalBody.innerHTML = `
+        <div class="rebook-service-summary">
+          <span class="detail-section-eyebrow">LOOK CONSULTATION HANDOFF</span>
+          <h4 style="font-family: var(--font-serif); font-size: 17px; margin: 4px 0;">${payload.suggestedService ? escapeHtml(payload.suggestedService.name) : (payload.category || 'Hair') + ' Styling'}</h4>
+          <p style="font-size: 12px; color: var(--color-text-muted);">
+            Stylist: <strong>${escapeHtml(payload.stylist.name || 'Selected Stylist')}</strong> • Branch: <strong>${escapeHtml(payload.branch.name || 'Main Flagship')}</strong>
+          </p>
+          <p style="font-size: 12px; color: var(--color-bronze); margin-top: 6px;">
+            Estimated Price: ${payload.estimatedPrice ? '₹' + payload.estimatedPrice : (payload.suggestedService && payload.suggestedService.price ? '₹' + payload.suggestedService.price : 'Standard Atelier Rate')}
+          </p>
+        </div>
+        <div class="rebook-integration-badge">
+          <strong>INSPIRATION HANDOFF INTEGRATION</strong>
+          Consultation preferences and proposed stylist (${escapeHtml(payload.stylist.name || 'Stylist')}) are prefilled. Proceed to date and slot selection to complete booking.
+        </div>
+      `;
+      modal.style.display = 'flex';
+    }
+  });
+
   // Booking Handoff Button
   const btnProceedBookingHandoff = document.getElementById('btnProceedBookingHandoff');
   if (btnProceedBookingHandoff) {
@@ -2793,28 +2843,6 @@ document.addEventListener('DOMContentLoaded', () => {
             detail: payload
           });
           window.dispatchEvent(handoffEvent);
-
-          // Populate rebook/booking modal safely
-          const modal = document.getElementById('rebookModal');
-          const modalBody = document.getElementById('rebookModalBody');
-          const modalTitle = document.getElementById('rebookModalTitle');
-
-          if (modal && modalBody) {
-            if (modalTitle) modalTitle.textContent = `Schedule Atelier Look (${payload.category})`;
-            modalBody.innerHTML = `
-              <div class="rebook-service-summary">
-                <span class="detail-section-eyebrow">LOOK CONSULTATION HANDOFF</span>
-                <h4 style="font-family: var(--font-serif); font-size: 17px; margin: 4px 0;">${payload.suggestedService ? payload.suggestedService.name : payload.category + ' Styling'}</h4>
-                <p style="font-size: 12px; color: var(--color-text-muted);">
-                  Stylist: <strong>${payload.stylist.name}</strong> • Branch: <strong>${payload.branch.name}</strong>
-                </p>
-                <p style="font-size: 12px; color: var(--color-bronze); margin-top: 6px;">
-                  Estimated Price: ${payload.estimatedPrice ? '₹' + payload.estimatedPrice : 'Standard Atelier Rate'}
-                </p>
-              </div>
-            `;
-            modal.style.display = 'flex';
-          }
         }
       } catch (err) {
         console.error('Error during booking handoff:', err);

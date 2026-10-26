@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Appointment = require('../models/Appointment');
 const Customer = require('../models/Customer');
 const Branch = require('../models/Branch');
@@ -14,14 +15,20 @@ class AnalyticsController {
   static buildAppointmentFilter(query) {
     const filter = {};
     if (query.branchId) {
-      filter.branchId = query.branchId.match(/^[0-9a-fA-F]{24}$/)
-        ? query.branchId
-        : null;
+      if (!mongoose.Types.ObjectId.isValid(query.branchId)) {
+        const error = new Error('Invalid branch identifier format');
+        error.status = 400;
+        throw error;
+      }
+      filter.branchId = query.branchId;
     }
     if (query.stylistId) {
-      filter.stylistId = query.stylistId.match(/^[0-9a-fA-F]{24}$/)
-        ? query.stylistId
-        : null;
+      if (!mongoose.Types.ObjectId.isValid(query.stylistId)) {
+        const error = new Error('Invalid stylist identifier format');
+        error.status = 400;
+        throw error;
+      }
+      filter.stylistId = query.stylistId;
     }
     if (query.startDate || query.endDate) {
       filter.date = {};
@@ -139,6 +146,9 @@ class AnalyticsController {
         }
       });
     } catch (err) {
+      if (err.status === 400) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
       next(err);
     }
   }
@@ -198,6 +208,9 @@ class AnalyticsController {
         data: branchMetrics
       });
     } catch (err) {
+      if (err.status === 400) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
       next(err);
     }
   }
@@ -258,6 +271,9 @@ class AnalyticsController {
         data: stylistMetrics
       });
     } catch (err) {
+      if (err.status === 400) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
       next(err);
     }
   }
@@ -313,6 +329,9 @@ class AnalyticsController {
         data: results
       });
     } catch (err) {
+      if (err.status === 400) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
       next(err);
     }
   }
