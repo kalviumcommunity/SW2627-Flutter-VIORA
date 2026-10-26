@@ -707,6 +707,22 @@ async function runPerson3Tests() {
     await Customer.deleteMany({ _id: { $in: [customer1Doc._id, customer2Doc._id] } });
     await Branch.deleteMany({ _id: branchDoc._id });
     await User.deleteMany({ _id: { $in: [adminUser._id, customer1User._id, customer2User._id, stylist1User._id, stylist2User._id] } });
+
+    // Clean up any test uploaded image files
+    try {
+      const uploadsDir = path.join(__dirname, '..', 'public', 'uploads');
+      if (fs.existsSync(uploadsDir)) {
+        const files = fs.readdirSync(uploadsDir);
+        for (const file of files) {
+          if (file.startsWith('test_insp_')) {
+            fs.unlinkSync(path.join(uploadsDir, file));
+          }
+        }
+      }
+    } catch (err) {
+      // ignore upload cleanup error
+    }
+
     console.log('✓ Cleaned up test records successfully.');
 
     console.log('\n==================================================================');
