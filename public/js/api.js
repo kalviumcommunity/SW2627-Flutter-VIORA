@@ -218,6 +218,199 @@ class VioraApiService {
     }
     return this.request(endpoint, { method: 'GET' });
   }
+
+  // ==========================================
+  // Person 3: Inspiration & Discovery APIs
+  // ==========================================
+  async getBranches() {
+    return this.request('/api/branches', { method: 'GET' });
+  }
+
+  async getDiscovery(category = 'All', search = '') {
+    const params = new URLSearchParams();
+    if (category && category !== 'All') params.append('category', category);
+    if (search && search.trim()) params.append('search', search.trim());
+    const qs = params.toString();
+    return this.request(`/api/inspiration/discovery${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async uploadImage(image, prefix = 'insp') {
+    return this.request('/api/inspiration/upload', {
+      method: 'POST',
+      body: JSON.stringify({ image, prefix })
+    });
+  }
+
+  async createInspirationRequest(payload) {
+    return this.request('/api/inspiration/requests', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async getInspirationRequests(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/inspiration/requests${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async getInspirationRequest(id) {
+    return this.request(`/api/inspiration/requests/${encodeURIComponent(id)}`, { method: 'GET' });
+  }
+
+  async respondToInspiration(requestId, payload) {
+    return this.request(`/api/inspiration/requests/${encodeURIComponent(requestId)}/respond`, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async updateInspirationStatus(requestId, status, message = '') {
+    return this.request(`/api/inspiration/requests/${encodeURIComponent(requestId)}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, message })
+    });
+  }
+
+  async chooseStylist(requestId, payload) {
+    return this.request(`/api/inspiration/requests/${encodeURIComponent(requestId)}/choose`, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async getBookingHandoff(requestId) {
+    return this.request(`/api/inspiration/requests/${encodeURIComponent(requestId)}/handoff`, {
+      method: 'POST'
+    });
+  }
+
+  // ==========================================
+  // Person 3: Stylist & Portfolio APIs
+  // ==========================================
+  async getAllStylists(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/stylists${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async getStylist(id) {
+    return this.request(`/api/stylists/${encodeURIComponent(id)}`, { method: 'GET' });
+  }
+
+  async getMyPortfolio() {
+    return this.request('/api/stylists/me/portfolio', { method: 'GET' });
+  }
+
+  async createPortfolioItem(payload) {
+    return this.request('/api/stylists/me/portfolio', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async updatePortfolioItem(itemId, payload) {
+    return this.request(`/api/stylists/me/portfolio/${encodeURIComponent(itemId)}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async deletePortfolioItem(itemId) {
+    return this.request(`/api/stylists/me/portfolio/${encodeURIComponent(itemId)}`, {
+      method: 'DELETE'
+    });
+  }
+
+  async getMyStylistReviews() {
+    return this.request('/api/stylists/me/reviews', { method: 'GET' });
+  }
+
+  // ==========================================
+  // Person 3: Reviews & Ratings APIs
+  // ==========================================
+  async getEligibleAppointments() {
+    return this.request('/api/reviews/eligible-appointments', { method: 'GET' });
+  }
+
+  async submitReview(payload) {
+    return this.request('/api/reviews', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  }
+
+  async getMyReviews() {
+    return this.request('/api/reviews/my-reviews', { method: 'GET' });
+  }
+
+  async getStylistReviews(stylistId) {
+    return this.request(`/api/reviews/stylist/${encodeURIComponent(stylistId)}`, { method: 'GET' });
+  }
+
+  async getAdminReviews(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/reviews/admin${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async moderateReview(reviewId, status, notes = '') {
+    return this.request(`/api/reviews/admin/${encodeURIComponent(reviewId)}/moderate`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, notes })
+    });
+  }
+
+  // ==========================================
+  // Person 3: Notifications APIs
+  // ==========================================
+  async getNotifications(unreadOnly = false) {
+    return this.request(`/api/notifications${unreadOnly ? '?unreadOnly=true' : ''}`, { method: 'GET' });
+  }
+
+  async markNotificationRead(id) {
+    return this.request(`/api/notifications/${encodeURIComponent(id)}/read`, { method: 'PUT' });
+  }
+
+  async markAllNotificationsRead() {
+    return this.request('/api/notifications/read-all', { method: 'PUT' });
+  }
+
+  async deleteNotification(id) {
+    return this.request(`/api/notifications/${encodeURIComponent(id)}`, { method: 'DELETE' });
+  }
+
+  // ==========================================
+  // Person 3: Admin Analytics & Intelligence APIs
+  // ==========================================
+  async getAnalyticsOverview(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/admin/analytics/overview${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async getBranchPerformance(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/admin/analytics/branches${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async getStylistPerformance(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/admin/analytics/stylists${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async getPopularServices(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/admin/analytics/services${qs ? '?' + qs : ''}`, { method: 'GET' });
+  }
+
+  async getPopularLooks() {
+    return this.request('/api/admin/analytics/looks', { method: 'GET' });
+  }
+
+  async getReviewAnalytics() {
+    return this.request('/api/admin/analytics/reviews', { method: 'GET' });
+  }
+
+  async getRetentionAnalytics() {
+    return this.request('/api/admin/analytics/retention', { method: 'GET' });
+  }
 }
 
 // Global instance
