@@ -293,13 +293,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? '${user.tierName} • Khar West, Mumbai'
                       : 'Exclusive Luxury Atelier • Mumbai';
 
-                  return GestureDetector(
-                    onTap: () => _showUserAccountModal(context, user),
-                    behavior: HitTestBehavior.opaque,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _showUserAccountModal(context, user),
+                          behavior: HitTestBehavior.opaque,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -336,23 +336,37 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.border, width: 1.5),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.notifications_none_outlined, color: AppColors.textPrimary, size: 24),
+                            onPressed: () => Navigator.of(context).pushNamed('/notifications'),
+                            tooltip: 'Notifications',
                           ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Image.asset(
-                            'assets/images/avatar_sarah.png',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.person, color: AppColors.primary),
+                          const SizedBox(width: 4),
+                          GestureDetector(
+                            onTap: () => _showUserAccountModal(context, user),
+                            child: Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppColors.border, width: 1.5),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child: Image.asset(
+                                'assets/images/avatar_sarah.png',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.person, color: AppColors.primary),
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   );
                 },
               ),
@@ -952,32 +966,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.border,
-                          width: 1.2,
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).pushNamed('/inspiration'),
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppColors.border,
+                            width: 1.2,
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.camera_alt_outlined,
-                            color: AppColors.primary,
-                            size: 22,
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Inspiration',
-                            style: AppTextStyles.editorialTitle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.camera_alt_outlined,
+                              color: AppColors.primary,
+                              size: 22,
                             ),
-                          ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Inspiration',
+                              style: AppTextStyles.editorialTitle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                           const SizedBox(height: 4),
                           const Text(
                             'Browse and request curated visual styles.',
@@ -991,6 +1008,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                ),
                 ],
               ),
 

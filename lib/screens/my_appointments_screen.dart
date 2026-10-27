@@ -257,7 +257,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                   const SizedBox(width: 8),
                   const Expanded(
                     child: Text(
-                      'Session Reservations â€” Backend Appointment Sync Pending Sprint 3',
+                      'Session Reservations — Backend Appointment Sync Pending Sprint 3',
                       style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                     ),
                   ),
@@ -266,7 +266,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
             ),
 
             ...activeList.map((appt) {
-              final dateStr = '${appt.appointmentDate.day} ${_monthName(appt.appointmentDate.month)} â€¢ ${appt.timeSlot}';
+              final dateStr = '${appt.appointmentDate.day} ${_monthName(appt.appointmentDate.month)} • ${appt.timeSlot}';
               return Container(
                 margin: const EdgeInsets.only(bottom: 16),
                 padding: const EdgeInsets.all(18),
@@ -333,7 +333,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                           ],
                         ),
                         Text(
-                          'â‚¹${appt.totalPrice}',
+                          '₹${appt.totalPrice}',
                           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                         ),
                       ],
@@ -391,23 +391,23 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
       {
         'service': 'Signature Haute Coiffure',
         'stylist': 'Christian Dior',
-        'branch': 'VIORA â€¢ Khar West',
+        'branch': 'VIORA • Khar West',
         'date': '12 Sep 2026',
-        'price': 'â‚¹140',
+        'price': '₹140',
       },
       {
         'service': 'Brown Ombre Cat Eye Nails',
         'stylist': 'Jessica Alba',
-        'branch': 'VIORA â€¢ Juhu Flagship',
+        'branch': 'VIORA • Juhu Flagship',
         'date': '28 Aug 2026',
-        'price': 'â‚¹45',
+        'price': '₹45',
       },
       {
         'service': 'Artisanal Botanical Scalp Ritual',
         'stylist': 'Sophia Laurent',
-        'branch': 'VIORA â€¢ Bandra Heritage',
+        'branch': 'VIORA • Bandra Heritage',
         'date': '14 Jul 2026',
-        'price': 'â‚¹90',
+        'price': '₹90',
       },
     ];
 
