@@ -110,4 +110,6 @@ class NailService {
       colors: ['Brown', 'Beige'],
     ),
   ];
+   // Alias required by FirestoreService.
+    static const List<NailService> sampleNailServices = allNailServices;
 }

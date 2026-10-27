@@ -172,4 +172,5 @@ class HairService {
       imageAsset: 'assets/images/haircut_men_pompadour.png',
     ),
   ];
+  static const List<HairService> sampleHairCuts = allHairCuts;
 }

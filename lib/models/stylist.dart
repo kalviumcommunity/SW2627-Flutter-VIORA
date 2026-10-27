@@ -28,6 +28,8 @@
     required this.imagePath,
     this.isAnyAvailable = false,
   });
+    // Allows screens to access the stylist's image using avatarUrl.
+    String get avatarUrl => imagePath;
 
   static const List<Stylist> sampleStylists = [
     Stylist(

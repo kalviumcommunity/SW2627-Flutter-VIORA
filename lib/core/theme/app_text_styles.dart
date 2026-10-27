@@ -88,4 +88,25 @@ class AppTextStyles {
     color: AppColors.textPrimary,
     letterSpacing: 0.2,
   );
+
+    // Compatibility styles used by other screens
+
+    static TextStyle get h2 => editorialTitle(fontSize: 28);
+
+    static TextStyle get h3 => editorialTitle(fontSize: 24);
+
+    static TextStyle get bodySmall => GoogleFonts.inter(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          height: 1.5,
+          color: AppColors.textSecondary,
+        );
+
+    static TextStyle get bodyMedium => bodyText;
+
+    static TextStyle get caption => GoogleFonts.inter(
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textMuted,
+        );
 }

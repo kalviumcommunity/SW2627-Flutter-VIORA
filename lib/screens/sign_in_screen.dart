@@ -5,7 +5,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/social_button.dart';
 import '../core/firebase/firebase_manager.dart';
-import 'home_screen.dart';
+import 'location_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -46,8 +46,12 @@ class _SignInScreenState extends State<SignInScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     if (email.isNotEmpty && password.isNotEmpty) {
+      final rawName = email.split('@').first;
+      final name = rawName.isNotEmpty
+          ? '${rawName[0].toUpperCase()}${rawName.substring(1)}'
+          : 'Member';
       await FirebaseManager().auth.createUserWithEmailAndPassword(
-            name: email.split('@').first.capitalize(),
+            name: name,
             email: email,
             password: password,
           );
@@ -72,7 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const HomeScreen(),
+            const LocationPermissionScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
@@ -103,7 +107,8 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(28, 0, 28, 36),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

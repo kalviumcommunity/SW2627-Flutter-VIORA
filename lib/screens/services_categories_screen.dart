@@ -2,11 +2,71 @@ import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
 import '../models/service_category.dart';
-
+import 'nail_services_screen.dart';
+import 'hair_services_screen.dart';
+import 'skin_services_screen.dart';
+import 'massage_services_screen.dart';
+import 'hair_removal_services_screen.dart';
+import 'mens_grooming_services_screen.dart';
+import 'eyes_brows_services_screen.dart';
+import 'makeup_services_screen.dart';
 import 'subcategories_screen.dart';
 
 class ServicesCategoriesScreen extends StatelessWidget {
   const ServicesCategoriesScreen({super.key});
+
+  void _navigateToScreen(BuildContext context, Widget screen) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => screen,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
+  void _handleCategoryTap(BuildContext context, ServiceCategory category) {
+    switch (category.id) {
+      case 'hair':
+        _navigateToScreen(context, const HairServicesScreen());
+        break;
+      case 'skin':
+        _navigateToScreen(context, const SkinServicesScreen());
+        break;
+      case 'nails':
+        _navigateToScreen(context, const NailServicesScreen());
+        break;
+      case 'hair_removal':
+      case 'threading':
+      case 'waxing':
+        _navigateToScreen(context, const HairRemovalServicesScreen());
+        break;
+      case 'eyes_brows':
+        _navigateToScreen(context, const EyesBrowsServicesScreen());
+        break;
+      case 'massage':
+      case 'body_care':
+        _navigateToScreen(context, const MassageServicesScreen());
+        break;
+      case 'makeup':
+        _navigateToScreen(context, const MakeupServicesScreen());
+        break;
+      case 'mens_grooming':
+        _navigateToScreen(context, const MensGroomingServicesScreen());
+        break;
+      default:
+        _navigateToScreen(
+          context,
+          SubcategoriesScreen(categoryTitle: category.name),
+        );
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +75,8 @@ class ServicesCategoriesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +118,6 @@ class ServicesCategoriesScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Spacer to balance the back button
                   const SizedBox(width: 40),
                 ],
               ),
@@ -86,146 +146,91 @@ class ServicesCategoriesScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // 3-Column Categories Grid
-              Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  itemCount: categories.length,
-                  physics: const BouncingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 14,
-                    childAspectRatio: 0.88,
-                  ),
-                  itemBuilder: (context, index) {
-                    final cat = categories[index];
-                    return _CategoryCard(category: cat);
-                  },
+              // 3-Column Categories Grid with Smooth Scrolling
+              GridView.builder(
+                padding: const EdgeInsets.only(bottom: 32),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: categories.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 14,
+                  childAspectRatio: 0.88,
                 ),
+                itemBuilder: (context, index) {
+                  final cat = categories[index];
+                  return GestureDetector(
+                    onTap: () => _handleCategoryTap(context, cat),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: AppColors.border,
+                          width: 1.2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.02),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 62,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Image.asset(
+                                cat.imageAsset,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: AppColors.primaryLight,
+                                    child: const Icon(
+                                      Icons.spa_outlined,
+                                      color: AppColors.primary,
+                                      size: 24,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 38,
+                            child: Container(
+                              width: double.infinity,
+                              color: AppColors.surface,
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              alignment: Alignment.center,
+                              child: Text(
+                                cat.name,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                  letterSpacing: -0.1,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CategoryCard extends StatelessWidget {
-  final ServiceCategory category;
-
-  const _CategoryCard({required this.category});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (category.id == 'hair' || category.name.toLowerCase() == 'hair') {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const SubcategoriesScreen(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              transitionDuration: const Duration(milliseconds: 300),
-            ),
-          );
-        } else if (category.id == 'nails' || category.name.toLowerCase() == 'nails') {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const SubcategoriesScreen(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              transitionDuration: const Duration(milliseconds: 300),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: AppColors.textPrimary,
-              content: Text(
-                'Selected ${category.name} services',
-                style: const TextStyle(color: Colors.white),
-              ),
-              duration: const Duration(milliseconds: 1500),
-            ),
-          );
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.border,
-            width: 1.2,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 62,
-              child: SizedBox(
-                width: double.infinity,
-                child: Image.asset(
-                  category.imageAsset,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: AppColors.primaryLight,
-                      child: const Icon(
-                        Icons.spa_outlined,
-                        color: AppColors.primary,
-                        size: 24,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 38,
-              child: Container(
-                width: double.infinity,
-                color: AppColors.surface,
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                alignment: Alignment.center,
-                child: Text(
-                  category.name,
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.1,
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

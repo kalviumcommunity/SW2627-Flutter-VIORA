@@ -189,6 +189,37 @@ class FirestoreService {
     return doc;
   }
 
+  /// Cancel an existing appointment
+  Future<void> cancelAppointment(String id) async {
+    final index = _appointments.indexWhere((a) => a.id == id);
+    if (index != -1) {
+      final old = _appointments[index];
+      _appointments[index] = AppointmentDocument(
+        id: old.id,
+        customerId: old.customerId,
+        customerName: old.customerName,
+        serviceTitle: old.serviceTitle,
+        category: old.category,
+        texture: old.texture,
+        length: old.length,
+        fringe: old.fringe,
+        finish: old.finish,
+        careTreatment: old.careTreatment,
+        stylistName: old.stylistName,
+        stylistRole: old.stylistRole,
+        stylistAvatar: old.stylistAvatar,
+        appointmentDate: old.appointmentDate,
+        timeSlot: old.timeSlot,
+        totalPrice: old.totalPrice,
+        salonBranch: old.salonBranch,
+        status: 'CANCELLED',
+        createdAt: old.createdAt,
+      );
+      _appointmentsStreamController.add(List.unmodifiable(_appointments));
+      debugPrint('🗄️ [FirestoreService] Cancelled Appointment: $id');
+    }
+  }
+
   /// Real-time stream of available haircuts
   Stream<List<HairService>> get haircutsStream async* {
     yield HairService.sampleHairCuts;

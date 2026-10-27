@@ -28,6 +28,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
   // Wed 17 is preselected as per screenshot
   int _selectedDayIndex = 2; // Wed 17
   String _selectedSlot = '11:30 AM'; // 11:30 AM preselected
+  String _selectedPeriod = 'All'; // 'All', 'Morning', 'Afternoon', 'Evening'
 
   final List<Map<String, String>> _dates = const [
     {'day': 'Mon', 'date': '15'},
@@ -47,7 +48,30 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
     '01:30 PM',
     '02:00 PM',
     '03:00 PM',
+    '04:00 PM',
+    '05:30 PM',
+    '06:30 PM',
+    '07:30 PM',
   ];
+
+  List<String> get _filteredSlots {
+    if (_selectedPeriod == 'Morning') {
+      return _slots.where((s) => s.contains('AM')).toList();
+    } else if (_selectedPeriod == 'Afternoon') {
+      return _slots.where((s) {
+        if (!s.contains('PM')) return false;
+        final hour = int.tryParse(s.split(':')[0]) ?? 0;
+        return hour == 12 || hour < 5;
+      }).toList();
+    } else if (_selectedPeriod == 'Evening') {
+      return _slots.where((s) {
+        if (!s.contains('PM')) return false;
+        final hour = int.tryParse(s.split(':')[0]) ?? 0;
+        return hour >= 5 && hour != 12;
+      }).toList();
+    }
+    return _slots;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +128,8 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
             // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -133,6 +158,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
 
                     // Horizontal Dates Row
                     SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       clipBehavior: Clip.none,
                       child: Row(
@@ -215,13 +241,56 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                       ),
                     ),
 
+                    const SizedBox(height: 12),
+
+                    // Morning / Afternoon / Evening Period Filter Chips
+                    Row(
+                      children: ['All', 'Morning', 'Afternoon', 'Evening'].map((period) {
+                        final isSelected = _selectedPeriod == period;
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: GestureDetector(
+                            onTap: () => setState(() => _selectedPeriod = period),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 13, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.surface,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : AppColors.border,
+                                  width: 1.2,
+                                ),
+                              ),
+                              child: Text(
+                                period,
+                                style: TextStyle(
+                                  fontSize: 11.5,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : AppColors.textPrimary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+
                     const SizedBox(height: 16),
 
                     // 3-Column Time Slots Grid
                     Wrap(
                       spacing: 12,
                       runSpacing: 12,
-                      children: _slots.map((slot) {
+                      children: _filteredSlots.map((slot) {
                         final isSelected = slot == _selectedSlot;
                         // Calculate width for 3 items per row with 12px spacing: (screenWidth - 40 - 24) / 3
                         final itemWidth =
@@ -349,18 +418,23 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                     child: ElevatedButton(
                       onPressed: () async {
                         final user = FirebaseManager().auth.currentUser;
+                        final branch = widget.customizations?['branch'] as String? ?? 'Model Town';
+                        final category = widget.customizations?['category'] as String? ?? 'Hair Cut & Styling';
+
                         await FirebaseManager().firestore.createAppointment(
                           customerId: user?.uid ?? 'guest_client',
-                          customerName: user?.name ?? 'Valued Client',
+                          customerName: user?.name ?? 'Sarah Thomas',
                           serviceTitle: widget.lookName,
-                          category: 'Hair Cut & Styling',
+                          category: category,
                           stylistName: widget.stylist.name,
                           stylistRole: widget.stylist.role,
-                          stylistAvatar: widget.stylist.avatarUrl,
+                          stylistAvatar: widget.stylist.avatarUrl.isNotEmpty
+                              ? widget.stylist.avatarUrl
+                              : 'assets/images/avatar_christian_dior.png',
                           appointmentDate: DateTime.now().add(Duration(days: _selectedDayIndex)),
                           timeSlot: _selectedSlot,
                           totalPrice: widget.finalPrice,
-                          salonBranch: 'VIORA • Model Town Sanctuary',
+                          salonBranch: branch,
                         );
 
                         if (!context.mounted) return;
@@ -373,6 +447,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                               finalPrice: widget.finalPrice,
                               selectedDateString: dateDisplayString,
                               selectedTimeString: _selectedSlot,
+                              branchName: branch,
                             ),
                           ),
                         );

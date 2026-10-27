@@ -2,9 +2,28 @@ import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
 import '../models/salon_branch.dart';
+import '../models/stylist.dart';
+import 'date_time_selection_screen.dart';
 
 class BranchesListScreen extends StatefulWidget {
-  const BranchesListScreen({super.key});
+  final bool isBookingFlow;
+  final String? bookingServiceTitle;
+  final String? bookingCategory;
+  final int? bookingPrice;
+  final int? bookingDurationMinutes;
+  final Stylist? bookingStylist;
+  final Map<String, dynamic>? bookingCustomizations;
+
+  const BranchesListScreen({
+    super.key,
+    this.isBookingFlow = false,
+    this.bookingServiceTitle,
+    this.bookingCategory,
+    this.bookingPrice,
+    this.bookingDurationMinutes,
+    this.bookingStylist,
+    this.bookingCustomizations,
+  });
 
   @override
   State<BranchesListScreen> createState() => _BranchesListScreenState();
@@ -60,10 +79,10 @@ class _BranchesListScreenState extends State<BranchesListScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      'Salons',
+                      widget.isBookingFlow ? 'Select Branch' : 'Salons',
                       textAlign: TextAlign.center,
                       style: AppTextStyles.editorialTitle(
-                        fontSize: 26,
+                        fontSize: 24,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -105,7 +124,62 @@ class _BranchesListScreenState extends State<BranchesListScreen> {
               ),
             ),
 
-            const SizedBox(height: 18),
+            if (widget.isBookingFlow && widget.bookingServiceTitle != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 6, 20, 12),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryLight,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.25),
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(7),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.spa_outlined,
+                          size: 16,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.bookingServiceTitle!,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              '${widget.bookingStylist?.name ?? "Christian Dior"} • ₹${widget.bookingPrice ?? 2400}',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
             // Search Bar
             Padding(
@@ -184,12 +258,22 @@ class _BranchesListScreenState extends State<BranchesListScreen> {
             // List of Branches
             Expanded(
               child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
                 itemCount: branches.length,
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 16),
                 itemBuilder: (context, index) {
-                  return _SalonBranchCard(branch: branches[index]);
+                  return _SalonBranchCard(
+                    branch: branches[index],
+                    isBookingFlow: widget.isBookingFlow,
+                    bookingServiceTitle: widget.bookingServiceTitle,
+                    bookingCategory: widget.bookingCategory,
+                    bookingPrice: widget.bookingPrice,
+                    bookingDurationMinutes: widget.bookingDurationMinutes,
+                    bookingStylist: widget.bookingStylist,
+                    bookingCustomizations: widget.bookingCustomizations,
+                  );
                 },
               ),
             ),
@@ -234,8 +318,24 @@ class _BranchesListScreenState extends State<BranchesListScreen> {
 
 class _SalonBranchCard extends StatelessWidget {
   final SalonBranch branch;
+  final bool isBookingFlow;
+  final String? bookingServiceTitle;
+  final String? bookingCategory;
+  final int? bookingPrice;
+  final int? bookingDurationMinutes;
+  final Stylist? bookingStylist;
+  final Map<String, dynamic>? bookingCustomizations;
 
-  const _SalonBranchCard({required this.branch});
+  const _SalonBranchCard({
+    required this.branch,
+    this.isBookingFlow = false,
+    this.bookingServiceTitle,
+    this.bookingCategory,
+    this.bookingPrice,
+    this.bookingDurationMinutes,
+    this.bookingStylist,
+    this.bookingCustomizations,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -379,6 +479,71 @@ class _SalonBranchCard extends StatelessWidget {
                     fontSize: 11.5,
                     fontWeight: FontWeight.w600,
                     color: AppColors.primary,
+                  ),
+                ),
+
+                const SizedBox(height: 14),
+
+                // Selection Control Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (isBookingFlow) {
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation, secondaryAnimation) =>
+                                DateTimeSelectionScreen(
+                              stylist: bookingStylist ??
+                                  Stylist.sampleStylists[2],
+                              lookName: bookingServiceTitle ??
+                                  'Salon Service',
+                              finalPrice: bookingPrice ?? 2400,
+                              customizations: {
+                                'branch': branch.name,
+                                'duration':
+                                    '${bookingDurationMinutes ?? 60} mins',
+                                'category': bookingCategory ??
+                                    'Beauty Service',
+                                if (bookingCustomizations != null)
+                                  ...bookingCustomizations!,
+                              },
+                            ),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return FadeTransition(
+                                  opacity: animation, child: child);
+                            },
+                            transitionDuration:
+                                const Duration(milliseconds: 300),
+                          ),
+                        );
+                      } else if (Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop(branch.name);
+                      } else {
+                        Navigator.of(context).pushNamed(
+                          '/date_time',
+                          arguments: {'branch': branch.name},
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 11),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'SELECT THIS BRANCH',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
                   ),
                 ),
               ],

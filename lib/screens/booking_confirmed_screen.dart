@@ -9,6 +9,7 @@ class BookingConfirmedScreen extends StatelessWidget {
   final int finalPrice;
   final String selectedDateString;
   final String selectedTimeString;
+  final String branchName;
 
   const BookingConfirmedScreen({
     super.key,
@@ -17,6 +18,7 @@ class BookingConfirmedScreen extends StatelessWidget {
     this.finalPrice = 2600,
     this.selectedDateString = 'Wed, 17 Oct',
     this.selectedTimeString = '11:30 AM',
+    this.branchName = 'VIORA — Khar West',
   });
 
   @override
@@ -24,11 +26,17 @@ class BookingConfirmedScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Column(
-            children: [
-              const Spacer(flex: 1),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
 
               // Success Checkmark Badge
               Container(
@@ -100,16 +108,24 @@ class BookingConfirmedScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Viora — Khar West',
+                      branchName,
                       style: AppTextStyles.editorialTitle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     const SizedBox(height: 3),
-                    const Text(
-                      'Plot 42, Khar Pali Road, Khar West, Mumbai',
-                      style: TextStyle(
+                    Text(
+                      branchName.toLowerCase().contains('model town')
+                          ? 'Model Town Market, Jalandhar, Punjab'
+                          : branchName.toLowerCase().contains('phagwara')
+                              ? 'GT Road, Near City Center, Phagwara, Punjab'
+                              : branchName.toLowerCase().contains('jalandhar')
+                                  ? 'Civil Lines, Jalandhar, Punjab'
+                                  : branchName.toLowerCase().contains('ludhiana')
+                                      ? 'Ferozepur Road, Ludhiana, Punjab'
+                                      : 'Plot 42, Khar Pali Road, Khar West, Mumbai',
+                      style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
                       ),
@@ -217,7 +233,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
 
-              const Spacer(flex: 2),
+              const SizedBox(height: 36),
 
               // Action Buttons
               SizedBox(
@@ -261,9 +277,8 @@ class BookingConfirmedScreen extends StatelessWidget {
                 height: 52,
                 child: OutlinedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/home',
-                      (route) => false,
+                    Navigator.of(context).pushNamed(
+                      '/my_appointments',
                     );
                   },
                   style: OutlinedButton.styleFrom(
@@ -275,7 +290,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'VIEW APPOINTMENTS',
+                    'VIEW MY APPOINTMENTS',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
@@ -286,9 +301,30 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 12),
-            ],
-          ),
+              const SizedBox(height: 8),
+
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/home',
+                    (route) => false,
+                  );
+                },
+                child: const Text(
+                  'Back to Home',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

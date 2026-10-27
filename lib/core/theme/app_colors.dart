@@ -28,4 +28,12 @@ class AppColors {
 
   /// Inactive pagination dots
   static const Color dotInactive = Color(0xFFE8E2D9);
+
+   // Compatibility aliases used by other screens
+   static const Color canvas = background;
+   static const Color gold = primary;
+   static const Color secondaryText = textSecondary;
+   static const Color primaryText = textPrimary;
+   static const Color cardBorder = border;
+   static const Color surfaceVariant = primaryLight;
 }
