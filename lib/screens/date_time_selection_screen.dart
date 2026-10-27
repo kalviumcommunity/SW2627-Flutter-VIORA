@@ -1,0 +1,432 @@
+import 'package:flutter/material.dart';
+import '../core/theme/app_colors.dart';
+import '../core/theme/app_text_styles.dart';
+import '../models/stylist.dart';
+import '../core/firebase/firebase_manager.dart';
+import 'booking_confirmed_screen.dart';
+
+class DateTimeSelectionScreen extends StatefulWidget {
+  final Stylist stylist;
+  final String lookName;
+  final int finalPrice;
+  final String? selectedBranchName;
+  final Map<String, dynamic>? customizations;
+
+  const DateTimeSelectionScreen({
+    super.key,
+    required this.stylist,
+    this.lookName = 'Brown Ombre Cat Eye Nails',
+    this.finalPrice = 2600,
+    this.selectedBranchName,
+    this.customizations,
+  });
+
+  @override
+  State<DateTimeSelectionScreen> createState() =>
+      _DateTimeSelectionScreenState();
+}
+
+class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
+  int _selectedDayIndex = 2; // Wed 17
+  String _selectedSlot = '11:30 AM'; // 11:30 AM preselected
+  bool _isSubmitting = false;
+
+  final List<Map<String, String>> _dates = const [
+    {'day': 'Mon', 'date': '15'},
+    {'day': 'Tue', 'date': '16'},
+    {'day': 'Wed', 'date': '17'},
+    {'day': 'Thu', 'date': '18'},
+    {'day': 'Fri', 'date': '19'},
+    {'day': 'Sat', 'date': '20'},
+  ];
+
+  final List<String> _slots = const [
+    '10:00 AM',
+    '10:30 AM',
+    '11:00 AM',
+    '11:30 AM',
+    '12:00 PM',
+    '01:30 PM',
+    '02:00 PM',
+    '03:00 PM',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedDate = _dates[_selectedDayIndex];
+    final dateDisplayString = '${selectedDate['day']}, ${selectedDate['date']} Oct';
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Top App Bar
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.border,
+                          width: 1.2,
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.arrow_back,
+                        size: 20,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Select Date & Time',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.editorialTitle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 40), // Balance back button
+                ],
+              ),
+            ),
+
+            // Content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Month & Year Row with Navigation Chevrons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'October 2023',
+                          style: AppTextStyles.editorialTitle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            _buildMonthNavButton(Icons.chevron_left_rounded),
+                            const SizedBox(width: 8),
+                            _buildMonthNavButton(Icons.chevron_right_rounded),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Horizontal Dates Row
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      clipBehavior: Clip.none,
+                      child: Row(
+                        children: List.generate(_dates.length, (index) {
+                          final item = _dates[index];
+                          final isSelected = index == _selectedDayIndex;
+
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: GestureDetector(
+                              onTap: () => setState(() => _selectedDayIndex = index),
+                              child: Container(
+                                width: 48,
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : AppColors.surface,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? AppColors.primary
+                                        : AppColors.border,
+                                    width: 1.2,
+                                  ),
+                                  boxShadow: isSelected
+                                      ? [
+                                          BoxShadow(
+                                            color: AppColors.primary
+                                                .withValues(alpha: 0.25),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ]
+                                      : [],
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      item['day']!,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500,
+                                        color: isSelected
+                                            ? Colors.white.withValues(alpha: 0.9)
+                                            : AppColors.textSecondary,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      item['date']!,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: isSelected
+                                            ? Colors.white
+                                            : AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+
+                    const SizedBox(height: 28),
+
+                    // Available Slots Heading
+                    const Text(
+                      'AVAILABLE SLOTS',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.2,
+                        color: Color(0xFF6E6A66),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // 3-Column Time Slots Grid
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: _slots.map((slot) {
+                        final isSelected = slot == _selectedSlot;
+                        // Calculate width for 3 items per row with 12px spacing: (screenWidth - 40 - 24) / 3
+                        final itemWidth =
+                            (MediaQuery.of(context).size.width - 40 - 24) / 3;
+
+                        return GestureDetector(
+                          onTap: () => setState(() => _selectedSlot = slot),
+                          child: Container(
+                            width: itemWidth,
+                            height: 44,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? const Color(0xFFF7EFE8)
+                                  : AppColors.surface,
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.border,
+                                width: isSelected ? 1.5 : 1.0,
+                              ),
+                            ),
+                            child: Text(
+                              slot,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Bottom Summary Bar & Action Button
+            Container(
+              padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, -3),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Summary Row
+                  Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.primary.withValues(alpha: 0.5),
+                            width: 1.2,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: widget.stylist.imagePath.isNotEmpty
+                              ? Image.asset(
+                                  widget.stylist.imagePath,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.person,
+                                          color: AppColors.primary),
+                                )
+                              : const Icon(Icons.auto_awesome,
+                                  color: AppColors.primary),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.lookName,
+                              style: AppTextStyles.editorialTitle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'with ${widget.stylist.name}',
+                              style: const TextStyle(
+                                fontSize: 11.5,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        '₹${widget.finalPrice}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 14),
+
+                  // BOOK APPOINTMENT Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: _isSubmitting ? null : () async {
+                        setState(() => _isSubmitting = true);
+                        try {
+                          final user = FirebaseManager().auth.currentUser;
+                          final branchName = widget.selectedBranchName ?? 'VIORA • Khar West';
+                          await FirebaseManager().firestore.createAppointment(
+                            customerId: user?.uid ?? 'guest_client',
+                            customerName: user?.name ?? 'Valued Client',
+                            serviceTitle: widget.lookName,
+                            category: 'Bespoke Experience',
+                            stylistName: widget.stylist.name,
+                            stylistRole: widget.stylist.role,
+                            stylistAvatar: widget.stylist.imagePath,
+                            appointmentDate: DateTime.now().add(Duration(days: _selectedDayIndex)),
+                            timeSlot: _selectedSlot,
+                            totalPrice: widget.finalPrice,
+                            salonBranch: branchName,
+                          );
+
+                          if (!context.mounted) return;
+
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => BookingConfirmedScreen(
+                                stylist: widget.stylist,
+                                lookName: widget.lookName,
+                                finalPrice: widget.finalPrice,
+                                selectedDateString: dateDisplayString,
+                                selectedTimeString: _selectedSlot,
+                                selectedBranchName: branchName,
+                              ),
+                            ),
+                          );
+                        } finally {
+                          if (mounted) setState(() => _isSubmitting = false);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(26),
+                        ),
+                      ),
+                      child: Text(
+                        _isSubmitting ? 'RESERVING...' : 'CONFIRM RESERVATION',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMonthNavButton(IconData icon) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.border, width: 1.0),
+      ),
+      child: Icon(
+        icon,
+        size: 18,
+        color: AppColors.textPrimary,
+      ),
+    );
+  }
+}

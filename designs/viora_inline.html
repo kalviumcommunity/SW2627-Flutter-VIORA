@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .font-serif-luxury { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .font-sans-clean { font-family: 'Inter', -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-2 font-sans-clean">
+  <div class="bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-2xl p-4 shadow-md max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center justify-between pb-3 border-b border-[var(--border)]">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-7 h-7 rounded-full bg-[#C59265] text-white flex items-center justify-center font-serif-luxury font-bold text-sm">V</div>
+        <div>
+          <h2 class="font-serif-luxury text-xl font-semibold text-[var(--foreground)]">VIORA — Mobile App Preview</h2>
+          <p class="text-[11px] text-[var(--muted-foreground)]">3 Starter Screens • Flutter &amp; Dart Implementation</p>
+        </div>
+      </div>
+      <!-- Tab Switcher -->
+      <div class="flex bg-[var(--background)] p-1 rounded-xl border border-[var(--border)] space-x-1">
+        <button onclick="setTab('onboarding')" id="btn-onboarding" class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium bg-[#C59265] text-white transition-all">
+          Onboarding
+        </button>
+        <button onclick="setTab('location')" id="btn-location" class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all">
+          Location
+        </button>
+        <button onclick="setTab('signin')" id="btn-signin" class="tab-btn px-2.5 py-1 rounded-lg text-xs font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all">
+          Sign In
+        </button>
+      </div>
+    </div>
+
+    <!-- Phone Screen Display Area (Compact ~340px height) -->
+    <div class="mt-4 flex justify-center">
+      <div class="w-[280px] h-[340px] rounded-3xl bg-[#FAF8F5] border-4 border-stone-800 shadow-xl overflow-hidden relative flex flex-col select-none text-[#1F1E1C]">
+        
+        <!-- Status Bar -->
+        <div class="h-6 px-4 flex items-center justify-between text-[9px] font-semibold z-10" id="miniStatusBar">
+          <span>9:41</span>
+          <div class="flex items-center space-x-1 text-[8px]">
+            <span>●●●</span>
+            <span>WiFi</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- 1. ONBOARDING SCREEN -->
+        <div id="view-onboarding" class="screen-view h-full flex flex-col justify-between -mt-6">
+          <div class="h-[52%] w-full relative overflow-hidden bg-stone-900">
+            <img src="./salon_hero.png" alt="Salon" class="w-full h-full object-cover" />
+          </div>
+          <div class="h-[48%] flex flex-col justify-between px-4 pb-3 pt-2 text-center bg-[#FAF8F5]">
+            <div>
+              <h3 class="font-serif-luxury text-2xl font-light tracking-widest text-[#1F1E1C]">VIORA</h3>
+              <p class="text-[8px] tracking-[0.2em] font-medium text-[#7A7672] mt-0.5">YOUR BEAUTY, PERFECTED</p>
+            </div>
+            <div class="flex justify-center space-x-1 my-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#C59265]"></span>
+              <span class="w-1 h-1 rounded-full bg-[#E8E2D9]"></span>
+              <span class="w-1 h-1 rounded-full bg-[#E8E2D9]"></span>
+            </div>
+            <button onclick="setTab('location')" class="w-full py-2 rounded-full bg-[#C59265] text-white font-bold text-[9px] tracking-wider uppercase shadow-xs">
+              GET STARTED
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. LOCATION ACCESS SCREEN -->
+        <div id="view-location" class="screen-view h-full flex flex-col justify-between px-4 py-3 bg-[#FAF8F5] hidden">
+          <div class="text-center pt-1">
+            <span class="font-serif-luxury text-base text-[#1F1E1C]">Welcome</span>
+          </div>
+          <div class="flex justify-center items-center my-auto">
+            <div class="w-20 h-20 rounded-full bg-[#F5ECE8] flex items-center justify-center">
+              <div class="w-13 h-13 rounded-full bg-white shadow-xs p-2 flex items-center justify-center">
+                <svg class="w-6 h-6 text-[#C59265]" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12c0 7 10 16 10 16s10-9 10-16c0-5.52-4.48-10-10-10z"/>
+                  <circle cx="12" cy="11.5" r="3.5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mb-1">
+            <h4 class="font-serif-luxury text-base text-[#1F1E1C] leading-tight">Find Your Nearest Salon</h4>
+            <p class="text-[8px] text-[#7A7672] leading-tight mt-1">To provide seamless booking, please allow location access.</p>
+          </div>
+          <div class="space-y-1.5 pb-1">
+            <button onclick="setTab('signin')" class="w-full py-2 rounded-full bg-[#C59265] text-white font-bold text-[9px] tracking-wider uppercase">
+              ALLOW LOCATION ACCESS
+            </button>
+            <div onclick="setTab('signin')" class="text-center text-[8.5px] text-[#C59265] underline cursor-pointer">
+              Enter Location Manually
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. SIGN IN SCREEN -->
+        <div id="view-signin" class="screen-view h-full flex flex-col justify-between px-4 py-3 bg-[#FAF8F5] hidden">
+          <div class="text-center pt-1">
+            <h3 class="font-serif-luxury text-2xl tracking-wider text-[#1F1E1C]">VIORA</h3>
+            <p class="text-[7px] tracking-[0.2em] font-medium text-[#7A7672]">EXCLUSIVE SALON MEMBER ACCESS</p>
+          </div>
+          <div class="space-y-2 my-auto">
+            <div>
+              <span class="block text-[7.5px] font-bold text-[#5A5652] tracking-wider uppercase">EMAIL ADDRESS</span>
+              <div class="w-full bg-white rounded-lg border border-[#EDE8E1] px-2 py-1.5 text-[8.5px] text-[#1F1E1C]">
+                sarah.kothari@gmail.com
+              </div>
+            </div>
+            <div>
+              <span class="block text-[7.5px] font-bold text-[#5A5652] tracking-wider uppercase">PASSWORD</span>
+              <div class="w-full bg-white rounded-lg border border-[#EDE8E1] px-2 py-1.5 text-[8.5px] text-[#1F1E1C] flex justify-between">
+                <span>•••••••••••••</span>
+                <span class="text-[8px] text-stone-400">👁</span>
+              </div>
+              <div class="text-right mt-0.5">
+                <span class="text-[7.5px] text-[#C59265]">Forgot Password?</span>
+              </div>
+            </div>
+            <div class="space-y-1 pt-1">
+              <div class="w-full py-1.5 rounded-full bg-[#C59265] text-white text-center font-bold text-[8.5px] tracking-wider uppercase">
+                SIGN IN
+              </div>
+              <div class="w-full py-1.5 rounded-full bg-white border border-[#EDE8E1] text-[#1F1E1C] text-center font-bold text-[8.5px] tracking-wider uppercase">
+                CREATE ACCOUNT
+              </div>
+            </div>
+            <div class="flex space-x-1.5 pt-0.5">
+              <div class="flex-1 py-1 bg-white border border-[#EDE8E1] rounded-full text-center text-[7.5px] font-medium">Google</div>
+              <div class="flex-1 py-1 bg-white border border-[#EDE8E1] rounded-full text-center text-[7.5px] font-medium">Apple</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Home Bar Indicator -->
+        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-20 h-0.5 bg-black/60 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setTab(tab) {
+      document.querySelectorAll('.screen-view').forEach(v => v.classList.add('hidden'));
+      document.getElementById('view-' + tab).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('bg-[#C59265]', 'text-white');
+        b.classList.add('text-[var(--muted-foreground)]');
+      });
+      const activeBtn = document.getElementById('btn-' + tab);
+      activeBtn.classList.add('bg-[#C59265]', 'text-white');
+      activeBtn.classList.remove('text-[var(--muted-foreground)]');
+
+      const sb = document.getElementById('miniStatusBar');
+      if (tab === 'onboarding') {
+        sb.className = 'h-6 px-4 flex items-center justify-between text-[9px] font-semibold z-10 text-white';
+      } else {
+        sb.className = 'h-6 px-4 flex items-center justify-between text-[9px] font-semibold z-10 text-[#1F1E1C]';
+      }
+    }
+  </script>
+</body>
+</html>
