@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
@@ -95,9 +95,9 @@ class ApiClient {
 
       final fastestWorkingUrl = await Future.any(futures);
       _baseUrl = fastestWorkingUrl;
-      debugPrint('🌐 [ApiClient] Discovered active backend base URL: $_baseUrl');
+      debugPrint('[ApiClient] Discovered active backend base URL: $_baseUrl');
     } catch (_) {
-      debugPrint('⚠️ [ApiClient] Probing candidates failed, keeping base URL: $_baseUrl');
+      debugPrint('[ApiClient] Probing candidates failed, keeping base URL: $_baseUrl');
     } finally {
       _discoveryCompleted = true;
     }
@@ -202,6 +202,33 @@ class ApiClient {
             body: body != null ? jsonEncode(body) : null,
           )
           .timeout(requestTimeout);
+      return _processResponse(response);
+    } on TimeoutException {
+      throw ApiException(
+        statusCode: 408,
+        message: 'Connection to backend at $_baseUrl timed out. Please check your network and server.',
+      );
+    } on SocketException catch (e) {
+      throw ApiException(
+        statusCode: 503,
+        message: 'Cannot reach backend server at $_baseUrl: ${e.message}',
+      );
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException(
+        statusCode: 0,
+        message: 'Network error or backend unreachable at $_baseUrl: $e',
+      );
+    }
+  }
+
+  Future<dynamic> delete(String endpoint, {bool includeAuth = true}) async {
+    await resolveActiveBaseUrl();
+    final uri = Uri.parse('$_baseUrl$endpoint');
+    final headers = await _buildHeaders(includeAuth: includeAuth);
+
+    try {
+      final response = await _httpClient.delete(uri, headers: headers).timeout(requestTimeout);
       return _processResponse(response);
     } on TimeoutException {
       throw ApiException(

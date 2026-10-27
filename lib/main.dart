@@ -18,6 +18,15 @@ import 'screens/booking_confirmed_screen.dart';
 import 'screens/my_appointments_screen.dart';
 import 'screens/customer_profile_screen.dart';
 
+// Person 3 - Inspiration & Reviews Screens
+import 'screens/inspiration_gallery_screen.dart';
+import 'screens/inspiration_request_screen.dart';
+import 'screens/inspiration_responses_screen.dart';
+import 'screens/notifications_screen.dart';
+import 'screens/submit_review_screen.dart';
+import 'screens/stylist_reviews_screen.dart';
+import 'screens/stylist_portfolio_screen.dart';
+
 // Stylist Dashboard Screens
 import 'screens/stylist_home_screen.dart';
 import 'screens/stylist_appointment_details_screen.dart';
@@ -63,7 +72,7 @@ class VioraSalonApp extends StatelessWidget {
     final isAuthenticated = FirebaseManager().auth.isAuthenticated;
 
     return MaterialApp(
-      title: 'VIORA — Luxury Salon & Member Access',
+      title: 'VIORA - Luxury Salon & Member Access',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       initialRoute: isAuthenticated ? '/home' : '/onboarding',
@@ -93,6 +102,15 @@ class VioraSalonApp extends StatelessWidget {
         '/customer_profile': (context) => const CustomerProfileScreen(),
         '/beauty_quiz': (context) => const BeautyQuizScreen(),
         '/quiz_results': (context) => const BeautyQuizResultScreen(),
+
+        // Person 3 Routes
+        '/inspiration': (context) => const InspirationGalleryScreen(),
+        '/inspiration_request': (context) => const InspirationRequestScreen(),
+        '/inspiration_responses': (context) => const InspirationResponsesScreen(),
+        '/notifications': (context) => const NotificationsScreen(),
+        '/submit_review': (context) => const SubmitReviewScreen(),
+        '/stylist_reviews': (context) => const StylistReviewsScreen(),
+        '/stylist_portfolio': (context) => const StylistPortfolioScreen(),
 
         // Stylist Dashboard
         '/stylist_login': (context) => const SignInScreen(),

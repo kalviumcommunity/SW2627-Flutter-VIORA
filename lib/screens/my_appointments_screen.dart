@@ -1,3 +1,4 @@
+﻿import 'submit_review_screen.dart';
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
@@ -256,7 +257,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                   const SizedBox(width: 8),
                   const Expanded(
                     child: Text(
-                      'Session Reservations — Backend Appointment Sync Pending Sprint 3',
+                      'Session Reservations â€” Backend Appointment Sync Pending Sprint 3',
                       style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                     ),
                   ),
@@ -265,7 +266,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
             ),
 
             ...activeList.map((appt) {
-              final dateStr = '${appt.appointmentDate.day} ${_monthName(appt.appointmentDate.month)} • ${appt.timeSlot}';
+              final dateStr = '${appt.appointmentDate.day} ${_monthName(appt.appointmentDate.month)} â€¢ ${appt.timeSlot}';
               return Container(
                 margin: const EdgeInsets.only(bottom: 16),
                 padding: const EdgeInsets.all(18),
@@ -332,7 +333,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                           ],
                         ),
                         Text(
-                          '₹${appt.totalPrice}',
+                          'â‚¹${appt.totalPrice}',
                           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                         ),
                       ],
@@ -390,23 +391,23 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
       {
         'service': 'Signature Haute Coiffure',
         'stylist': 'Christian Dior',
-        'branch': 'VIORA • Khar West',
+        'branch': 'VIORA â€¢ Khar West',
         'date': '12 Sep 2026',
-        'price': '₹140',
+        'price': 'â‚¹140',
       },
       {
         'service': 'Brown Ombre Cat Eye Nails',
         'stylist': 'Jessica Alba',
-        'branch': 'VIORA • Juhu Flagship',
+        'branch': 'VIORA â€¢ Juhu Flagship',
         'date': '28 Aug 2026',
-        'price': '₹45',
+        'price': 'â‚¹45',
       },
       {
         'service': 'Artisanal Botanical Scalp Ritual',
         'stylist': 'Sophia Laurent',
-        'branch': 'VIORA • Bandra Heritage',
+        'branch': 'VIORA â€¢ Bandra Heritage',
         'date': '14 Jul 2026',
-        'price': '₹90',
+        'price': 'â‚¹90',
       },
     ];
 
@@ -479,6 +480,29 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   child: const Text('REBOOK EXPERIENCE', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SubmitReviewScreen(
+                          serviceName: item['service']!,
+                          stylistName: item['stylist']!,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.star_outline_rounded, size: 15),
+                  label: const Text('RATE & REVIEW VISIT', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
                 ),
               ),
             ],

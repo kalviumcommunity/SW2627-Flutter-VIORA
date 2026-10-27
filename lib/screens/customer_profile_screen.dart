@@ -1,4 +1,4 @@
-import 'customer_main_scaffold.dart';
+﻿import 'customer_main_scaffold.dart';
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
@@ -194,7 +194,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                         const Divider(height: 18),
                         _buildPreferenceRow('Scalp Treatment', 'Botanical Detox Acupressure'),
                         const Divider(height: 18),
-                        _buildPreferenceRow('Preferred Branch', 'VIORA • Khar West Flagship'),
+                        _buildPreferenceRow('Preferred Branch', 'VIORA â€¢ Khar West Flagship'),
                         const Divider(height: 18),
                         _buildPreferenceRow('Lead Master Stylist', 'Christian Dior (Art Director)'),
                         const SizedBox(height: 14),
@@ -402,3 +402,4 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     );
   }
 }
+
