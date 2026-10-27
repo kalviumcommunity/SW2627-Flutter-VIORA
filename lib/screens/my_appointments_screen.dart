@@ -1,3 +1,4 @@
+﻿import 'submit_review_screen.dart';
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
@@ -479,6 +480,29 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   child: const Text('REBOOK EXPERIENCE', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SubmitReviewScreen(
+                          serviceName: item['service']!,
+                          stylistName: item['stylist']!,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.star_outline_rounded, size: 15),
+                  label: const Text('RATE & REVIEW VISIT', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
                 ),
               ),
             ],

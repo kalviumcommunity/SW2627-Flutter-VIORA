@@ -1,4 +1,4 @@
-import 'customer_main_scaffold.dart';
+﻿import 'customer_main_scaffold.dart';
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
@@ -245,6 +245,18 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                     subtitle: 'View haircutting, couture coloring, and spa services',
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (c) => const ServicesCategoriesScreen())),
                   ),
+                  _buildNavigationTile(
+                    icon: Icons.auto_awesome_outlined,
+                    title: 'Inspiration & Stylist Proposals',
+                    subtitle: 'Track your bespoke requests and proposals',
+                    onTap: () => Navigator.of(context).pushNamed('/inspiration_responses'),
+                  ),
+                  _buildNavigationTile(
+                    icon: Icons.notifications_none_outlined,
+                    title: 'Atelier Notification Center',
+                    subtitle: 'Updates, reminders, and stylist communications',
+                    onTap: () => Navigator.of(context).pushNamed('/notifications'),
+                  ),
 
                   const SizedBox(height: 24),
 
@@ -402,3 +414,4 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     );
   }
 }
+
