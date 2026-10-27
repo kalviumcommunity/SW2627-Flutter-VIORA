@@ -9,6 +9,7 @@ class DateTimeSelectionScreen extends StatefulWidget {
   final Stylist stylist;
   final String lookName;
   final int finalPrice;
+  final String? selectedBranchName;
   final Map<String, dynamic>? customizations;
 
   const DateTimeSelectionScreen({
@@ -16,6 +17,7 @@ class DateTimeSelectionScreen extends StatefulWidget {
     required this.stylist,
     this.lookName = 'Brown Ombre Cat Eye Nails',
     this.finalPrice = 2600,
+    this.selectedBranchName,
     this.customizations,
   });
 
@@ -25,9 +27,9 @@ class DateTimeSelectionScreen extends StatefulWidget {
 }
 
 class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
-  // Wed 17 is preselected as per screenshot
   int _selectedDayIndex = 2; // Wed 17
   String _selectedSlot = '11:30 AM'; // 11:30 AM preselected
+  bool _isSubmitting = false;
 
   final List<Map<String, String>> _dates = const [
     {'day': 'Mon', 'date': '15'},
@@ -162,7 +164,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                                       ? [
                                           BoxShadow(
                                             color: AppColors.primary
-                                                .withOpacity(0.25),
+                                                .withValues(alpha: 0.25),
                                             blurRadius: 8,
                                             offset: const Offset(0, 3),
                                           ),
@@ -178,7 +180,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                                         fontSize: 11,
                                         fontWeight: FontWeight.w500,
                                         color: isSelected
-                                            ? Colors.white.withOpacity(0.9)
+                                            ? Colors.white.withValues(alpha: 0.9)
                                             : AppColors.textSecondary,
                                       ),
                                     ),
@@ -271,7 +273,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                 color: AppColors.background,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 10,
                     offset: const Offset(0, -3),
                   ),
@@ -289,7 +291,7 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.primary.withOpacity(0.5),
+                            color: AppColors.primary.withValues(alpha: 0.5),
                             width: 1.2,
                           ),
                         ),
@@ -347,35 +349,42 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        final user = FirebaseManager().auth.currentUser;
-                        await FirebaseManager().firestore.createAppointment(
-                          customerId: user?.uid ?? 'guest_client',
-                          customerName: user?.name ?? 'Valued Client',
-                          serviceTitle: widget.lookName,
-                          category: 'Hair Cut & Styling',
-                          stylistName: widget.stylist.name,
-                          stylistRole: widget.stylist.role,
-                          stylistAvatar: widget.stylist.avatarUrl,
-                          appointmentDate: DateTime.now().add(Duration(days: _selectedDayIndex)),
-                          timeSlot: _selectedSlot,
-                          totalPrice: widget.finalPrice,
-                          salonBranch: 'VIORA • Model Town Sanctuary',
-                        );
+                      onPressed: _isSubmitting ? null : () async {
+                        setState(() => _isSubmitting = true);
+                        try {
+                          final user = FirebaseManager().auth.currentUser;
+                          final branchName = widget.selectedBranchName ?? 'VIORA • Khar West';
+                          await FirebaseManager().firestore.createAppointment(
+                            customerId: user?.uid ?? 'guest_client',
+                            customerName: user?.name ?? 'Valued Client',
+                            serviceTitle: widget.lookName,
+                            category: 'Bespoke Experience',
+                            stylistName: widget.stylist.name,
+                            stylistRole: widget.stylist.role,
+                            stylistAvatar: widget.stylist.imagePath,
+                            appointmentDate: DateTime.now().add(Duration(days: _selectedDayIndex)),
+                            timeSlot: _selectedSlot,
+                            totalPrice: widget.finalPrice,
+                            salonBranch: branchName,
+                          );
 
-                        if (!context.mounted) return;
+                          if (!context.mounted) return;
 
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => BookingConfirmedScreen(
-                              stylist: widget.stylist,
-                              lookName: widget.lookName,
-                              finalPrice: widget.finalPrice,
-                              selectedDateString: dateDisplayString,
-                              selectedTimeString: _selectedSlot,
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => BookingConfirmedScreen(
+                                stylist: widget.stylist,
+                                lookName: widget.lookName,
+                                finalPrice: widget.finalPrice,
+                                selectedDateString: dateDisplayString,
+                                selectedTimeString: _selectedSlot,
+                                selectedBranchName: branchName,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } finally {
+                          if (mounted) setState(() => _isSubmitting = false);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
@@ -385,8 +394,8 @@ class _DateTimeSelectionScreenState extends State<DateTimeSelectionScreen> {
                           borderRadius: BorderRadius.circular(26),
                         ),
                       ),
-                      child: const Text(
-                        'BOOK APPOINTMENT',
+                      child: Text(
+                        _isSubmitting ? 'RESERVING...' : 'CONFIRM RESERVATION',
                         style: TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.w700,

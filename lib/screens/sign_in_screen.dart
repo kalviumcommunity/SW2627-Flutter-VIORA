@@ -5,7 +5,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/social_button.dart';
 import '../core/firebase/firebase_manager.dart';
-import 'home_screen.dart';
+import '../services/api_client.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -15,73 +15,174 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final TextEditingController _emailController =
-      TextEditingController(text: 'sarah.kothari@gmail.com');
-  final TextEditingController _passwordController =
-      TextEditingController(text: 'secretpassword123');
-
+  bool _isSignUp = false;
+  bool _isLoading = false;
   bool _obscurePassword = true;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(text: 'sarah.kothari@gmail.com');
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController(text: 'secretpassword123');
+
+  String? _nameError;
+  String? _emailError;
+  String? _passwordError;
+  String? _generalError;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _onSignIn() async {
+  bool _validateInputs() {
+    setState(() {
+      _nameError = null;
+      _emailError = null;
+      _passwordError = null;
+      _generalError = null;
+    });
+
+    bool isValid = true;
     final email = _emailController.text.trim();
     final password = _passwordController.text;
-    if (email.isNotEmpty && password.isNotEmpty) {
-      await FirebaseManager().auth.signInWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
+
+    if (_isSignUp) {
+      final name = _nameController.text.trim();
+      if (name.isEmpty) {
+        _nameError = 'Please enter your full name';
+        isValid = false;
+      }
     }
-    if (!mounted) return;
-    _navigateToNext();
+
+    if (email.isEmpty) {
+      _emailError = 'Please enter your email address';
+      isValid = false;
+    } else {
+      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+      if (!emailRegex.hasMatch(email)) {
+        _emailError = 'Please enter a valid email address';
+        isValid = false;
+      }
+    }
+
+    if (password.isEmpty) {
+      _passwordError = 'Please enter your password';
+      isValid = false;
+    } else if (password.length < 6) {
+      _passwordError = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+
+    setState(() {});
+    return isValid;
   }
 
-  void _onCreateAccount() async {
+  Future<void> _handleSubmit() async {
+    if (_isLoading) return;
+    if (!_validateInputs()) return;
+
+    setState(() {
+      _isLoading = true;
+      _generalError = null;
+    });
+
     final email = _emailController.text.trim();
     final password = _passwordController.text;
-    if (email.isNotEmpty && password.isNotEmpty) {
-      await FirebaseManager().auth.createUserWithEmailAndPassword(
-            name: email.split('@').first.capitalize(),
-            email: email,
-            password: password,
-          );
+
+    try {
+      if (_isSignUp) {
+        final name = _nameController.text.trim();
+        final phone = _phoneController.text.trim();
+        await FirebaseManager().auth.createUserWithEmailAndPassword(
+          name: name,
+          email: email,
+          password: password,
+          phone: phone.isNotEmpty ? phone : null,
+        );
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Registration successful! Welcome to VIORA Atelier.'),
+            backgroundColor: Color(0xFF2E7D32),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        await FirebaseManager().auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      }
+
+      if (!mounted) return;
+      _navigateToNext();
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _generalError = e.message;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message),
+          backgroundColor: const Color(0xFFC62828),
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      const msg = 'Connection failed. Please ensure the backend server is running and accessible.';
+      setState(() {
+        _generalError = msg;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(msg),
+          backgroundColor: Color(0xFFC62828),
+          duration: Duration(seconds: 4),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
-    if (!mounted) return;
-    _navigateToNext();
   }
 
   void _onGoogleSignIn() async {
-    await FirebaseManager().auth.signInWithGoogle();
-    if (!mounted) return;
-    _navigateToNext();
+    setState(() => _isLoading = true);
+    try {
+      await FirebaseManager().auth.signInWithGoogle();
+      if (!mounted) return;
+      _navigateToNext();
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   void _onAppleSignIn() async {
-    await FirebaseManager().auth.signInWithApple();
-    if (!mounted) return;
+    setState(() => _isLoading = true);
+    try {
+      await FirebaseManager().auth.signInWithApple();
+      if (!mounted) return;
+      _navigateToNext();
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  void _onContinueAsGuest() {
+    FirebaseManager().auth.continueAsGuest();
     _navigateToNext();
   }
 
   void _navigateToNext() {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const HomeScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 350),
-      ),
-    );
+    Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
   }
 
   void _onForgotPassword() {
@@ -89,10 +190,10 @@ class _SignInScreenState extends State<SignInScreen> {
       const SnackBar(
         backgroundColor: AppColors.textPrimary,
         content: Text(
-          'Password reset link requested.',
+          'Password reset link requested. Please check your email.',
           style: TextStyle(color: Colors.white),
         ),
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: 2),
       ),
     );
   }
@@ -108,30 +209,33 @@ class _SignInScreenState extends State<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 12),
-              // Optional back button if navigated from Onboarding
               Align(
                 alignment: Alignment.centerLeft,
-                child: Navigator.of(context).canPop()
-                    ? GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        behavior: HitTestBehavior.opaque,
-                        child: Container(
-                          width: 38,
-                          height: 38,
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.arrow_back,
-                            size: 18,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                      )
-                    : const SizedBox(height: 38),
+                child: GestureDetector(
+                  onTap: () {
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    } else {
+                      Navigator.of(context).pushReplacementNamed('/onboarding');
+                    }
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 18,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -148,7 +252,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
               // Brand Subtitle
               Text(
-                'EXCLUSIVE SALON MEMBER ACCESS',
+                _isSignUp ? 'JOIN THE VIORA ATELIER' : 'EXCLUSIVE SALON MEMBER ACCESS',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.uppercaseSubtitle(
                   fontSize: 11.5,
@@ -156,7 +260,50 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
 
-              const SizedBox(height: 44),
+              const SizedBox(height: 12),
+
+              const SizedBox(height: 24),
+
+              // General error banner if present
+              if (_generalError != null) ...[
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFDE8E7),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: const Color(0xFFF5C6CB)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.error_outline, color: Color(0xFFD9534F), size: 20),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          _generalError!,
+                          style: const TextStyle(
+                            color: Color(0xFF721C24),
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 18),
+              ],
+
+              // Sign Up Name Field
+              if (_isSignUp) ...[
+                AppTextField(
+                  label: 'FULL NAME',
+                  controller: _nameController,
+                  hintText: 'Enter your full name',
+                  errorText: _nameError,
+                ),
+                const SizedBox(height: 16),
+              ],
 
               // Email Address Field
               AppTextField(
@@ -164,9 +311,20 @@ class _SignInScreenState extends State<SignInScreen> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 hintText: 'Enter your email',
+                errorText: _emailError,
               ),
 
-              const SizedBox(height: 20),
+              if (_isSignUp) ...[
+                const SizedBox(height: 16),
+                AppTextField(
+                  label: 'PHONE NUMBER (OPTIONAL)',
+                  controller: _phoneController,
+                  keyboardType: TextInputType.phone,
+                  hintText: '+91 98200 12345',
+                ),
+              ],
+
+              const SizedBox(height: 16),
 
               // Password Field
               AppTextField(
@@ -174,11 +332,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 textInputAction: TextInputAction.done,
+                hintText: 'Minimum 6 characters',
+                errorText: _passwordError,
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
+                    _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                     color: const Color(0xFF6E6A65),
                     size: 20,
                   ),
@@ -190,48 +348,90 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
 
-              const SizedBox(height: 10),
-
-              // Forgot Password link
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: _onForgotPassword,
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Text(
-                      'Forgot Password?',
-                      style: AppTextStyles.linkText(underline: false).copyWith(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w500,
+              if (!_isSignUp) ...[
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: _onForgotPassword,
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        'Forgot Password?',
+                        style: AppTextStyles.linkText(underline: false).copyWith(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                    ),
+                  ),
+                ),
+              ],
+
+              const SizedBox(height: 28),
+
+              // Main Action Buttons matching login-signup.png
+              if (!_isSignUp) ...[
+                AppButton(
+                  text: 'SIGN IN',
+                  onPressed: _handleSubmit,
+                  isLoading: _isLoading,
+                  variant: AppButtonVariant.primary,
+                ),
+                const SizedBox(height: 14),
+                AppButton(
+                  text: 'CREATE ACCOUNT',
+                  onPressed: () {
+                    setState(() {
+                      _isSignUp = true;
+                      _generalError = null;
+                    });
+                  },
+                  variant: AppButtonVariant.outlined,
+                ),
+              ] else ...[
+                AppButton(
+                  text: 'CREATE ACCOUNT',
+                  onPressed: _handleSubmit,
+                  isLoading: _isLoading,
+                  variant: AppButtonVariant.primary,
+                ),
+                const SizedBox(height: 14),
+                AppButton(
+                  text: 'ALREADY A MEMBER? SIGN IN',
+                  onPressed: () {
+                    setState(() {
+                      _isSignUp = false;
+                      _generalError = null;
+                    });
+                  },
+                  variant: AppButtonVariant.outlined,
+                ),
+              ],
+
+              const SizedBox(height: 16),
+
+              // Guest Access Button
+              GestureDetector(
+                onTap: _onContinueAsGuest,
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    'Continue as Guest',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
-              // Sign In Button
-              AppButton(
-                text: 'SIGN IN',
-                onPressed: _onSignIn,
-                variant: AppButtonVariant.primary,
-              ),
-
-              const SizedBox(height: 16),
-
-              // Create Account Button
-              AppButton(
-                text: 'CREATE ACCOUNT',
-                onPressed: _onCreateAccount,
-                variant: AppButtonVariant.outlined,
-              ),
-
-              const SizedBox(height: 36),
-
-              // Or continue with text
               Text(
                 'Or continue with',
                 style: TextStyle(
@@ -241,7 +441,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
 
-              const SizedBox(height: 22),
+              const SizedBox(height: 18),
 
               // Social Sign-In buttons
               Row(

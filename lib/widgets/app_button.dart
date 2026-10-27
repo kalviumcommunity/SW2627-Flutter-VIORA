@@ -10,6 +10,7 @@ class AppButton extends StatelessWidget {
   final AppButtonVariant variant;
   final double height;
   final double? width;
+  final bool isLoading;
 
   const AppButton({
     super.key,
@@ -18,6 +19,7 @@ class AppButton extends StatelessWidget {
     this.variant = AppButtonVariant.primary,
     this.height = 54,
     this.width,
+    this.isLoading = false,
   });
 
   @override
@@ -28,10 +30,11 @@ class AppButton extends StatelessWidget {
       width: width ?? double.infinity,
       height: height,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: isPrimary ? AppColors.primary : AppColors.surface,
           foregroundColor: isPrimary ? Colors.white : AppColors.textPrimary,
+          disabledBackgroundColor: isPrimary ? AppColors.primary.withValues(alpha: 0.6) : AppColors.surface,
           elevation: 0,
           shadowColor: Colors.transparent,
           side: isPrimary
@@ -42,12 +45,21 @@ class AppButton extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24),
         ),
-        child: Text(
-          text,
-          style: AppTextStyles.buttonText(
-            color: isPrimary ? Colors.white : AppColors.textPrimary,
-          ),
-        ),
+        child: isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text(
+                text,
+                style: AppTextStyles.buttonText(
+                  color: isPrimary ? Colors.white : AppColors.textPrimary,
+                ),
+              ),
       ),
     );
   }

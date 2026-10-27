@@ -11,6 +11,7 @@ class AppTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final ValueChanged<String>? onChanged;
+  final String? errorText;
 
   const AppTextField({
     super.key,
@@ -22,10 +23,13 @@ class AppTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
     this.onChanged,
+    this.errorText,
   });
 
   @override
   Widget build(BuildContext context) {
+    final hasError = errorText != null && errorText!.isNotEmpty;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,8 +43,8 @@ class AppTextField extends StatelessWidget {
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: AppColors.border,
-              width: 1.2,
+              color: hasError ? const Color(0xFFD9534F) : AppColors.border,
+              width: hasError ? 1.5 : 1.2,
             ),
           ),
           child: TextField(
@@ -65,6 +69,20 @@ class AppTextField extends StatelessWidget {
             ),
           ),
         ),
+        if (hasError) ...[
+          const SizedBox(height: 5),
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              errorText!,
+              style: const TextStyle(
+                color: Color(0xFFD9534F),
+                fontSize: 11.5,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

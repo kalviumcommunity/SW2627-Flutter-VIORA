@@ -88,4 +88,20 @@ class AppTextStyles {
     color: AppColors.textPrimary,
     letterSpacing: 0.2,
   );
+
+  /// Caption / small label text
+  static TextStyle caption = GoogleFonts.inter(
+    fontSize: 11,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
+  );
+
+  /// Compatibility getters
+  static TextStyle get labelStyle => uppercaseSubtitle();
+  static TextStyle get h1 => editorialTitle(fontSize: 32);
+  static TextStyle get h2 => editorialTitle(fontSize: 24);
+  static TextStyle get h3 => editorialTitle(fontSize: 20);
+  static TextStyle get priceStyle => GoogleFonts.cormorantGaramond(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primary);
+  static TextStyle get bodyMedium => bodyText;
+  static TextStyle get bodySmall => caption;
 }

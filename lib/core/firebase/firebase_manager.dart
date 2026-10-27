@@ -15,9 +15,9 @@ class FirebaseManager {
   bool _initialized = false;
   bool _isLiveCloud = false;
 
-  late final AuthService auth;
-  late final FirestoreService firestore;
-  late final StorageService storage;
+  final AuthService auth = AuthService();
+  final FirestoreService firestore = FirestoreService();
+  final StorageService storage = StorageService();
 
   bool get isInitialized => _initialized;
   bool get isLiveCloud => _isLiveCloud;
@@ -28,9 +28,6 @@ class FirebaseManager {
 
     debugPrint('🔥 [FirebaseManager] Initializing Firebase services for Web/Mobile...');
 
-    auth = AuthService();
-    firestore = FirestoreService();
-    storage = StorageService();
 
     try {
       // If project has configured live keys in DefaultFirebaseOptions

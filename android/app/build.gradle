@@ -17,7 +17,7 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '
 
 android {
     namespace "com.viora.salon"
-    compileSdk 34
+    compileSdk 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -35,10 +35,26 @@ android {
 
     defaultConfig {
         applicationId "com.viora.salon"
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        ndk {
+            if (project.hasProperty('target-platform')) {
+                def platforms = project.property('target-platform').split(',')
+                def abis = platforms.collect { platform ->
+                    if (platform == 'android-arm') return 'armeabi-v7a'
+                    if (platform == 'android-arm64') return 'arm64-v8a'
+                    if (platform == 'android-x64') return 'x86_64'
+                    if (platform == 'android-x86') return 'x86'
+                    return platform
+                }
+                abiFilters abis as String[]
+            } else {
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+            }
+        }
     }
 
     buildTypes {

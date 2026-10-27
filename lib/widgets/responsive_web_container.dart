@@ -14,7 +14,7 @@ class ResponsiveWebContainer extends StatelessWidget {
     super.key,
     required this.child,
     this.maxWidth = 480.0,
-    this.showWebHeader = true,
+    this.showWebHeader = false,
   });
 
   @override
@@ -38,20 +38,20 @@ class ResponsiveWebContainer extends StatelessWidget {
             borderRadius: BorderRadius.circular(32),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.55),
+                color: Colors.black.withValues(alpha: 0.55),
                 blurRadius: 36,
                 spreadRadius: 4,
                 offset: const Offset(0, 16),
               ),
               BoxShadow(
-                color: AppColors.gold.withOpacity(0.15),
+                color: AppColors.primary.withValues(alpha: 0.15),
                 blurRadius: 18,
                 spreadRadius: 0,
                 offset: const Offset(0, 4),
               ),
             ],
             border: Border.all(
-              color: Colors.white.withOpacity(0.12),
+              color: Colors.white.withValues(alpha: 0.12),
               width: 1.5,
             ),
           ),
@@ -74,11 +74,11 @@ class ResponsiveWebContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         border: const Border(
-          bottom: BorderSide(color: AppColors.cardBorder, width: 0.8),
+          bottom: BorderSide(color: AppColors.border, width: 0.8),
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.between,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
@@ -86,7 +86,7 @@ class ResponsiveWebContainer extends StatelessWidget {
                 width: 18,
                 height: 18,
                 decoration: BoxDecoration(
-                  color: AppColors.gold,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 alignment: Alignment.center,
@@ -124,7 +124,7 @@ class ResponsiveWebContainer extends StatelessWidget {
               Text(
                 user != null ? '${user.tierName} • ${user.name}' : 'Guest Session',
                 style: TextStyle(
-                  color: AppColors.secondaryText,
+                  color: AppColors.textSecondary,
                   fontSize: 9.5,
                   fontWeight: FontWeight.w600,
                 ),

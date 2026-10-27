@@ -28,4 +28,9 @@ class AppColors {
 
   /// Inactive pagination dots
   static const Color dotInactive = Color(0xFFE8E2D9);
+
+  /// Style aliases
+  static const Color gold = primary;
+  static const Color bronze = primary;
+  static const Color cardBorder = border;
 }

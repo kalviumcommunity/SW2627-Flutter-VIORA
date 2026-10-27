@@ -9,14 +9,16 @@ class BookingConfirmedScreen extends StatelessWidget {
   final int finalPrice;
   final String selectedDateString;
   final String selectedTimeString;
+  final String selectedBranchName;
 
   const BookingConfirmedScreen({
     super.key,
     required this.stylist,
-    this.lookName = 'Brown Ombre Cat Eye Nails',
-    this.finalPrice = 2600,
-    this.selectedDateString = 'Wed, 17 Oct',
-    this.selectedTimeString = '11:30 AM',
+    this.lookName = 'Signature Styling',
+    this.finalPrice = 140,
+    this.selectedDateString = 'Tomorrow',
+    this.selectedTimeString = '11:00 AM',
+    this.selectedBranchName = 'VIORA · Flagship',
   });
 
   @override
@@ -24,42 +26,42 @@ class BookingConfirmedScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
             children: [
-              const Spacer(flex: 1),
+              const SizedBox(height: 16),
 
-              // Success Checkmark Badge
+              // Status Icon Badge
               Container(
-                width: 80,
-                height: 80,
+                width: 76,
+                height: 76,
                 decoration: const BoxDecoration(
                   color: Color(0xFFF7EFE8),
                   shape: BoxShape.circle,
                 ),
                 alignment: Alignment.center,
                 child: const Icon(
-                  Icons.check_rounded,
+                  Icons.bookmark_added_outlined,
                   color: AppColors.primary,
-                  size: 38,
+                  size: 36,
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
               // Title & Subtitle
               Text(
-                'Booking Confirmed!',
+                'Reservation Requested',
                 style: AppTextStyles.editorialTitle(
                   fontSize: 28,
                   fontWeight: FontWeight.w400,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               const Text(
-                'Your luxury beauty experience is scheduled.',
+                'Your luxury beauty session is held in session mode.',
                 style: TextStyle(
                   fontSize: 13.5,
                   color: AppColors.textSecondary,
@@ -67,9 +69,62 @@ class BookingConfirmedScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 20),
 
-              // Booking Details Card
+              // Mandated Backend Sync Notice Banner
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFBF6F0),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.35),
+                    width: 1.2,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.info_outline,
+                          size: 18,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'Session Reservation — Backend Appointment Sync Pending Sprint 3',
+                            style: const TextStyle(
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.3,
+                              color: AppColors.textPrimary,
+                              height: 1.35,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'This reservation is held in prototype/session mode and has not been confirmed by the backend database. Permanent MongoDB persistence and slot conflict prevention are scheduled for Sprint 3.',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        color: AppColors.textSecondary,
+                        height: 1.45,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Booking Details Card (Preserves all selected details, no fake database IDs)
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(22),
@@ -79,7 +134,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                   border: Border.all(color: AppColors.border, width: 1.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
+                      color: Colors.black.withValues(alpha: 0.04),
                       blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),
@@ -89,26 +144,17 @@ class BookingConfirmedScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Section 1: Salon Branch
-                    const Text(
-                      'SALON BRANCH',
-                      style: TextStyle(
-                        fontSize: 10.5,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.2,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
                     Text(
-                      'Viora — Khar West',
-                      style: AppTextStyles.editorialTitle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                      selectedBranchName,
+                      style: const TextStyle(
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 4),
                     const Text(
-                      'Plot 42, Khar Pali Road, Khar West, Mumbai',
+                      'Flagship Salon Location',
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -129,7 +175,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: AppColors.primary.withOpacity(0.4),
+                              color: AppColors.primary.withValues(alpha: 0.4),
                               width: 1.2,
                             ),
                           ),
@@ -217,7 +263,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
 
-              const Spacer(flex: 2),
+              const SizedBox(height: 24),
 
               // Action Buttons
               SizedBox(
@@ -229,7 +275,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                       const SnackBar(
                         backgroundColor: AppColors.primary,
                         content: Text(
-                          'Appointment added to your device calendar!',
+                          'Reservation saved to session calendar.',
                         ),
                         duration: Duration(seconds: 2),
                       ),
@@ -286,7 +332,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
             ],
           ),
         ),

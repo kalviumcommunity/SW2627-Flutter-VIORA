@@ -1,3 +1,4 @@
+import 'branch_service.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/hair_service.dart';
@@ -45,7 +46,7 @@ class AppointmentDocument {
     required this.timeSlot,
     required this.totalPrice,
     required this.salonBranch,
-    this.status = 'CONFIRMED',
+    this.status = 'SESSION HOLD',
     required this.createdAt,
   });
 
@@ -111,36 +112,44 @@ class FirestoreService {
       List.unmodifiable(_appointments);
 
   Future<void> init() async {
-    // Seed pre-existing sample appointment
-    _appointments.add(
-      AppointmentDocument(
-        id: 'APT-VIORA-8921',
-        customerId: 'viora_member_001',
-        customerName: 'Agnes Vance',
-        serviceTitle: 'Long Layered Cut',
-        category: 'Hair Cut & Styling',
-        texture: 'Straight',
-        length: 'Long',
-        fringe: 'No Bangs',
-        finish: 'Signature Blowout',
-        careTreatment: 'K18 Molecular Treatment',
-        stylistName: 'Christian Dior',
-        stylistRole: 'Master Stylist',
-        stylistAvatar: 'assets/images/avatar_christian_dior.png',
-        appointmentDate: DateTime.now().add(const Duration(days: 2)),
-        timeSlot: '02:00 PM',
-        totalPrice: 3800,
-        salonBranch: 'VIORA • Model Town Sanctuary',
-        status: 'CONFIRMED',
-        createdAt: DateTime.now().subtract(const Duration(hours: 3)),
-      ),
-    );
-
     _appointmentsStreamController.add(_appointments);
-    debugPrint('🗄️ [FirestoreService] Loaded ${_appointments.length} initial appointment records');
+    debugPrint('💎 [FirestoreService] Initialized appointments stream (${_appointments.length} active)');
   }
 
   /// Create and persist a new Appointment in Firestore
+  /// Cancels an existing appointment by ID
+  Future<bool> cancelAppointment(String appointmentId) async {
+    final index = _appointments.indexWhere((a) => a.id == appointmentId);
+    if (index != -1) {
+      final old = _appointments[index];
+      _appointments[index] = AppointmentDocument(
+        id: old.id,
+        customerId: old.customerId,
+        customerName: old.customerName,
+        serviceTitle: old.serviceTitle,
+        category: old.category,
+        texture: old.texture,
+        length: old.length,
+        fringe: old.fringe,
+        finish: old.finish,
+        careTreatment: old.careTreatment,
+        stylistName: old.stylistName,
+        stylistRole: old.stylistRole,
+        stylistAvatar: old.stylistAvatar,
+        appointmentDate: old.appointmentDate,
+        timeSlot: old.timeSlot,
+        totalPrice: old.totalPrice,
+        salonBranch: old.salonBranch,
+        status: 'CANCELLED',
+        createdAt: old.createdAt,
+      );
+      _appointmentsStreamController.add(List.unmodifiable(_appointments));
+      debugPrint('🗑️ [FirestoreService] Cancelled Appointment: $appointmentId');
+      return true;
+    }
+    return false;
+  }
+
   Future<AppointmentDocument> createAppointment({
     required String customerId,
     required String customerName,
@@ -179,7 +188,7 @@ class FirestoreService {
       timeSlot: timeSlot,
       totalPrice: totalPrice,
       salonBranch: salonBranch,
-      status: 'CONFIRMED',
+      status: 'SESSION HOLD',
       createdAt: DateTime.now(),
     );
 
@@ -191,7 +200,7 @@ class FirestoreService {
 
   /// Real-time stream of available haircuts
   Stream<List<HairService>> get haircutsStream async* {
-    yield HairService.sampleHairCuts;
+    yield HairService.allHairCuts;
   }
 
   /// Real-time stream of senior stylists
@@ -201,12 +210,12 @@ class FirestoreService {
 
   /// Real-time stream of nail services
   Stream<List<NailService>> get nailServicesStream async* {
-    yield NailService.sampleNailServices;
+    yield NailService.allNailServices;
   }
 
   /// Real-time stream of salon branches
   Stream<List<SalonBranch>> get branchesStream async* {
-    yield SalonBranch.sampleBranches;
+    yield await BranchService().getBranches();
   }
 
   void dispose() {
