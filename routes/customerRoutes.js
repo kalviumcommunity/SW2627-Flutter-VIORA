@@ -36,8 +36,8 @@ router.route('/history')
 router.route('/history/:appointmentId/rebook')
   .get(protect, getRebookContext);
 
-// Customer Beauty Quiz & Recommendations endpoints (Protected - Day 4 Person 2)
-router.get('/quiz/questions', protect, getQuizQuestions);
+// Customer Beauty Quiz & Recommendations endpoints (Day 4 Person 2)
+router.get('/quiz/questions', getQuizQuestions);
 
 router.route('/quiz')
   .get(protect, getQuizResult)
