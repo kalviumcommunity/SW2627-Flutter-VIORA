@@ -1,4 +1,5 @@
-﻿import 'customer_main_scaffold.dart';
+import 'viora_search_screen.dart';
+import 'customer_main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'subcategories_screen.dart';
 import '../core/theme/app_colors.dart';
@@ -447,33 +448,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const SizedBox(height: 16),
 
-              // 3. Search Bar
-              Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.border, width: 1.2),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.search,
-                      size: 20,
-                      color: AppColors.textSecondary,
+              // 3. Search Bar (Interactive Navigation to VioraSearchScreen)
+              GestureDetector(
+                key: const Key('home_search_bar_button'),
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const VioraSearchScreen(),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        'Search services, stylists, or branches',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textMuted,
+                  );
+                },
+                child: Container(
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppColors.border, width: 1.2),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.search,
+                        size: 20,
+                        color: AppColors.textSecondary,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Search services, stylists, or branches',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppColors.textMuted,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 

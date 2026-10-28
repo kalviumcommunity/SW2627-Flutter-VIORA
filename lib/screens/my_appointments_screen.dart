@@ -464,12 +464,15 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
+                  key: Key('rebook_button_${item['service']}'),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => BranchesListScreen(
                           selectedServiceTitle: item['service']!,
                           selectedPrice: int.tryParse(item['price']!.replaceAll(RegExp(r'[^0-9]'), '')) ?? 140,
+                          preselectedBranchName: item['branch'],
+                          preferredStylistName: item['stylist'],
                         ),
                       ),
                     );

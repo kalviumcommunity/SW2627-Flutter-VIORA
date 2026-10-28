@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+import 'screens/viora_search_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'core/theme/app_theme.dart';
@@ -88,6 +89,7 @@ class VioraSalonApp extends StatelessWidget {
 
         // Customer Main Flow
         '/home': (context) => const CustomerMainScaffold(),
+        '/search': (context) => const VioraSearchScreen(),
         '/services': (context) => const ServicesCategoriesScreen(),
         '/subcategories': (context) => const SubcategoriesScreen(),
         '/service_details': (context) => const ServiceDetailsScreen(),
