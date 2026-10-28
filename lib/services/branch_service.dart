@@ -29,15 +29,51 @@ class BranchService {
             imageAsset = 'assets/images/salon_colaba.png';
           }
 
+          final rating = (item['rating'] is num)
+              ? (item['rating'] as num).toDouble()
+              : (item['avgRating'] is num)
+                  ? (item['avgRating'] as num).toDouble()
+                  : 4.8;
+
+          final serviceCount = (item['serviceCount'] is num)
+              ? (item['serviceCount'] as num).toInt()
+              : 42;
+
+          final distanceStr = item['distance']?.toString() ?? '1.2 km';
+
+          final latitude = (item['latitude'] is num)
+              ? (item['latitude'] as num).toDouble()
+              : null;
+
+          final longitude = (item['longitude'] is num)
+              ? (item['longitude'] as num).toDouble()
+              : null;
+
+          final servicesList = (item['services'] is List)
+              ? (item['services'] as List).map((s) => s.toString()).toList()
+              : const [
+                  'Hair',
+                  'Nails',
+                  'Skin',
+                  'Makeup',
+                  'Beauty',
+                  'Consultation',
+                  'Balayage',
+                  'Facial'
+                ];
+
           return SalonBranch(
             id: id,
             name: name,
-            distance: '1.2 km',
-            rating: 4.9,
-            serviceCount: 48,
+            distance: distanceStr,
+            rating: rating,
+            serviceCount: serviceCount,
             address: address,
             openingHours: 'Open Today: $openingTime - $closingTime',
             imageAsset: imageAsset,
+            latitude: latitude,
+            longitude: longitude,
+            services: servicesList,
           );
         }).toList();
 

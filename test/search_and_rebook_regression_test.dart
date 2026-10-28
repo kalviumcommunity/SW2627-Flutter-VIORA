@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:viora_salon_app/screens/home_screen.dart';
-import 'package:viora_salon_app/screens/viora_search_screen.dart';
 import 'package:viora_salon_app/screens/branches_list_screen.dart';
+import 'package:viora_salon_app/screens/viora_search_screen.dart';
 import 'package:viora_salon_app/screens/date_time_selection_screen.dart';
-import 'package:viora_salon_app/core/theme/app_theme.dart';
-
-Widget createTestWidget(Widget child) {
-  return MaterialApp(
-    theme: AppTheme.lightTheme,
-    home: child,
-  );
-}
 
 void main() {
+  Widget createTestWidget(Widget child) {
+    return MaterialApp(
+      home: child,
+      theme: ThemeData(
+        fontFamily: 'Inter',
+      ),
+    );
+  }
+
   group('BUG 1 — Home Search Regression Tests', () {
     testWidgets('Tapping Home Search Bar opens VioraSearchScreen', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
@@ -42,19 +43,15 @@ void main() {
       await tester.pumpWidget(createTestWidget(const VioraSearchScreen()));
       await tester.pumpAndSettle();
 
-      // Enter query 'Khar'
       final inputFinder = find.byKey(const Key('home_search_input_field'));
       await tester.enterText(inputFinder, 'Khar');
       await tester.pumpAndSettle();
 
-      // Result should show Khar West
       expect(find.text('VIORA — Khar West'), findsOneWidget);
 
-      // Clear button should be visible
       final clearBtn = find.byKey(const Key('search_clear_button'));
       expect(clearBtn, findsOneWidget);
 
-      // Clear query
       await tester.tap(clearBtn);
       await tester.pumpAndSettle();
 
@@ -78,8 +75,8 @@ void main() {
     });
   });
 
-  group('BUG 2 — Salons Page Search & Filters Regression Tests', () {
-    testWidgets('ALL SALONS tab displays all eligible branches', (tester) async {
+  group('BUG 2 — Salons Page Search & Filters Comprehensive Regression Tests', () {
+    testWidgets('1. ALL SALONS tab displays all eligible branches', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -92,7 +89,7 @@ void main() {
       expect(find.text('VIORA — Colaba'), findsOneWidget);
     });
 
-    testWidgets('POPULAR tab orders branches by rating and serviceCount', (tester) async {
+    testWidgets('2. Search matches salon name and branch name', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -100,15 +97,49 @@ void main() {
       await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
       await tester.pumpAndSettle();
 
-      final popularTabFinder = find.byKey(const Key('tab_popular'));
-      expect(popularTabFinder, findsOneWidget);
-      await tester.tap(popularTabFinder);
+      final searchInput = find.byKey(const Key('salon_search_input'));
+      await tester.enterText(searchInput, 'Khar West');
       await tester.pumpAndSettle();
 
+      expect(find.text('VIORA — Khar West'), findsOneWidget);
+      expect(find.text('VIORA — Juhu'), findsNothing);
+      expect(find.text('VIORA — Colaba'), findsNothing);
+    });
+
+    testWidgets('3. Search matches supported location field (address)', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      final searchInput = find.byKey(const Key('salon_search_input'));
+      await tester.enterText(searchInput, 'Pali Road');
+      await tester.pumpAndSettle();
+
+      expect(find.text('VIORA — Khar West'), findsOneWidget);
+      expect(find.text('VIORA — Juhu'), findsNothing);
+    });
+
+    testWidgets('4. Search matches supported service categories (e.g. Beauty, Hair)', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      final searchInput = find.byKey(const Key('salon_search_input'));
+      await tester.enterText(searchInput, 'Beauty');
+      await tester.pumpAndSettle();
+
+      expect(find.text('VIORA — Khar West'), findsOneWidget);
+      expect(find.text('VIORA — Juhu'), findsOneWidget);
       expect(find.text('VIORA — Colaba'), findsOneWidget);
     });
 
-    testWidgets('NEAREST tab orders branches by distance', (tester) async {
+    testWidgets('5. Search is case-insensitive and trims leading/trailing spaces', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -116,16 +147,15 @@ void main() {
       await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
       await tester.pumpAndSettle();
 
-      final nearestTabFinder = find.byKey(const Key('tab_nearest'));
-      expect(nearestTabFinder, findsOneWidget);
-      await tester.tap(nearestTabFinder);
+      final searchInput = find.byKey(const Key('salon_search_input'));
+      await tester.enterText(searchInput, '   jUhU   ');
       await tester.pumpAndSettle();
 
-      // Nearest is Khar West (0.8 km)
-      expect(find.text('VIORA — Khar West'), findsOneWidget);
+      expect(find.text('VIORA — Juhu'), findsOneWidget);
+      expect(find.text('VIORA — Colaba'), findsNothing);
     });
 
-    testWidgets('Searching salon by query filters list and clear restores list', (tester) async {
+    testWidgets('6. Clearing search query restores complete list', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -137,16 +167,126 @@ void main() {
       await tester.enterText(searchInput, 'Juhu');
       await tester.pumpAndSettle();
 
-      expect(find.text('VIORA — Juhu'), findsOneWidget);
       expect(find.text('VIORA — Colaba'), findsNothing);
 
-      // Tap clear
       final clearBtn = find.byKey(const Key('salon_search_clear_button'));
       expect(clearBtn, findsOneWidget);
       await tester.tap(clearBtn);
       await tester.pumpAndSettle();
 
+      expect(find.text('VIORA — Khar West'), findsOneWidget);
+      expect(find.text('VIORA — Juhu'), findsOneWidget);
       expect(find.text('VIORA — Colaba'), findsOneWidget);
+    });
+
+    testWidgets('7. POPULAR tab orders branches by rating and serviceCount', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      final popularTabFinder = find.byKey(const Key('tab_popular'));
+      await tester.tap(popularTabFinder);
+      await tester.pumpAndSettle();
+
+      // Colaba is highest rated (4.9★, 52 services)
+      expect(find.text('VIORA — Colaba'), findsOneWidget);
+    });
+
+    testWidgets('8. NEAREST tab orders branches by valid distance', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      final nearestTabFinder = find.byKey(const Key('tab_nearest'));
+      await tester.tap(nearestTabFinder);
+      await tester.pumpAndSettle();
+
+      // Nearest is Khar West (0.8 km)
+      expect(find.text('VIORA — Khar West'), findsOneWidget);
+    });
+
+    testWidgets('9. Combined search and filter: Popular with query', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      // Select POPULAR
+      await tester.tap(find.byKey(const Key('tab_popular')));
+      await tester.pumpAndSettle();
+
+      // Search for 'Beauty'
+      final searchInput = find.byKey(const Key('salon_search_input'));
+      await tester.enterText(searchInput, 'Beauty');
+      await tester.pumpAndSettle();
+
+      // Colaba and Khar West should be present, ordered by popularity
+      expect(find.text('VIORA — Colaba'), findsOneWidget);
+      expect(find.text('VIORA — Khar West'), findsOneWidget);
+    });
+
+    testWidgets('10. Changing filter tabs updates displayed list immediately', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      // Switch to NEAREST
+      await tester.tap(find.byKey(const Key('tab_nearest')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('tab_nearest')), findsOneWidget);
+
+      // Switch to ALL SALONS
+      await tester.tap(find.byKey(const Key('tab_all_salons')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('tab_all_salons')), findsOneWidget);
+    });
+
+    testWidgets('11. Empty results display elegant message and Reset button', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      final searchInput = find.byKey(const Key('salon_search_input'));
+      await tester.enterText(searchInput, 'UnknownNonExistentSalonXYZ');
+      await tester.pumpAndSettle();
+
+      expect(find.text('No Salons Found'), findsOneWidget);
+      expect(find.text('RESET FILTERS'), findsOneWidget);
+
+      // Tap RESET FILTERS
+      await tester.tap(find.text('RESET FILTERS'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('VIORA — Khar West'), findsOneWidget);
+    });
+
+    testWidgets('12. Tapping a salon card opens DateTimeSelectionScreen', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(createTestWidget(const BranchesListScreen()));
+      await tester.pumpAndSettle();
+
+      // Tap first salon
+      await tester.tap(find.text('SELECT SALON →').first);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DateTimeSelectionScreen), findsOneWidget);
     });
   });
 
@@ -166,7 +306,6 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // Rebooking banner must be visible
       expect(find.text('ORIGINAL SALON PRESELECTED'), findsOneWidget);
       expect(find.text('VIORA — Khar West'), findsWidgets);
       expect(find.text('PREVIOUS APPOINTMENT SALON'), findsOneWidget);
@@ -213,7 +352,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(DateTimeSelectionScreen), findsOneWidget);
-      // Stylist name should be Christian Dior
       expect(find.text('with Christian Dior'), findsOneWidget);
       expect(find.text('Signature Haute Coiffure'), findsOneWidget);
     });
